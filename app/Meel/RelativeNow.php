@@ -25,6 +25,12 @@ class RelativeNow
         $this->string = $string;
 
         $this->isRelativeToNow = $this->interpretNow($string);
+
+        if ($this->isRelativeToNow()) {
+            $this->years = $this->interpretYears($string);
+
+            
+        }
     }
 
     public function isRelativeToNow()
@@ -55,18 +61,67 @@ class RelativeNow
         }
 
         // Match strings like:
-        //   -in 1 hour
+        //   "in 1 hour"
         if (strpos($string, 'in ') === 0) {
             return true;
         }
 
+        // Match strings like:
+        //   "next year"
+        if (strpos($string, 'next ') === 0) {
+            return true;
+        }
+
         // Match patterns like:
-        //   -right now
-        //   -an hour from now
+        //   "right now"
+        //   "an hour from now"
         if (preg_match('/ now$/', $string)) {
             return true;
         }
 
         return false;
+    }
+
+    protected function interpretYears($string)
+    {
+        if (strpos($string, 'next year') !== false) {
+            return 1;
+        }
+
+        if (preg_match('/(\d+) years?/', $string, $matches)) {
+            return (int) $matches[1];
+        }
+
+        return 0;
+    }
+
+    protected function interpretMonths($string)
+    {
+
+    }
+
+    protected function interpretWeeks($string)
+    {
+
+    }
+
+    protected function interpretDays($string)
+    {
+
+    }
+
+    protected function interpretHours($string)
+    {
+
+    }
+
+    protected function interpretMinutes($string)
+    {
+
+    }
+
+    protected function interpretSeconds($string)
+    {
+
     }
 }
