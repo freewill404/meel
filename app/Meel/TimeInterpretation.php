@@ -34,12 +34,22 @@ class TimeInterpretation
         return Carbon::createFromFormat('U', 0)->setTime($hours, $minutes, 0, 0);
     }
 
+    public function getTimeString(): string
+    {
+        return $this->getTime()->format('H:i:s');
+    }
+
     protected function interpretAbsoluteTime($string)
     {
+        // Match patterns like:
+        //   "1:30"
+        //   "12:00"
         if (preg_match('/(\d?\d:\d\d)/', $string, $matches)) {
             return $matches[1];
         }
 
+        // Match patterns like:
+        //   "at 2"
         if (preg_match('/at (\d?\d)/', $string, $matches)) {
             return $matches[1].':00';
         }

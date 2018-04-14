@@ -62,4 +62,11 @@ class TimeString
     {
         return $this->originalString;
     }
+
+    public static function prepare($string): string
+    {
+        $timeString = new static($string);
+
+        return $timeString->getPreparedString();
+    }
 }
