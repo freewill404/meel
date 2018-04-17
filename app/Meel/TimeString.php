@@ -8,7 +8,7 @@ class TimeString
 
     protected $originalString;
 
-    protected $writtenNumbers = [
+    protected $replaceWords = [
         'a'       => 1,
         'an'      => 1,
         'one'     => 1,
@@ -24,6 +24,10 @@ class TimeString
         'fifteen' => 15,
         'thirty'  => 30,
         'sixty'   => 60,
+
+        'every week'  => 'weekly',
+        'every month' => 'monthly',
+        'every year'  => 'yearly',
     ];
 
     public function __construct(string $string)
@@ -39,18 +43,22 @@ class TimeString
 
         $string = strtolower($string);
 
-        foreach ($this->writtenNumbers as $word => $number) {
-            $string = $this->replaceWrittenNumber($string, $word, $number);
+        foreach ($this->replaceWords as $search => $replace) {
+            $string = $this->replaceWord($string, $search, $replace);
         }
 
         return $string;
     }
 
-    protected function replaceWrittenNumber($input, $word, $number)
+    protected function replaceWord($input, $search, $replace)
     {
-        $input = preg_replace('/(^'.$word.' )/', "{$number} ", $input);
+        $input = preg_replace('/(^'.$search.'$)/', "{$replace}", $input);
 
-        return preg_replace('/( '.$word.' )/', " {$number} ", $input);
+        $input = preg_replace('/(^'.$search.' )/', "{$replace} ", $input);
+
+        $input = preg_replace('/( '.$search.'$)/', " {$replace}", $input);
+
+        return preg_replace('/( '.$search.' )/', " {$replace} ", $input);
     }
 
     public function getPreparedString()

@@ -62,4 +62,12 @@ class TimeStringTest extends TestCase
         $this->assertPreparedInput('in 30 minutes', 'in thirty minutes');
         $this->assertPreparedInput('in 60 minutes', 'in sixty minutes');
     }
+
+    /** @test */
+    function it_changes_recurring_text_to_single_words()
+    {
+        $this->assertPreparedInput('weekly', 'every week');
+        $this->assertPreparedInput('monthly', 'every month');
+        $this->assertPreparedInput('yearly', 'every year');
+    }
 }
