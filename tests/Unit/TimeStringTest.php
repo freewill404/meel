@@ -69,5 +69,13 @@ class TimeStringTest extends TestCase
         $this->assertPreparedInput('weekly', 'every week');
         $this->assertPreparedInput('monthly', 'every month');
         $this->assertPreparedInput('yearly', 'every year');
+
+        $this->assertPreparedInput('weekly on monday',    'every monday');
+        $this->assertPreparedInput('weekly on tuesday',   'every tuesday');
+        $this->assertPreparedInput('weekly on wednesday', 'every wednesday');
+        $this->assertPreparedInput('weekly on thursday',  'every thursday');
+        $this->assertPreparedInput('weekly on friday',    'every friday');
+        $this->assertPreparedInput('weekly on saturday',  'every saturday');
+        $this->assertPreparedInput('weekly on sunday',    'every sunday');
     }
 }

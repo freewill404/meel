@@ -28,6 +28,14 @@ class TimeString
         'every week'  => 'weekly',
         'every month' => 'monthly',
         'every year'  => 'yearly',
+
+        'every monday'    => 'weekly on monday',
+        'every tuesday'   => 'weekly on tuesday',
+        'every wednesday' => 'weekly on wednesday',
+        'every thursday'  => 'weekly on thursday',
+        'every friday'    => 'weekly on friday',
+        'every saturday'  => 'weekly on saturday',
+        'every sunday'    => 'weekly on sunday',
     ];
 
     public function __construct(string $string)

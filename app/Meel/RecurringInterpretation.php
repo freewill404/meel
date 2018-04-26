@@ -113,6 +113,11 @@ class RecurringInterpretation
             return false;
         }
 
-        return [];
+        return [
+            'interval'       => $this->interval,
+            'dayOfTheWeek'   => $this->dayOfTheWeek,
+            'dateOfTheMonth' => $this->dateOfTheMonth,
+            'monthOfTheYear' => $this->monthOfTheYear,
+        ];
     }
 }
