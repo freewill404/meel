@@ -3,7 +3,6 @@
 namespace Tests\Integration;
 
 use App\Meel\EmailScheduleFormat;
-use Carbon\Carbon;
 use Tests\TestCase;
 
 class EmailScheduleFormatTest extends TestCase
@@ -66,5 +65,21 @@ class EmailScheduleFormatTest extends TestCase
         $this->assertRecurringSchedule('every monday at 11', '2018-04-02 11:00:00');
 
         $this->assertRecurringSchedule('every saturday at 11', '2018-03-31 11:00:00');
+    }
+
+    /** @test */
+    function it_determines_the_next_occurrence_for_monthly_recurring_schedules()
+    {
+        $this->assertRecurringSchedule('monthly', '2018-04-01 08:00:00');
+
+        $this->assertRecurringSchedule('monthly on the 25th', '2018-04-25 08:00:00');
+    }
+
+    /** @test */
+    function it_determines_the_next_occurrence_for_yearly_recurring_schedules()
+    {
+        $this->assertRecurringSchedule('yearly', '2019-01-01 08:00:00');
+
+        $this->assertRecurringSchedule('yearly in may', '2018-05-01 08:00:00');
     }
 }

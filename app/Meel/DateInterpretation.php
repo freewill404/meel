@@ -3,33 +3,82 @@
 namespace App\Meel;
 
 use Illuminate\Support\Carbon;
-use LogicException;
 
 class DateInterpretation
 {
     protected $string;
 
-    protected $date; // Y-m-d
+    protected $year;
+
+    protected $month;
+
+    protected $day;
 
     public function __construct(string $string)
     {
         $this->string = $string;
 
-        $this->date = $this->interpretDate($string);
-    }
-
-    public function isValidDate()
-    {
-        return (bool) $this->date;
+        $this->interpretDate($string);
     }
 
     public function getDate(): Carbon
     {
-        if (! $this->isValidDate()) {
-            throw new LogicException('The given input is not interpreted as a valid date');
-        }
+        return Carbon::parse($this->getDateString().' 00:00:00');
+    }
 
-        return Carbon::parse($this->date.' 00:00:00');
+    public function getDateString(): string
+    {
+        return $this->getYear().'-'.$this->getMonth().'-'.$this->getDay();
+    }
+
+    protected function defaultYear()
+    {
+        return date('Y');
+    }
+
+    protected function defaultMonth()
+    {
+        return '01';
+    }
+
+    protected function defaultDay()
+    {
+        return '01';
+    }
+
+    public function getYear(): string
+    {
+        return $this->year ? str_pad($this->year, 2, '0', STR_PAD_LEFT) : $this->defaultYear();
+    }
+
+    public function getMonth(): string
+    {
+        return $this->month ? str_pad($this->month, 2, '0', STR_PAD_LEFT) : $this->defaultMonth();
+    }
+
+    public function getDay(): string
+    {
+        return $this->day ? str_pad($this->day, 2, '0', STR_PAD_LEFT) : $this->defaultDay();
+    }
+
+    public function hasSpecifiedDate(): bool
+    {
+        return $this->hasSpecifiedDay() || $this->hasSpecifiedMonth() || $this->hasSpecifiedYear();
+    }
+
+    public function hasSpecifiedYear(): bool
+    {
+        return $this->year !== null;
+    }
+
+    public function hasSpecifiedMonth(): bool
+    {
+        return $this->month !== null;
+    }
+
+    public function hasSpecifiedDay(): bool
+    {
+        return $this->day !== null;
     }
 
     protected function interpretDate($string)
@@ -40,41 +89,40 @@ class DateInterpretation
         //   "10-1-2000"
         //   "1-1-2000"
         if (preg_match('/(\d?\d-\d?\d-\d\d\d\d)/', $string, $matches)) {
-            return $this->parseYearMonthDay($matches[1]);
+            [$a, $b, $year] = explode('-', $matches[1]);
+
+            [$day, $month] = $this->parseDayAndMonth($a, $b);
+
+            if ($day && $year > 1999 && $year < 2100) {
+                $this->year = $year;
+
+                $this->month = $month;
+
+                $this->day = $day;
+            }
+
+            return;
         }
 
         // Match dates like:
         //   "23-2"
         //   "2-23"
         if (preg_match('/(\d?\d-\d?\d)/', $string, $matches)) {
-            return $this->parseMonthDay($matches[1]);
+            [$a, $b] = explode('-', $matches[1]);
+
+            [$day, $month] = $this->parseDayAndMonth($a, $b);
+
+            $this->month = $month;
+
+            $this->day = $day;
+
+            return;
         }
 
-        return false;
-    }
-
-    protected function parseYearMonthDay($string)
-    {
-        [$a, $b, $year] = explode('-', $string);
-
-        [$day, $month] = $this->parseDayAndMonth($a, $b);
-
-        if ($day === false || $year < 2017 || $year > 2299) {
-            return false;
+        // Match years between 2000 and 2099
+        if (preg_match('/(20\d\d)/', $string, $matches)) {
+            $this->year = $matches[1];
         }
-
-        return "{$year}-{$month}-{$day}";
-    }
-
-    protected function parseMonthDay($string)
-    {
-        [$a, $b] = explode('-', $string);
-
-        [$day, $month] = $this->parseDayAndMonth($a, $b);
-
-        return $day === false
-            ? false
-            : now()->format('Y-')."{$month}-{$day}";
     }
 
     /**
@@ -88,7 +136,7 @@ class DateInterpretation
      */
     protected function parseDayAndMonth($a, $b)
     {
-        $failed = [false, false];
+        $failed = [null, null];
 
         if (! preg_match('/^\d+$/', $a) || ! preg_match('/^\d+$/', $b)) {
             return $failed;

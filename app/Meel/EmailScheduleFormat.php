@@ -3,6 +3,7 @@
 namespace App\Meel;
 
 use App\Support\Enums\Days;
+use App\Support\Enums\Intervals;
 use App\Support\Enums\Months;
 
 class EmailScheduleFormat
@@ -63,8 +64,8 @@ class EmailScheduleFormat
             return $this->getNextRecurringDate();
         }
 
-        if ($this->dateInterpretation->isValidDate()) {
-            return $this->dateInterpretation->getDate()->format('Y-m-d');
+        if ($this->dateInterpretation->hasSpecifiedDate()) {
+            return $this->dateInterpretation->getDateString();
         }
 
         if ($this->relativeNow->isRelativeToNow()) {
@@ -94,7 +95,8 @@ class EmailScheduleFormat
 
     protected function getNextRecurringDate()
     {
-        $dateTime = now();
+        // Get the specified date, or get the default date
+        $dateTime = $this->dateInterpretation->getDate();
 
         // If it recurs once a year, the month should be set
         $month = $this->recurringInterpretation->getMonthOfTheYear();
@@ -106,8 +108,12 @@ class EmailScheduleFormat
         // If it recurs once a month, the day of the month should be set
         $dateOfMonth = $this->recurringInterpretation->getDateOfTheMonth();
 
-        if ($dateOfMonth) {
+        if ($this->recurringInterpretation->getInterval() === Intervals::MONTHLY && $dateOfMonth) {
             $dateTime->day($dateOfMonth);
+
+            while (in_the_past($dateTime)) {
+                $dateTime->addMonth();
+            }
         }
 
         // If it recurs once a week, the day of the week should be set
@@ -118,6 +124,12 @@ class EmailScheduleFormat
 
             while (in_the_past($dateTime) || Days::toInt($day) !== $dateTime->dayOfWeek) {
                 $dateTime->addDay();
+            }
+        }
+
+        if ($this->recurringInterpretation->getInterval() === Intervals::YEARLY) {
+            while (in_the_past($dateTime)) {
+                $dateTime->addYear();
             }
         }
 

@@ -11,15 +11,17 @@ class DateInterpretationTest extends TestCase
     {
         $dateInterpretation = new DateInterpretation($input);
 
-        if (! $dateInterpretation->isValidDate()) {
-            $this->fail("DateInterpretation interpreted '{$input}' as not being a valid date, expected '{$expected}'");
+        if (! $dateInterpretation->hasSpecifiedDate()) {
+            $this->fail("DateInterpretation interpreted '{$input}' as not having a specified date, expected '{$expected}'");
         }
 
         $this->assertSame(
             $expected,
-            $actual = $dateInterpretation->getDate()->format('Y-m-d'),
+            $actual = $dateInterpretation->getDateString(),
             "DateInterpretation interpreted '{$input}' as '{$actual}', expected '{$expected}'"
         );
+
+        return $dateInterpretation;
     }
 
     /** @test */
@@ -27,7 +29,11 @@ class DateInterpretationTest extends TestCase
     {
         // d-m-Y
         $this->assertDateInterpretation('2018-03-28', '28-03-2018');
-        $this->assertDateInterpretation('2018-03-28', 'On 28-03-2018');
+        $dateInterpretation = $this->assertDateInterpretation('2018-03-28', 'On 28-03-2018');
+
+        $this->assertTrue($dateInterpretation->hasSpecifiedYear());
+        $this->assertTrue($dateInterpretation->hasSpecifiedMonth());
+        $this->assertTrue($dateInterpretation->hasSpecifiedDay());
 
         // unambiguous m-d-Y
         $this->assertDateInterpretation('2018-03-28', '3-28-2018');
@@ -39,16 +45,28 @@ class DateInterpretationTest extends TestCase
     /** @test */
     function it_interprets_valid_dates_without_a_year()
     {
-        $currentYear = now()->format('Y');
-
         // d-m
-        $this->assertDateInterpretation($currentYear.'-03-28', '28-03');
-        $this->assertDateInterpretation($currentYear.'-03-28', 'On 28-03');
+        $this->assertDateInterpretation('2018-03-28', '28-03');
+        $dateInterpretation = $this->assertDateInterpretation('2018-03-28', 'On 28-03');
+
+        $this->assertFalse($dateInterpretation->hasSpecifiedYear());
+        $this->assertTrue($dateInterpretation->hasSpecifiedMonth());
+        $this->assertTrue($dateInterpretation->hasSpecifiedDay());
 
         // unambiguous m-d
-        $this->assertDateInterpretation($currentYear.'-03-28', '03-28');
+        $this->assertDateInterpretation('2018-03-28', '03-28');
 
         // ambiguous m-d (in this case always assume d-m)
-        $this->assertDateInterpretation($currentYear.'-02-03', '03-02');
+        $this->assertDateInterpretation('2018-02-03', '03-02');
+    }
+
+    /** @test */
+    function it_interprets_years()
+    {
+        $dateInterpretation = $this->assertDateInterpretation('2020-01-01', 'in the year 2020');
+
+        $this->assertTrue($dateInterpretation->hasSpecifiedYear());
+        $this->assertFalse($dateInterpretation->hasSpecifiedMonth());
+        $this->assertFalse($dateInterpretation->hasSpecifiedDay());
     }
 }
