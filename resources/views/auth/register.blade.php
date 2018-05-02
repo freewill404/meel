@@ -24,7 +24,7 @@
             <input class="field" type="password" name="password_confirmation" required>
         </label>
 
-        <button type="submit" class="btn block ml-auto mt-4">Registeren</button>
+        <button type="submit" class="btn block ml-auto mt-4">Register</button>
     </form>
 
 @endsection
