@@ -1,7 +1,5 @@
 <?php
 
-use Carbon\Carbon;
-
 /**
  * @param $path
  * @param null|string $disk
@@ -32,13 +30,4 @@ function interval(int $interval, $closure)
     }
 
     $calls[$caller] = $callCount + 1;
-}
-
-function in_the_past($date): bool
-{
-    $now = (int) now()->format('U');
-
-    $dateUnix = (int) Carbon::parse($date)->format('U');
-
-    return $dateUnix < $now;
 }

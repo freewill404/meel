@@ -111,7 +111,7 @@ class EmailScheduleFormat
         if ($this->recurringInterpretation->getInterval() === Intervals::MONTHLY && $dateOfMonth) {
             $dateTime->day($dateOfMonth);
 
-            while (in_the_past($dateTime)) {
+            while ($dateTime->isPast()) {
                 $dateTime->addMonth();
             }
         }
@@ -122,13 +122,13 @@ class EmailScheduleFormat
         if ($day) {
             $dateTime->startOfWeek();
 
-            while (in_the_past($dateTime) || Days::toInt($day) !== $dateTime->dayOfWeek) {
+            while ($dateTime->isPast() || Days::toInt($day) !== $dateTime->dayOfWeek) {
                 $dateTime->addDay();
             }
         }
 
         if ($this->recurringInterpretation->getInterval() === Intervals::YEARLY) {
-            while (in_the_past($dateTime)) {
+            while ($dateTime->isPast()) {
                 $dateTime->addYear();
             }
         }
