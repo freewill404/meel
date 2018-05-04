@@ -1,6 +1,6 @@
 <?php
 
-Route::view('/', 'home')->name('home')->middleware('guest');
+Route::get('/', ['uses' => 'HomeController@index', 'as' => 'home']);
 
 Route::get('login',   ['uses' => 'Auth\LoginController@showLoginForm', 'as' => 'login']);
 Route::post('login',  ['uses' => 'Auth\LoginController@login']);

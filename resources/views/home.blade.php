@@ -7,4 +7,6 @@
 
     <h1>Meel.me</h1>
 
+    Register an account yo!
+
 @endsection

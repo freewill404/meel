@@ -10,7 +10,7 @@ class RedirectIfAuthenticated
     public function handle($request, Closure $next, $guard = null)
     {
         return Auth::guard($guard)->check()
-            ? redirect()->route('user.meel')
+            ? redirect()->route('home')
             : $next($request);
     }
 }
