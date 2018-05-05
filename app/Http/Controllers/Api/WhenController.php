@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Meel\EmailScheduleFormat;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class WhenController extends Controller
@@ -26,13 +27,17 @@ class WhenController extends Controller
             return ['valid' => false, 'humanInterpretation' => ''];
         }
 
+        $nextOccurrenceString = $emailSchedule->nextOccurrence();
+
+        $dayOfTheWeek = Carbon::parse($nextOccurrenceString)->format('l');
+
         $humanInterpretation = $emailSchedule->isRecurring()
-            ? 'Recurring '.$emailSchedule->getInterval().', at '
+            ? 'Recurring '.$emailSchedule->getInterval().', first occurrence at '
             : 'Once, at ';
 
         return [
             'valid' => true,
-            'humanInterpretation' => $humanInterpretation.$emailSchedule->nextOccurrence(),
+            'humanInterpretation' => $humanInterpretation.$nextOccurrenceString.' ('.$dayOfTheWeek.')',
         ];
     }
 }
