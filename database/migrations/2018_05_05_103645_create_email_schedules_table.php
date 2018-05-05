@@ -11,12 +11,15 @@ class CreateEmailSchedulesTable extends Migration
         Schema::create('email_schedules', function (Blueprint $table) {
             $table->increments('id');
 
+            $table->unsignedInteger('user_id');
             $table->string('what');
             $table->string('when');
             $table->dateTime('previous_occurrence')->nullable();
             $table->dateTime('next_occurrence')->nullable();
             $table->unsignedInteger('times_sent')->default(0);
             $table->boolean('disabled')->default(false);
+
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 
             $table->timestamps();
         });

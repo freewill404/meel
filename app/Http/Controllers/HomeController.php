@@ -14,8 +14,17 @@ class HomeController extends Controller
 
     public function post(MeelRequest $request)
     {
-        dd(
-            $request->all()
-        );
+        $request->user()->emailSchedules()->create([
+            'what'            => $request->get('what'),
+            'when'            => $request->get('when'),
+            'next_occurrence' => $request->getScheduleFormat()->nextOccurrence(),
+        ]);
+
+        return redirect()->route('home.success');
+    }
+
+    public function success()
+    {
+        return view('meel-success');
     }
 }
