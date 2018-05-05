@@ -42,7 +42,12 @@ class EmailScheduleFormat
 
     public function isRecurring(): bool
     {
-        return (bool) $this->recurringInterpretation->getInterval();
+        return (bool) $this->getInterval();
+    }
+
+    public function getInterval()
+    {
+        return $this->recurringInterpretation->getInterval();
     }
 
     public function nextOccurrence()

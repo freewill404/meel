@@ -27,7 +27,7 @@ class WhenController extends Controller
         }
 
         $humanInterpretation = $emailSchedule->isRecurring()
-            ? 'Recurring, at '
+            ? 'Recurring '.$emailSchedule->getInterval().', at '
             : 'Once, at ';
 
         return [
