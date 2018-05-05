@@ -44,4 +44,16 @@ class WhenControllerTest extends TestCase
         // "null" is the default value. It is valid, and the human message is empty.
         $this->assertValidHumanInterpretation('', null);
     }
+
+    /** @test */
+    function basic_invalid_interpretation()
+    {
+        $this->assertInvalidHumanInterpretation('', 'ALL THE TIME BRO!');
+    }
+
+    /** @test */
+    function basic_non_recurring_interpretation()
+    {
+        $this->assertValidHumanInterpretation('Once, at 2018-04-04 16:00:00', 'next week at 16:00');
+    }
 }

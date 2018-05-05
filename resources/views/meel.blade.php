@@ -16,10 +16,10 @@
 
         <label class="block mt-8">
             When?
-            <input type="text" name="when" class="field" placeholder="now">
+            <when-input></when-input>
         </label>
 
-        <button class="btn mt-8">Meel!</button>
+        <button class="btn mt-4">Meel!</button>
 
     </form>
 

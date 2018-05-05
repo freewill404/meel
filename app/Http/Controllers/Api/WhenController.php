@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Meel\EmailScheduleFormat;
 use Illuminate\Http\Request;
 
 class WhenController extends Controller
@@ -19,6 +20,19 @@ class WhenController extends Controller
             return ['valid' => true, 'humanInterpretation' => ''];
         }
 
-        dd('TODO!! FINISH WHEN CONTROLLER API');
+        $emailSchedule = new EmailScheduleFormat($writtenInput);
+
+        if (! $emailSchedule->isUsableInterpretation()) {
+            return ['valid' => false, 'humanInterpretation' => ''];
+        }
+
+        $humanInterpretation = $emailSchedule->isRecurring()
+            ? 'Recurring, at '
+            : 'Once, at ';
+
+        return [
+            'valid' => true,
+            'humanInterpretation' => $humanInterpretation.$emailSchedule->nextOccurrence(),
+        ];
     }
 }
