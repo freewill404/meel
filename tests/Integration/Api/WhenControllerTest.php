@@ -54,6 +54,6 @@ class WhenControllerTest extends TestCase
     /** @test */
     function basic_non_recurring_interpretation()
     {
-        $this->assertValidHumanInterpretation('Once, at 2018-04-04 16:00:00', 'next week at 16:00');
+        $this->assertValidHumanInterpretation('Once, at 2018-04-04 16:00:00 (Wednesday)', 'next week at 16:00');
     }
 }

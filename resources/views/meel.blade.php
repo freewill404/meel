@@ -6,6 +6,8 @@
 @section('content')
 
     <form method="POST" class="max-w-sm mx-auto mt-2">
+        {{ method_field('POST') }}
+        {{ csrf_field() }}
 
         <h1>Meel.me</h1>
 

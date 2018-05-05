@@ -9,8 +9,9 @@ class EmailSchedule extends Model
     protected $guarded = [];
 
     protected $casts = [
-        'next_occurrence' => 'datetime',
-        'times_sent'      => 'integer',
-        'disabled'        => 'bool',
+        'previous_occurrence' => 'datetime',
+        'next_occurrence'     => 'datetime',
+        'times_sent'          => 'integer',
+        'disabled'            => 'bool',
     ];
 }

@@ -13,6 +13,7 @@ class CreateEmailSchedulesTable extends Migration
 
             $table->string('what');
             $table->string('when');
+            $table->dateTime('previous_occurrence')->nullable();
             $table->dateTime('next_occurrence')->nullable();
             $table->unsignedInteger('times_sent')->default(0);
             $table->boolean('disabled')->default(false);
