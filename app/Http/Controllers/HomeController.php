@@ -15,9 +15,8 @@ class HomeController extends Controller
     public function post(MeelRequest $request)
     {
         $request->user()->emailSchedules()->create([
-            'what'            => $request->get('what'),
-            'when'            => $request->get('when'),
-            'next_occurrence' => $request->getScheduleFormat()->nextOccurrence(),
+            'what' => $request->get('what'),
+            'when' => $request->get('when'),
         ]);
 
         return redirect()->route('home.success');

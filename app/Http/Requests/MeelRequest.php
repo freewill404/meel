@@ -35,6 +35,7 @@ class MeelRequest extends FormRequest
      */
     public function user($guard = null)
     {
+        // Overridden for better IDE intellisense
         return parent::user($guard);
     }
 }

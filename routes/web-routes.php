@@ -1,8 +1,8 @@
 <?php
 
 Route::get('/',   ['uses' => 'HomeController@index',   'as' => 'home']);
-Route::get('/ok', ['uses' => 'HomeController@success', 'as' => 'home.success']);
 Route::post('/',  ['uses' => 'HomeController@post',    'as' => 'home.post']);
+Route::get('/ok', ['uses' => 'HomeController@success', 'as' => 'home.success']);
 
 Route::get('login',   ['uses' => 'Auth\LoginController@showLoginForm', 'as' => 'login']);
 Route::post('login',  ['uses' => 'Auth\LoginController@login']);

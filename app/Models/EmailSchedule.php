@@ -2,7 +2,12 @@
 
 namespace App\Models;
 
+use App\Mail\Email;
+use App\Meel\EmailScheduleFormat;
+use Doctrine\DBAL\Query\QueryBuilder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Mail;
+use RuntimeException;
 
 class EmailSchedule extends Model
 {
@@ -10,8 +15,59 @@ class EmailSchedule extends Model
 
     protected $casts = [
         'previous_occurrence' => 'datetime',
-        'next_occurrence'     => 'datetime',
-        'times_sent'          => 'integer',
         'disabled'            => 'bool',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function sendEmail()
+    {
+        Mail::send(
+            new Email($this)
+        );
+
+        $this->emailScheduleHistories()->create([
+            'sent_at' => $this->next_occurrence,
+        ]);
+
+        $schedule = new EmailScheduleFormat($this->when);
+
+        $this->update([
+            'next_occurrence' => $schedule->isRecurring() ? $schedule->nextOccurrence() : null,
+        ]);
+    }
+
+    public function emailScheduleHistories()
+    {
+        return $this->hasMany(EmailScheduleHistory::class);
+    }
+
+    public function scopeScheduledForNow(QueryBuilder $query)
+    {
+        $now = now()->second(0);
+
+        return $query
+            ->where('next_occurrence', $now)
+            ->where('disabled', false);
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function (EmailSchedule $emailSchedule) {
+            $schedule = new EmailScheduleFormat($emailSchedule->when);
+
+            $nextOccurrence = $schedule->nextOccurrence();
+
+            if ($nextOccurrence === null) {
+                throw new RuntimeException('Tried creating an EmailSchedule with an invalid "when": '.$emailSchedule->when);
+            }
+
+            $emailSchedule->next_occurrence = $nextOccurrence;
+        });
+    }
 }
