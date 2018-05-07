@@ -146,7 +146,7 @@ return [
         Illuminate\View\ViewServiceProvider::class,
 
         // Package Service Providers...
-
+        Laravel\Passport\PassportServiceProvider::class,
 
         // Application Service Providers...
         App\Providers\AppServiceProvider::class,

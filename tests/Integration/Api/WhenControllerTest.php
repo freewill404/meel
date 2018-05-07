@@ -2,10 +2,14 @@
 
 namespace Tests\Integration\Api;
 
+use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class WhenControllerTest extends TestCase
 {
+    use RefreshDatabase;
+
     private function assertValidHumanInterpretation($expected, $input)
     {
         return $this->assertHumanInterpretation($expected, $input, true);
@@ -41,6 +45,10 @@ class WhenControllerTest extends TestCase
     /** @test */
     function default_empty_value_is_valid()
     {
+        $this->actingAs(
+            factory(User::class)->create(['timezone' => 'UTC']), 'api'
+        );
+
         // "null" is the default value. It is valid, and the human message is empty.
         $this->assertValidHumanInterpretation('', null);
     }
@@ -48,12 +56,20 @@ class WhenControllerTest extends TestCase
     /** @test */
     function basic_invalid_interpretation()
     {
+        $this->actingAs(
+            factory(User::class)->create(['timezone' => 'UTC']), 'api'
+        );
+
         $this->assertInvalidHumanInterpretation('', 'ALL THE TIME BRO!');
     }
 
     /** @test */
     function basic_non_recurring_interpretation()
     {
+        $this->actingAs(
+            factory(User::class)->create(['timezone' => 'UTC']), 'api'
+        );
+
         $this->assertValidHumanInterpretation('Once, at 2018-04-04 16:00:00 (Wednesday)', 'next week at 16:00');
     }
 }

@@ -35,7 +35,7 @@ class RouteServiceProvider extends ServiceProvider
     protected function mapApiRoutes()
     {
         Route::prefix('api/v1')
-             ->middleware('api')
+             ->middleware(['api', 'auth:api'])
              ->name('api.')
              ->namespace($this->namespace.'\\Api')
              ->group(base_path('routes/api-routes.php'));
