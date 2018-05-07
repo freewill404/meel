@@ -106,18 +106,4 @@ class RecurringInterpretation
     {
         return $this->interval;
     }
-
-    public function toArray()
-    {
-        if ($this->interval === false) {
-            return false;
-        }
-
-        return [
-            'interval'       => $this->interval,
-            'dayOfTheWeek'   => $this->dayOfTheWeek,
-            'dateOfTheMonth' => $this->dateOfTheMonth,
-            'monthOfTheYear' => $this->monthOfTheYear,
-        ];
-    }
 }
