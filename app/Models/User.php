@@ -22,4 +22,19 @@ class User extends Authenticatable
     {
         return $this->hasMany(EmailSchedule::class);
     }
+
+    public static function getIdsByTimezone(): array
+    {
+        $users = static::all();
+
+        $timezones = $users->pluck('timezone')->unique()->sort();
+
+        $userIdsByTimezone = [];
+
+        foreach ($timezones as $timezone) {
+            $userIdsByTimezone[$timezone] = $users->where('timezone', $timezone)->pluck('id')->all();
+        }
+
+        return $userIdsByTimezone;
+    }
 }

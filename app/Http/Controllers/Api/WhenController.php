@@ -21,7 +21,7 @@ class WhenController extends Controller
             return ['valid' => true, 'humanInterpretation' => ''];
         }
 
-        $emailSchedule = new EmailScheduleFormat($writtenInput);
+        $emailSchedule = new EmailScheduleFormat($writtenInput, $request->user()->timezone);
 
         if (! $emailSchedule->isUsableInterpretation()) {
             return ['valid' => false, 'humanInterpretation' => ''];

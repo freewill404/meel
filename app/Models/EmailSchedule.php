@@ -45,21 +45,12 @@ class EmailSchedule extends Model
         return $this->hasMany(EmailScheduleHistory::class);
     }
 
-    public function scopeScheduledForNow(QueryBuilder $query)
-    {
-        $now = now()->second(0);
-
-        return $query
-            ->where('next_occurrence', $now)
-            ->where('disabled', false);
-    }
-
     protected static function boot()
     {
         parent::boot();
 
         static::creating(function (EmailSchedule $emailSchedule) {
-            $schedule = new EmailScheduleFormat($emailSchedule->when);
+            $schedule = new EmailScheduleFormat($emailSchedule->when, $emailSchedule->user->timezone);
 
             $nextOccurrence = $schedule->nextOccurrence();
 

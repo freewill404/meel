@@ -9,6 +9,8 @@ class RelativeNow
 {
     protected $string;
 
+    protected $timezone;
+
     protected $isRelativeToNow = false;
 
     /**
@@ -31,9 +33,11 @@ class RelativeNow
 
     protected $seconds = 0;
 
-    public function __construct(string $string)
+    public function __construct(string $string, $timezone = null)
     {
         $this->string = $string;
+
+        $this->timezone = $timezone;
 
         $this->isRelativeToNow = $this->interpretNow($string);
 
@@ -72,7 +76,7 @@ class RelativeNow
             throw new LogicException('The given input is not relative to now');
         }
 
-        $dateTime = now()
+        $dateTime = now($this->timezone)
             ->addYears($this->years)
             ->addMonths($this->months)
             ->addWeeks($this->weeks)

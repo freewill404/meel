@@ -23,11 +23,11 @@ class WhenControllerTest extends TestCase
     private function assertHumanInterpretation($expected, $input, $isValid)
     {
         $response = $this->post(route('api.humanInterpretation'), [
-            'when' => $input,
-        ]);
+                'when' => $input,
+            ])
+            ->assertStatus(200);
 
         $content = (array) json_decode($response->getContent());
-
         $this->assertSame(
             $isValid,
             $content['valid'],
@@ -46,7 +46,7 @@ class WhenControllerTest extends TestCase
     function default_empty_value_is_valid()
     {
         $this->actingAs(
-            factory(User::class)->create(['timezone' => 'UTC']), 'api'
+            factory(User::class)->create(), 'api'
         );
 
         // "null" is the default value. It is valid, and the human message is empty.
@@ -57,7 +57,7 @@ class WhenControllerTest extends TestCase
     function basic_invalid_interpretation()
     {
         $this->actingAs(
-            factory(User::class)->create(['timezone' => 'UTC']), 'api'
+            factory(User::class)->create(), 'api'
         );
 
         $this->assertInvalidHumanInterpretation('', 'ALL THE TIME BRO!');
@@ -67,7 +67,7 @@ class WhenControllerTest extends TestCase
     function basic_non_recurring_interpretation()
     {
         $this->actingAs(
-            factory(User::class)->create(['timezone' => 'UTC']), 'api'
+            factory(User::class)->create(), 'api'
         );
 
         $this->assertValidHumanInterpretation('Once, at 2018-04-04 16:00:00 (Wednesday)', 'next week at 16:00');

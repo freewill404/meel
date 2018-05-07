@@ -8,15 +8,19 @@ class DateInterpretation
 {
     protected $string;
 
+    protected $timezone;
+
     protected $year;
 
     protected $month;
 
     protected $day;
 
-    public function __construct(string $string)
+    public function __construct(string $string, $timezone = null)
     {
         $this->string = $string;
+
+        $this->timezone = $timezone;
 
         $this->interpretDate($string);
     }
@@ -33,7 +37,7 @@ class DateInterpretation
 
     protected function defaultYear()
     {
-        return date('Y');
+        return now($this->timezone)->format('Y');
     }
 
     protected function defaultMonth()

@@ -14,9 +14,15 @@ class QueueScheduledEmails extends Command
 
     public function handle()
     {
-        EmailSchedule::scheduledForNow()
-            ->each(function (EmailSchedule $schedule) {
-                SendScheduledEmailJob::dispatch($schedule);
-            });
+
+
+        // User Ids Per Timezone
+
+        // Foreach Timezone
+        //      where user_id in UserIdsPerTimezone && next occurrence === now($timezone)
+
+        // ->each(function (EmailSchedule $schedule) {
+        //     SendScheduledEmailJob::dispatch($schedule);
+        // });
     }
 }

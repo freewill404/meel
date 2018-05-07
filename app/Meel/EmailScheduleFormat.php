@@ -20,15 +20,15 @@ class EmailScheduleFormat
 
     protected $recurringInterpretation;
 
-    public function __construct($writtenInput)
+    public function __construct($writtenInput, $timezone = null)
     {
         $this->writtenInput = $writtenInput;
 
         $this->preparedWrittenInput = TimeString::prepare($writtenInput);
 
-        $this->dateInterpretation = new DateInterpretation($this->preparedWrittenInput);
+        $this->dateInterpretation = new DateInterpretation($this->preparedWrittenInput, $timezone);
 
-        $this->relativeNow = new RelativeNow($this->preparedWrittenInput);
+        $this->relativeNow = new RelativeNow($this->preparedWrittenInput, $timezone);
 
         $this->timeInterpretation = new TimeInterpretation($this->preparedWrittenInput);
 
