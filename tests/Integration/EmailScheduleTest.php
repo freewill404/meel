@@ -32,6 +32,22 @@ class EmailScheduleTest extends TestCase
     /** @test */
     function it_creates_history_records_for_sent_emails()
     {
+        $user = factory(User::class)->create();
 
+        $emailSchedule = $user->emailSchedules()->create([
+            'what' => 'The what text',
+            'when' => 'now',
+        ]);
+
+        $emailSchedule->sendEmail();
+
+        $histories = $emailSchedule->emailScheduleHistories;
+
+        $this->assertSame(1, $histories->count());
+
+        $this->assertSame(
+            (string) $histories->first()->sent_at,
+            '2018-03-28 12:00:00'
+        );
     }
 }
