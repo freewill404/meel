@@ -4,8 +4,8 @@ namespace App\Models;
 
 use App\Mail\Email;
 use App\Meel\EmailScheduleFormat;
-use Doctrine\DBAL\Query\QueryBuilder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Mail;
 use RuntimeException;
 
@@ -43,6 +43,26 @@ class EmailSchedule extends Model
     public function emailScheduleHistories()
     {
         return $this->hasMany(EmailScheduleHistory::class);
+    }
+
+    public static function shouldBeSentNow(): Collection
+    {
+        $emailSchedules = collect();
+
+        foreach (User::getIdsByTimezone() as $timezone => $userIds) {
+            $timezoneNow = now($timezone)->second(0);
+
+            $emailSchedules = EmailSchedule::query()
+                ->whereIn('user_id', $userIds) // Only query EmailSchedules of users that are in this "timezone"
+                ->where('next_occurrence', $timezoneNow)
+                ->where('disabled', false)
+                ->get()
+                ->merge($emailSchedules);
+        }
+
+        return $emailSchedules->sortBy(function ($item) {
+            return $item->id;
+        })->values();
     }
 
     protected static function boot()
