@@ -54,6 +54,18 @@ class EmailScheduleTest extends TestCase
     }
 
     /** @test */
+    function it_sets_the_next_occurrence_for_recurring_emails_after_sending()
+    {
+
+    }
+
+    /** @test */
+    function it_sets_the_next_occurrence_for_non_recurring_emails_to_null()
+    {
+
+    }
+
+    /** @test */
     function it_gets_all_schedules_that_should_be_sent_right_now_respecting_timezones()
     {
         $amsterdamUser = factory(User::class)->create(['timezone' => 'Europe/Amsterdam']);
