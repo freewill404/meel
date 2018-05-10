@@ -8,6 +8,8 @@ class EmailScheduleHistory extends Model
 {
     protected $guarded = [];
 
+    public $timestamps = false;
+
     protected $casts = [
         'sent_at' => 'datetime',
     ];

@@ -30,7 +30,8 @@ class EmailSchedule extends Model
         );
 
         $this->emailScheduleHistories()->create([
-            'sent_at' => $this->next_occurrence,
+            'sent_at'             => $this->next_occurrence,
+            'sent_at_server_time' => now(),
         ]);
 
         $schedule = new EmailScheduleFormat($this->when);

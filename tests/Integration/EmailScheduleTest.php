@@ -34,7 +34,7 @@ class EmailScheduleTest extends TestCase
     /** @test */
     function it_creates_history_records_for_sent_emails()
     {
-        $user = factory(User::class)->create();
+        $user = factory(User::class)->create(['timezone' => 'Asia/Shanghai']);
 
         $emailSchedule = $user->emailSchedules()->create([
             'what' => 'The what text',
@@ -49,6 +49,11 @@ class EmailScheduleTest extends TestCase
 
         $this->assertSame(
             (string) $histories->first()->sent_at,
+            '2018-03-28 18:00:00'
+        );
+
+        $this->assertSame(
+            (string) $histories->first()->sent_at_server_time,
             '2018-03-28 12:00:00'
         );
     }
