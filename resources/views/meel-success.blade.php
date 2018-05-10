@@ -5,10 +5,16 @@
 
 @section('content')
 
-    <h1>Done!</h1>
+    <div class="max-w-xs mx-auto mt-2 text-center">
 
-    <div>
-        Don't meel us, we'll meel you
+        <h1>Done!</h1>
+
+        <p class="mt-4">
+            Don't meel us, we'll meel you
+        </p>
+
+        <a href="/" class="btn block mx-8 mt-8">Back</a>
+
     </div>
 
 @endsection

@@ -6,7 +6,7 @@
 @section('content')
 
     <form class="max-w-xs bg-white border mx-auto p-2" method="post" action="{{ route('login') }}">
-        <h2 class="mb-4">Login</h2>
+        <h2 class="mb-4">Login | Meel.me</h2>
         {{ csrf_field() }}
 
         <label>
