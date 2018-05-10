@@ -56,13 +56,37 @@ class EmailScheduleTest extends TestCase
     /** @test */
     function it_sets_the_next_occurrence_for_recurring_emails_after_sending()
     {
+        $user = factory(User::class)->create();
 
+        $emailSchedule = $user->emailSchedules()->create([
+            'what' => 'The what text',
+            'when' => 'every monday at 12:00',
+        ]);
+
+        $this->assertSame('2018-04-02 12:00:00', EmailSchedule::find(1)->next_occurrence);
+
+        Carbon::setTestNow('2018-04-02 12:00:00');
+
+        $emailSchedule->sendEmail();
+
+        $this->assertSame('2018-04-09 12:00:00', EmailSchedule::find(1)->next_occurrence);
     }
 
     /** @test */
     function it_sets_the_next_occurrence_for_non_recurring_emails_to_null()
     {
+        $user = factory(User::class)->create();
 
+        $emailSchedule = $user->emailSchedules()->create([
+            'what' => 'The what text',
+            'when' => 'now',
+        ]);
+
+        $this->assertSame('2018-03-28 12:00:00', EmailSchedule::find(1)->next_occurrence);
+
+        $emailSchedule->sendEmail();
+
+        $this->assertSame(null, EmailSchedule::find(1)->next_occurrence);
     }
 
     /** @test */
