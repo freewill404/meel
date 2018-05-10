@@ -1,6 +1,5 @@
 @extends('layout.base-template', [
-    'title'       => 'Meel.me',
-    'description' => 'SEO description',
+    'title' => 'Meel.me',
 ])
 
 @section('content')
@@ -10,9 +9,16 @@
 
         <div class="text-sm font-mono">
             <a class="text-grey" href="{{ route('profile') }}">profile</a>
+
             <span class="text-grey mx-1">|</span>
-            <a class="text-grey" href="{{ route('login') }}">logout</a>
+
+            <form method="post" class="inline-block" action="{{ route('logout') }}">
+                {{ csrf_field() }}
+                <button type="submit" class="text-grey">logout</button>
+            </form>
+
         </div>
+
     </div>
 
 
