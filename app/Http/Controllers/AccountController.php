@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-class ProfileController extends Controller
+class AccountController extends Controller
 {
     public function __construct()
     {
@@ -11,6 +11,6 @@ class ProfileController extends Controller
 
     public function index()
     {
-        return view('profile.index');
+        return view('account.index');
     }
 }

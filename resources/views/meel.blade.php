@@ -8,7 +8,7 @@
         <h1>Meel.me</h1>
 
         <div class="text-sm font-mono">
-            <a class="text-grey" href="{{ route('profile') }}">profile</a>
+            <a class="text-grey" href="{{ route('account') }}">account</a>
 
             <span class="text-grey mx-1">|</span>
 

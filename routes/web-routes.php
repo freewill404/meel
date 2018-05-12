@@ -4,7 +4,7 @@ Route::get('/',   ['uses' => 'HomeController@index',   'as' => 'home']);
 Route::post('/',  ['uses' => 'HomeController@post',    'as' => 'home.post']);
 Route::get('/ok', ['uses' => 'HomeController@success', 'as' => 'home.success']);
 
-Route::get('/profile', ['uses' => 'ProfileController@index', 'as' => 'profile']);
+Route::get('/account', ['uses' => 'AccountController@index', 'as' => 'account']);
 
 Route::get('login',   ['uses' => 'Auth\LoginController@showLoginForm', 'as' => 'login']);
 Route::post('login',  ['uses' => 'Auth\LoginController@login']);

@@ -24,7 +24,7 @@
 </head>
 <body class="bg-grey-lighter">
 
-    @include('layout.header')
+    @yield('header')
 
     <div id="app" class="container mx-auto p-2">
         @yield('content')
