@@ -15,7 +15,6 @@ class CreateEmailSchedulesTable extends Migration
             $table->string('what');
             $table->string('when');
             $table->dateTime('next_occurrence')->nullable();
-            $table->boolean('disabled')->default(false);
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 

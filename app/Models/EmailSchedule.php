@@ -15,7 +15,6 @@ class EmailSchedule extends Model
 
     protected $casts = [
         'previous_occurrence' => 'datetime',
-        'disabled'            => 'bool',
     ];
 
     public function user()
@@ -66,7 +65,6 @@ class EmailSchedule extends Model
             $emailSchedules = EmailSchedule::query()
                 ->whereIn('user_id', $userIds) // Only query EmailSchedules of users that are in this "timezone"
                 ->where('next_occurrence', $timezoneNow)
-                ->where('disabled', false)
                 ->get()
                 ->merge($emailSchedules);
         }
