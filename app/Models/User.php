@@ -18,6 +18,10 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    protected $casts = [
+        'email_confirmed' => 'bool',
+    ];
+
     public function emailSchedules()
     {
         return $this->hasMany(EmailSchedule::class)->orderBy('next_occurrence');
