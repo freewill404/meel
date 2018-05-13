@@ -1,6 +1,6 @@
 @extends('layout.base-template', [
-    'title'       => 'Request Password Reset',
-    'description' => 'SEO description',
+    'title'       => 'Request password reset | Meel.me',
+    'description' => 'Forgot your password? We\'ll mail you a new one!',
 ])
 
 @section('content')

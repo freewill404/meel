@@ -1,6 +1,6 @@
 @extends('layout.base-template', [
-    'title'       => 'Register',
-    'description' => 'SEO description',
+    'title'       => 'Register an account | Meel.me',
+    'description' => 'Register today to start mailing yourself',
 ])
 
 @section('content')

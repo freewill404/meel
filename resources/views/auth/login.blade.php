@@ -1,6 +1,6 @@
 @extends('layout.base-template', [
-    'title'       => 'Login',
-    'description' => 'SEO description',
+    'title'       => 'Login | Meel.me',
+    'description' => 'Login to your favorite self-emailing service',
 ])
 
 @section('content')

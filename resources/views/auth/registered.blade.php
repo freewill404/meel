@@ -1,6 +1,5 @@
 @extends('layout.base-template', [
-    'title'       => 'Account created | Meel.me',
-    'description' => 'SEO description',
+    'title' => 'Account created | Meel.me',
 ])
 
 @section('content')

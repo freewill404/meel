@@ -1,6 +1,6 @@
 @extends('layout.base-template', [
     'title'       => 'Meel.me | Schedule and send (recurring) emails to yourself',
-    'description' => 'SEO description',
+    'description' => 'Never forget anything by mailing yourself. Don\'t clog up your agenda with reminders, fill up your gmail with emails instead!',
 ])
 
 @section('content')
