@@ -13,6 +13,8 @@ class Kernel extends ConsoleKernel
 
     protected function schedule(Schedule $schedule)
     {
+        $schedule->command('meel:queue-scheduled-emails')->everyMinute();
+
         // $schedule->command('sitemap:generate')->dailyAt('2:00');
     }
 
