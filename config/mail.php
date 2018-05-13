@@ -57,7 +57,7 @@ return [
 
     'from' => [
         'address' => 'no-reply@meel.me',
-        'name'    => 'Meeler',
+        'name'    => 'Meel.me',
     ],
 
     /*
