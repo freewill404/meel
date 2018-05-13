@@ -5,18 +5,12 @@ namespace App\Http\Controllers\Auth;
 use App\Models\User;
 use App\Http\Controllers\Controller;
 use App\Support\Enums\Timezones;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class RegisterController extends Controller
 {
-    use RegistersUsers;
-
-    /**
-     * Where to redirect users after registration.
-     */
-    protected $redirectTo = '/';
-
     public function __construct()
     {
         $this->middleware('guest');
@@ -29,21 +23,57 @@ class RegisterController extends Controller
         ]);
     }
 
-    protected function validator(array $data)
+    public function register(Request $request)
     {
-        return Validator::make($data, [
+        $request->validate([
             'email'    => 'required|string|email|max:255|unique:users',
             'timezone' => Timezones::required(),
             'password' => 'required|string|min:6|confirmed',
         ]);
+
+        $user = User::create([
+            'email'               => $request->get('email'),
+            'timezone'            => $request->get('timezone'),
+            'password'            => bcrypt($request->get('password')),
+            'email_confirm_token' => sha1(str_random(16)),
+        ]);
+
+        event(
+            new Registered($user)
+        );
+
+        return redirect()->route('register.done');
     }
 
-    protected function create(array $data)
+    public function registered()
     {
-        return User::create([
-            'email'    => $data['email'],
-            'timezone' => $data['timezone'],
-            'password' => bcrypt($data['password']),
+        return view('auth.registered');
+    }
+
+    public function confirm(Request $request)
+    {
+        $token = $request->get('token');
+
+        if (! $token) {
+            return response('invalid token', 400);
+        }
+
+        $user = User::query()
+            ->where('email_confirmed', false)
+            ->where('email_confirm_token', $token)
+            ->first();
+
+        if (! $user) {
+            return response('invalid token', 400);
+        }
+
+        $user->update([
+            'email_confirmed'     => true,
+            'email_confirm_token' => null,
         ]);
+
+        Auth::guard()->login($user);
+
+        return redirect()->route('home');
     }
 }
