@@ -52,7 +52,7 @@ class EmailScheduleFormatTest extends TestCase
     /** @test */
     function it_determines_the_next_occurrence_for_non_recurring_schedules()
     {
-        $this->assertSingleOccurrenceSchedule('now', '2018-03-28 12:00:00');
+        $this->assertSingleOccurrenceSchedule('now', '2018-03-28 12:01:00');
 
         $this->assertSingleOccurrenceSchedule('at 5', '2018-03-28 05:00:00');
 

@@ -41,9 +41,19 @@ class EmailSchedule extends Model
         ]);
     }
 
+    public function getIsRecurringAttribute()
+    {
+        return (new EmailScheduleFormat($this->when))->isRecurring();
+    }
+
+    public function getLastSentAtAttribute()
+    {
+        return optional($this->emailScheduleHistories->first())->sent_at;
+    }
+
     public function emailScheduleHistories()
     {
-        return $this->hasMany(EmailScheduleHistory::class);
+        return $this->hasMany(EmailScheduleHistory::class)->orderByDesc('sent_at');
     }
 
     public static function shouldBeSentNow(): Collection

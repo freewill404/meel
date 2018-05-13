@@ -31,6 +31,15 @@ abstract class TestCase extends BaseTestCase
         return $this->testFilePath.'_snapshots_';
     }
 
+    protected function progressTimeInMinutes($minutes = 1)
+    {
+        Carbon::setTestNow(
+            now()->addMinutes($minutes)
+        );
+
+        return $this;
+    }
+
     public function createApplication()
     {
         $app = require __DIR__.'/../bootstrap/app.php';

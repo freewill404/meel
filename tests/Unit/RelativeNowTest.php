@@ -63,9 +63,9 @@ class RelativeNowTest extends TestCase
     /** @test */
     function it_interprets_now()
     {
-        $this->assertRelativeNow('2018-03-28 12:00:00', 'now');
+        $this->assertRelativeNow('2018-03-28 12:01:00', 'now');
 
-        $this->assertRelativeNow('2018-03-28 12:00:00', 'right now');
+        $this->assertRelativeNow('2018-03-28 12:01:00', 'right now');
     }
 
     /** @test */
@@ -109,15 +109,13 @@ class RelativeNowTest extends TestCase
     }
 
     /** @test */
-    function it_interprets_hours_minutes_and_seconds()
+    function it_interprets_hours_and_minutes()
     {
         $this->assertRelativeNow('2018-03-28 15:00:00', '3 hours from now');
 
         $this->assertRelativeNow('2018-03-28 12:03:00', '3 minutes from now');
 
-        $this->assertRelativeNow('2018-03-28 12:00:05', '5 seconds from now');
-
-        $this->assertRelativeNow('2018-03-28 14:15:10', '2 hours, 15 minutes and 10 seconds from now');
+        $this->assertRelativeNow('2018-03-28 14:15:00', '2 hours and 15 minutes from now');
     }
 
     /** @test */

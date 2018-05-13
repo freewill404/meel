@@ -20,7 +20,7 @@ class User extends Authenticatable
 
     public function emailSchedules()
     {
-        return $this->hasMany(EmailSchedule::class);
+        return $this->hasMany(EmailSchedule::class)->orderBy('next_occurrence');
     }
 
     public static function getIdsByTimezone(): array

@@ -41,6 +41,8 @@ class EmailScheduleTest extends TestCase
             'when' => 'now',
         ]);
 
+        $this->progressTimeInMinutes(1);
+
         $emailSchedule->sendEmail();
 
         $histories = $emailSchedule->emailScheduleHistories;
@@ -48,13 +50,13 @@ class EmailScheduleTest extends TestCase
         $this->assertSame(1, $histories->count());
 
         $this->assertSame(
-            (string) $histories->first()->sent_at,
-            '2018-03-28 18:00:00'
+            '2018-03-28 18:01:00',
+            (string) $histories->first()->sent_at
         );
 
         $this->assertSame(
-            (string) $histories->first()->sent_at_server_time,
-            '2018-03-28 12:00:00'
+            '2018-03-28 12:01:00',
+            (string) $histories->first()->sent_at_server_time
         );
     }
 
@@ -87,7 +89,7 @@ class EmailScheduleTest extends TestCase
             'when' => 'now',
         ]);
 
-        $this->assertSame('2018-03-28 12:00:00', EmailSchedule::find(1)->next_occurrence);
+        $this->assertSame('2018-03-28 12:01:00', EmailSchedule::find(1)->next_occurrence);
 
         $emailSchedule->sendEmail();
 
@@ -109,14 +111,17 @@ class EmailScheduleTest extends TestCase
         $londonUser->emailSchedules()->create([   'what' => 'l2', 'when' => 'in 1 hour']);
         $amsterdamUser->emailSchedules()->create(['what' => 'a2', 'when' => 'in 6 hours']);
 
+        // Emails scheduled for "now" are sent the next minute.
+        $this->progressTimeInMinutes(1);
+
         $schedules = EmailSchedule::shouldBeSentNow()->map(function (EmailSchedule $schedule) {
             return ['what' => $schedule->what, 'next_occurrence' => $schedule->next_occurrence];
         })->all();
 
         $this->assertSame([
-            0 => ['what' => 'c1', 'next_occurrence' => '2018-03-28 18:00:00'],
-            1 => ['what' => 'l1', 'next_occurrence' => '2018-03-28 11:00:00'],
-            2 => ['what' => 'a1', 'next_occurrence' => '2018-03-28 12:00:00']
+            0 => ['what' => 'c1', 'next_occurrence' => '2018-03-28 18:01:00'],
+            1 => ['what' => 'l1', 'next_occurrence' => '2018-03-28 11:01:00'],
+            2 => ['what' => 'a1', 'next_occurrence' => '2018-03-28 12:01:00']
         ], $schedules);
     }
 }

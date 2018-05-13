@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
+
 class AccountController extends Controller
 {
     public function __construct()
@@ -9,8 +11,10 @@ class AccountController extends Controller
         $this->middleware('auth');
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        return view('account.index');
+        return view('account.index', [
+            'emailSchedules' => $request->user()->emailSchedules,
+        ]);
     }
 }

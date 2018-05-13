@@ -31,8 +31,6 @@ class RelativeNow
 
     protected $minutes = 0;
 
-    protected $seconds = 0;
-
     public function __construct(string $string, $timezone = null)
     {
         $this->string = $string;
@@ -53,8 +51,6 @@ class RelativeNow
             $this->hours = $this->interpretHours($string);
 
             $this->minutes = $this->interpretMinutes($string);
-
-            $this->seconds = $this->interpretSeconds($string);
         }
     }
 
@@ -67,7 +63,7 @@ class RelativeNow
     {
         // ($this->years || $this->months || $this->weeks || $this->days)
 
-        return $this->isRelativeToNow() && ($this->timeOffsetFromNow || $this->hours || $this->minutes || $this->seconds);
+        return $this->isRelativeToNow() && ($this->timeOffsetFromNow || $this->hours || $this->minutes);
     }
 
     public function getTime(): Carbon
@@ -83,9 +79,17 @@ class RelativeNow
             ->addDays($this->days);
 
         if ($this->hasSpecifiedTime()) {
-            $dateTime->addHours($this->hours)
-                ->addMinutes($this->minutes)
-                ->addSeconds($this->seconds);
+            $dateTime
+                ->second(0) // Ensure the seconds are always at :00
+                ->addHours($this->hours)
+                ->addMinutes($this->minutes);
+
+            // The meel should be sent "now", set the time to the next minute
+            // so the cron sends it as soon as possible.
+            if (! $this->hours && ! $this->minutes) {
+                $dateTime->addMinute();
+            }
+
         } else {
             $dateTime->setTimeFromTimeString($this->getDefaultTimeString());
         }
@@ -118,7 +122,7 @@ class RelativeNow
         // Match strings like:
         //   "in 1 hour"
         if (strpos($string, 'in ') === 0) {
-            if (preg_match('/in \d+ (seconds|minutes|hours)/', $string)) {
+            if (preg_match('/in \d+ (minutes|hours)/', $string)) {
                 $this->timeOffsetFromNow = true;
             }
 
@@ -216,15 +220,6 @@ class RelativeNow
     protected function interpretMinutes($string)
     {
         if (preg_match('/(\d+) minutes?/', $string, $matches)) {
-            return (int) $matches[1];
-        }
-
-        return 0;
-    }
-
-    protected function interpretSeconds($string)
-    {
-        if (preg_match('/(\d+) seconds?/', $string, $matches)) {
             return (int) $matches[1];
         }
 
