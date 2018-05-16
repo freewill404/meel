@@ -2,7 +2,7 @@
 
 namespace App\Meel;
 
-class TimeString
+class WhenString
 {
     protected $string;
 
@@ -86,8 +86,8 @@ class TimeString
 
     public static function prepare($string): string
     {
-        $timeString = new static($string);
+        $whenString = new static($string);
 
-        return $timeString->getPreparedString();
+        return $whenString->getPreparedString();
     }
 }

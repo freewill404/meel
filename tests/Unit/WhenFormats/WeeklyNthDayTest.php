@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\WhenFormats;
 
-use App\Meel\TimeString;
+use App\Meel\WhenString;
 use App\Meel\WhenFormats\WeeklyNthDay;
 use Tests\TestCase;
 
@@ -10,7 +10,7 @@ class WeeklyNthDayTest extends TestCase
 {
     private function assertWhenFormatMatches($string)
     {
-        $preparedString = TimeString::prepare($string);
+        $preparedString = WhenString::prepare($string);
 
         $this->assertTrue(
             WeeklyNthDay::matches($preparedString),

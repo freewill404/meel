@@ -24,7 +24,7 @@ class EmailScheduleFormat
     {
         $this->writtenInput = $writtenInput;
 
-        $this->preparedWrittenInput = TimeString::prepare($writtenInput);
+        $this->preparedWrittenInput = WhenString::prepare($writtenInput);
 
         $this->dateInterpretation = new DateInterpretation($this->preparedWrittenInput, $timezone);
 

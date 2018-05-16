@@ -2,19 +2,19 @@
 
 namespace Tests\Unit;
 
-use App\Meel\TimeString;
+use App\Meel\WhenString;
 use Tests\TestCase;
 
-class TimeStringTest extends TestCase
+class WhenStringTest extends TestCase
 {
     private function assertPreparedInput($expected, $input)
     {
-        $timeString = new TimeString($input);
+        $whenString = new WhenString($input);
 
         $this->assertSame(
             $expected,
-            $actual = $timeString->getPreparedString(),
-            "TimeString input '{$input}' was prepared as '{$actual}', should be '{$expected}'"
+            $actual = $whenString->getPreparedString(),
+            "WhenString input '{$input}' was prepared as '{$actual}', should be '{$expected}'"
         );
     }
 
