@@ -35,4 +35,9 @@ class Days extends Enum
 
         throw new LogicException('Invalid day');
     }
+
+    public static function regex()
+    {
+        return '(monday|tuesday|wednesday|thursday|friday|saturday|sunday)';
+    }
 }

@@ -36,6 +36,11 @@ class TimeString
         'every friday'    => 'weekly on friday',
         'every saturday'  => 'weekly on saturday',
         'every sunday'    => 'weekly on sunday',
+
+        '1st' => 'first',
+        '2nd' => 'second',
+        '3rd' => 'third',
+        '4th' => 'fourth',
     ];
 
     public function __construct(string $string)
