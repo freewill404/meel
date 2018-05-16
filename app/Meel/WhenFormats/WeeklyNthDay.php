@@ -2,6 +2,8 @@
 
 namespace App\Meel\WhenFormats;
 
+use App\Meel\TimeString;
+
 class WeeklyNthDay extends RecurringWhenFormat
 {
     protected $usableMatch = false;
@@ -29,8 +31,8 @@ class WeeklyNthDay extends RecurringWhenFormat
         return (bool) $this->usableMatch;
     }
 
-    public function getNextDate($setTime, $timezone)
+    public function getNextDate(TimeString $setTime, $timezone)
     {
-        // TODO
+        // TODO: !!!
     }
 }
