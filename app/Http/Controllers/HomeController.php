@@ -16,7 +16,7 @@ class HomeController extends Controller
     {
         $request->user()->emailSchedules()->create([
             'what' => $request->get('what'),
-            'when' => $request->get('when'),
+            'when' => $request->get('when') ?? $request->user()->default_when,
         ]);
 
         return redirect()->route('home.success');

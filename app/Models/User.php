@@ -27,6 +27,11 @@ class User extends Authenticatable
         return $this->hasMany(EmailSchedule::class)->orderBy('next_occurrence');
     }
 
+    public function getDefaultWhenAttribute()
+    {
+        return 'now';
+    }
+
     public static function getIdsByTimezone(): array
     {
         $users = static::all();
