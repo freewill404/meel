@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Meel\WhenFormats;
+namespace App\Meel\WhenFormats\Recurring;
 
-use App\Meel\TimeString;
+use App\Meel\DateTime\TimeString;
 
 abstract class RecurringWhenFormat
 {

@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Meel;
+namespace App\Meel\DateTime;
 
+use Carbon\Carbon;
 use RuntimeException;
 
 class TimeString
@@ -14,6 +15,10 @@ class TimeString
 
     public function __construct($string)
     {
+        if ($string instanceof Carbon) {
+            $string = $string->format('h:i:s');
+        }
+
         if (! preg_match('/^\d\d?:\d\d?:\d\d?$/', $string)) {
             throw new RuntimeException('Invalid TimeString input: '.$string);
         }
@@ -34,6 +39,13 @@ class TimeString
     public function earlierThan($timeString): bool
     {
         return $this->difference($timeString) < 0;
+    }
+
+    public function earlierThanNow($timezone): bool
+    {
+        return $this->earlierThan(
+            now($timezone)
+        );
     }
 
     public function laterThan($timeString): bool

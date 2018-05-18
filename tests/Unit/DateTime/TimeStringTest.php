@@ -1,8 +1,8 @@
 <?php
 
-namespace Tests\Unit;
+namespace Tests\Unit\DateTime;
 
-use App\Meel\TimeString;
+use App\Meel\DateTime\TimeString;
 use RuntimeException;
 use Tests\TestCase;
 
