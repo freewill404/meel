@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit;
+namespace Tests\Unit\WhenFormats;
 
 use App\Meel\WhenFormats\Recurring\Monthly;
 use App\Meel\WhenFormats\Recurring\Weekly;

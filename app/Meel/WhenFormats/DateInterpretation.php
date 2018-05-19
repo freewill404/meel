@@ -1,13 +1,11 @@
 <?php
 
-namespace App\Meel;
+namespace App\Meel\WhenFormats;
 
-use Illuminate\Support\Carbon;
+use App\Meel\DateTime\DateString;
 
 class DateInterpretation
 {
-    protected $string;
-
     protected $timezone;
 
     protected $year;
@@ -18,21 +16,16 @@ class DateInterpretation
 
     public function __construct(string $string, $timezone = null)
     {
-        $this->string = $string;
-
         $this->timezone = $timezone;
 
         $this->interpretDate($string);
     }
 
-    public function getDate(): Carbon
+    public function getDateString(): DateString
     {
-        return Carbon::parse($this->getDateString().' 00:00:00');
-    }
-
-    public function getDateString(): string
-    {
-        return $this->getYear().'-'.$this->getMonth().'-'.$this->getDay();
+        return new DateString(
+            $this->getYear().'-'.$this->getMonth().'-'.$this->getDay()
+        );
     }
 
     protected function defaultYear()

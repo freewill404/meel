@@ -1,24 +1,27 @@
 <?php
 
-namespace Tests\Unit;
+namespace Tests\Unit\WhenFormats;
 
-use App\Meel\DateInterpretation;
+use App\Meel\WhenFormats\DateInterpretation;
+use App\Meel\WhenString;
 use Tests\TestCase;
 
 class DateInterpretationTest extends TestCase
 {
-    private function assertDateInterpretation($expected, $input)
+    private function assertDateInterpretation($expected, $string)
     {
-        $dateInterpretation = new DateInterpretation($input);
+        $preparedString = WhenString::prepare($string);
+
+        $dateInterpretation = new DateInterpretation($preparedString);
 
         if (! $dateInterpretation->hasSpecifiedDate()) {
-            $this->fail("DateInterpretation interpreted '{$input}' as not having a specified date, expected '{$expected}'");
+            $this->fail("DateInterpretation interpreted '{$string}' as not having a specified date, expected '{$expected}'");
         }
 
         $this->assertSame(
             $expected,
-            $actual = $dateInterpretation->getDateString(),
-            "DateInterpretation interpreted '{$input}' as '{$actual}', expected '{$expected}'"
+            $actual = (string) $dateInterpretation->getDateString(),
+            "DateInterpretation interpreted '{$string}' as '{$actual}', expected '{$expected}'"
         );
 
         return $dateInterpretation;

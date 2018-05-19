@@ -4,6 +4,7 @@ namespace App\Meel;
 
 use App\Meel\DateTime\DateString;
 use App\Meel\DateTime\TimeString;
+use App\Meel\WhenFormats\DateInterpretation;
 use App\Meel\WhenFormats\RecurringInterpretation;
 use App\Meel\WhenFormats\TimeInterpretation;
 use App\Support\Enums\Days;
@@ -76,7 +77,7 @@ class EmailScheduleFormat
         }
 
         if ($this->dateInterpretation->hasSpecifiedDate()) {
-            return new DateString($this->dateInterpretation->getDateString());
+            return $this->dateInterpretation->getDateString();
         }
 
         if ($this->relativeNow->isRelativeToNow()) {
@@ -102,48 +103,5 @@ class EmailScheduleFormat
     protected function getDefaultTime(): TimeString
     {
         return new TimeString('08:00:00');
-    }
-
-    protected function getNextRecurringDate()
-    {
-        // Get the specified date, or get the default date
-        $dateTime = $this->dateInterpretation->getDate();
-
-        // If it recurs once a year, the month should be set
-        $month = $this->recurringInterpretation->getMonthOfTheYear();
-
-        if ($month) {
-            $dateTime->month(Months::toInt($month));
-        }
-
-        // If it recurs once a month, the day of the month should be set
-        $dateOfMonth = $this->recurringInterpretation->getDateOfTheMonth();
-
-        if ($this->recurringInterpretation->getInterval() === Intervals::MONTHLY && $dateOfMonth) {
-            $dateTime->day($dateOfMonth);
-
-            while ($dateTime->isPast()) {
-                $dateTime->addMonth();
-            }
-        }
-
-        // If it recurs once a week, the day of the week should be set
-        $day = $this->recurringInterpretation->getDayOfTheWeek();
-
-        if ($day) {
-            $dateTime->startOfWeek();
-
-            while ($dateTime->isPast() || Days::toInt($day) !== $dateTime->dayOfWeek) {
-                $dateTime->addDay();
-            }
-        }
-
-        if ($this->recurringInterpretation->getInterval() === Intervals::YEARLY) {
-            while ($dateTime->isPast()) {
-                $dateTime->addYear();
-            }
-        }
-
-        return $dateTime->format('Y-m-d');
     }
 }
