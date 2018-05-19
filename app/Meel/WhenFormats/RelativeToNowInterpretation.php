@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Meel;
+namespace App\Meel\WhenFormats;
 
 use App\Meel\DateTime\TimeString;
 use Illuminate\Support\Carbon;
 use LogicException;
 
-class RelativeNow
+class RelativeToNowInterpretation
 {
     protected $string;
 

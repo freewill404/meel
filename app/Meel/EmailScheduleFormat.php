@@ -6,6 +6,7 @@ use App\Meel\DateTime\DateString;
 use App\Meel\DateTime\TimeString;
 use App\Meel\WhenFormats\DateInterpretation;
 use App\Meel\WhenFormats\RecurringInterpretation;
+use App\Meel\WhenFormats\RelativeToNowInterpretation;
 use App\Meel\WhenFormats\TimeInterpretation;
 use App\Support\Enums\Days;
 use App\Support\Enums\Intervals;
@@ -37,7 +38,7 @@ class EmailScheduleFormat
 
         $this->dateInterpretation = new DateInterpretation($this->preparedWrittenInput, $timezone);
 
-        $this->relativeNow = new RelativeNow($this->preparedWrittenInput, $timezone);
+        $this->relativeNow = new RelativeToNowInterpretation($this->preparedWrittenInput, $timezone);
 
         $this->timeInterpretation = new TimeInterpretation($this->preparedWrittenInput);
 

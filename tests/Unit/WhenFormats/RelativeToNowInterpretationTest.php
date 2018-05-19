@@ -1,44 +1,44 @@
 <?php
 
-namespace Tests\Unit;
+namespace Tests\Unit\WhenFormats;
 
-use App\Meel\RelativeNow;
+use App\Meel\WhenFormats\RelativeToNowInterpretation;
 use Tests\TestCase;
 
-class RelativeNowTest extends TestCase
+class RelativeToNowInterpretationTest extends TestCase
 {
     private function assertIsRelativeToNow($input)
     {
-        $relativeNow = new RelativeNow($input);
+        $relativeNow = new RelativeToNowInterpretation($input);
 
         $this->assertTrue(
             $relativeNow->isRelativeToNow(),
-            "RelativeNow did not interpret '{$input}' to be relative to now"
+            "RelativeToNowInterpretation did not interpret '{$input}' to be relative to now"
         );
     }
 
     private function assertIsNotRelativeToNow($input)
     {
-        $relativeNow = new RelativeNow($input);
+        $relativeNow = new RelativeToNowInterpretation($input);
 
         $this->assertFalse(
             $relativeNow->isRelativeToNow(),
-            "RelativeNow interpreted '{$input}' to be relative to now"
+            "RelativeToNowInterpretation interpreted '{$input}' to be relative to now"
         );
     }
 
     private function assertRelativeNow($expected, $input)
     {
-        $relativeNow = new RelativeNow($input);
+        $relativeNow = new RelativeToNowInterpretation($input);
 
         if (! $relativeNow->isRelativeToNow()) {
-            $this->fail("RelativeNow interpreted '{$input}' as not being relative to now, should be '{$expected}'");
+            $this->fail("RelativeToNowInterpretation interpreted '{$input}' as not being relative to now, should be '{$expected}'");
         }
 
         $this->assertSame(
             $expected,
             $actual = $relativeNow->getTime()->format('Y-m-d H:i:s'),
-            "RelativeNow interpreted '{$input}' as '{$actual}', should be '{$expected}'"
+            "RelativeToNowInterpretation interpreted '{$input}' as '{$actual}', should be '{$expected}'"
         );
     }
 
