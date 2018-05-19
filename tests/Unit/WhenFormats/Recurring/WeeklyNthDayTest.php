@@ -2,12 +2,12 @@
 
 namespace Tests\Unit\WhenFormats\Recurring;
 
-use App\Meel\WhenFormats\Recurring\WeeklyNthDay;
+use App\Meel\WhenFormats\Recurring\MonthlyNthDay;
 use Carbon\Carbon;
 
 class WeeklyNthDayTest extends RecurringWhenFormatTestCase
 {
-    protected $whenFormat = WeeklyNthDay::class;
+    protected $whenFormat = MonthlyNthDay::class;
 
     /** @test */
     function it_matches()

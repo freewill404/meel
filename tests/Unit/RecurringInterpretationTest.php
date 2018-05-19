@@ -4,7 +4,7 @@ namespace Tests\Unit;
 
 use App\Meel\WhenFormats\Recurring\Monthly;
 use App\Meel\WhenFormats\Recurring\Weekly;
-use App\Meel\WhenFormats\Recurring\WeeklyNthDay;
+use App\Meel\WhenFormats\Recurring\MonthlyNthDay;
 use App\Meel\WhenFormats\Recurring\Yearly;
 use App\Meel\WhenFormats\RecurringInterpretation;
 use App\Meel\WhenString;
@@ -60,14 +60,14 @@ class RecurringInterpretationTest extends TestCase
     /** @test */
     function it_interprets_monthly_on_the_nth_day_intervals()
     {
-        $this->assertRecurringInterpretation(WeeklyNthDay::class, 'first tuesday of the month');
+        $this->assertRecurringInterpretation(MonthlyNthDay::class, 'first tuesday of the month');
 
-        $this->assertRecurringInterpretation(WeeklyNthDay::class, 'second tuesday of the month');
+        $this->assertRecurringInterpretation(MonthlyNthDay::class, 'second tuesday of the month');
 
-        $this->assertRecurringInterpretation(WeeklyNthDay::class, 'third tuesday of the month');
+        $this->assertRecurringInterpretation(MonthlyNthDay::class, 'third tuesday of the month');
 
-        $this->assertRecurringInterpretation(WeeklyNthDay::class, 'fourth tuesday of the month');
+        $this->assertRecurringInterpretation(MonthlyNthDay::class, 'fourth tuesday of the month');
 
-        $this->assertRecurringInterpretation(WeeklyNthDay::class, 'last tuesday of the month');
+        $this->assertRecurringInterpretation(MonthlyNthDay::class, 'last tuesday of the month');
     }
 }

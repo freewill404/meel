@@ -6,7 +6,7 @@ use App\Meel\DateTime\DateString;
 use App\Meel\DateTime\TimeString;
 use Carbon\Carbon;
 
-class WeeklyNthDay extends RecurringWhenFormat
+class MonthlyNthDay extends RecurringWhenFormat
 {
     protected $usableMatch = false;
 

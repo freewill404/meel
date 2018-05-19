@@ -10,7 +10,7 @@ use RuntimeException;
 class RecurringInterpretation
 {
     protected $formats = [
-        Recurring\WeeklyNthDay::class,
+        Recurring\MonthlyNthDay::class,
         Recurring\Yearly::class,
         Recurring\Monthly::class,
         Recurring\Weekly::class,
