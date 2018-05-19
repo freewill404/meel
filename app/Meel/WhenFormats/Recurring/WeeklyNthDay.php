@@ -39,7 +39,7 @@ class WeeklyNthDay extends RecurringWhenFormat
         return (bool) $this->usableMatch;
     }
 
-    public function getNextDate(TimeString $setTime, $timezone): DateString
+    public function getNextDate(TimeString $setTime, $timezone = null): DateString
     {
         $setTimeIsEarlierThanNow = $setTime->earlierThanNow($timezone);
 

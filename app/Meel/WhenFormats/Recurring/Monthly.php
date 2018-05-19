@@ -29,7 +29,7 @@ class Monthly extends RecurringWhenFormat
         return $this->usableMatch;
     }
 
-    public function getNextDate(TimeString $setTime, $timezone): DateString
+    public function getNextDate(TimeString $setTime, $timezone = null): DateString
     {
         $setTimeIsEarlierThanNow = $setTime->earlierThanNow($timezone);
 

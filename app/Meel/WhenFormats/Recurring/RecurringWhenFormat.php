@@ -11,7 +11,7 @@ abstract class RecurringWhenFormat
 
     abstract public function isUsableMatch(): bool;
 
-    abstract public function getNextDate(TimeString $setTime, $timezone): DateString;
+    abstract public function getNextDate(TimeString $setTime, $timezone = null): DateString;
 
     public static function matches(string $string): bool
     {

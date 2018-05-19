@@ -2,6 +2,9 @@
 
 namespace App\Meel;
 
+use App\Meel\DateTime\DateString;
+use App\Meel\DateTime\TimeString;
+use App\Meel\WhenFormats\RecurringInterpretation;
 use App\Support\Enums\Days;
 use App\Support\Enums\Intervals;
 use App\Support\Enums\Months;
@@ -20,9 +23,13 @@ class EmailScheduleFormat
 
     protected $recurringInterpretation;
 
+    protected $timezone;
+
     public function __construct($writtenInput, $timezone = null)
     {
         $this->writtenInput = $writtenInput;
+
+        $this->timezone = $timezone;
 
         $this->preparedWrittenInput = WhenString::prepare($writtenInput);
 
@@ -47,37 +54,39 @@ class EmailScheduleFormat
 
     public function getInterval()
     {
-        return $this->recurringInterpretation->getInterval();
+        return $this->recurringInterpretation->isUsableMatch() ? 'TODO' : false;
     }
 
     public function nextOccurrence()
     {
-        $date = $this->getNextInterpretedDate();
+        $time = new TimeString(
+            $this->getNextInterpretedTime() ?: $this->getDefaultTime()
+        );
+
+        $date = $this->getNextInterpretedDate($time);
 
         if (! $date) {
             return false;
         }
 
-        $time = $this->getNextInterpretedTime() ?: $this->getDefaultTime();
-
         return $date.' '.$time;
     }
 
-    protected function getNextInterpretedDate()
+    protected function getNextInterpretedDate(TimeString $setTime): ?DateString
     {
         if ($this->isRecurring()) {
-            return $this->getNextRecurringDate();
+            return $this->recurringInterpretation->getNextDate($setTime, $this->timezone);
         }
 
         if ($this->dateInterpretation->hasSpecifiedDate()) {
-            return $this->dateInterpretation->getDateString();
+            return new DateString($this->dateInterpretation->getDateString());
         }
 
         if ($this->relativeNow->isRelativeToNow()) {
-            return $this->relativeNow->getTime()->format('Y-m-d');
+            return new DateString($this->relativeNow->getTime()->format('Y-m-d'));
         }
 
-        return false;
+        return null;
     }
 
     protected function getNextInterpretedTime()
