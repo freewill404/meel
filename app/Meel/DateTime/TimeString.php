@@ -16,7 +16,7 @@ class TimeString
     public function __construct($string)
     {
         if ($string instanceof Carbon) {
-            $string = $string->format('h:i:s');
+            $string = $string->format('H:i:s');
         }
 
         if (! preg_match('/^\d\d?:\d\d?:\d\d?$/', $string)) {

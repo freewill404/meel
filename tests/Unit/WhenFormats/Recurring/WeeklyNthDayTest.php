@@ -2,48 +2,12 @@
 
 namespace Tests\Unit\WhenFormats\Recurring;
 
-use App\Meel\DateTime\TimeString;
-use App\Meel\WhenString;
 use App\Meel\WhenFormats\Recurring\WeeklyNthDay;
 use Carbon\Carbon;
-use Tests\TestCase;
 
-class WeeklyNthDayTest extends TestCase
+class WeeklyNthDayTest extends RecurringWhenFormatTestCase
 {
-    private function assertWhenFormatMatches($string)
-    {
-        $preparedString = WhenString::prepare($string);
-
-        $this->assertTrue(
-            WeeklyNthDay::matches($preparedString),
-            'WeeklyNthDay did not match string: "'.$preparedString.'"'
-        );
-    }
-
-    private function assertWhenFormatDoesNotMatch($string)
-    {
-        $preparedString = WhenString::prepare($string);
-
-        $this->assertFalse(
-            WeeklyNthDay::matches($preparedString),
-            'WeeklyNthDay matches string: "'.$preparedString.'"'
-        );
-    }
-
-    private function assertNextDate($expected, $string, $setTime = null, $timezone = null)
-    {
-        $preparedString = WhenString::prepare($string);
-
-        $format = new WeeklyNthDay($preparedString);
-
-        $setTime = new TimeString($setTime ?? now($timezone));
-
-        $this->assertSame(
-            $expected,
-            $actual = (string) $format->getNextDate($setTime, $timezone),
-            "WeeklyNthDay wrong next date, expected: '{$expected}', actual: '{$actual}'"
-        );
-    }
+    protected $whenFormat = WeeklyNthDay::class;
 
     /** @test */
     function it_matches()
@@ -66,9 +30,7 @@ class WeeklyNthDayTest extends TestCase
     /** @test */
     function it_can_get_the_last_day()
     {
-        $beforeNow  = new TimeString('11:00:00');
-        $exactlyNow = new TimeString('12:00:00');
-        $afterNow   = new TimeString('13:00:00');
+        [$beforeNow, $exactlyNow, $afterNow] = $this->getTimeStrings();
 
         // The last wednesday
         Carbon::setTestNow('2018-03-28 12:00:00');
@@ -93,9 +55,7 @@ class WeeklyNthDayTest extends TestCase
     /** @test */
     function it_can_get_the_nth_day()
     {
-        $beforeNow  = new TimeString('11:00:00');
-        $exactlyNow = new TimeString('12:00:00');
-        $afterNow   = new TimeString('13:00:00');
+        [$beforeNow, $exactlyNow, $afterNow] = $this->getTimeStrings();
 
         // The second wednesday
         Carbon::setTestNow('2018-03-14 12:00:00');

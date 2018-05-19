@@ -29,7 +29,6 @@ class DateStringTest extends TestCase
         $this->assertInvalidDateString('2000:01:01');
         $this->assertInvalidDateString('2000-00-01');
         $this->assertInvalidDateString('2000-01-00');
-        $this->assertInvalidDateString('0000-01-01');
         $this->assertInvalidDateString('2000-01-32');
         $this->assertInvalidDateString('2000-13-01');
         $this->assertInvalidDateString('2018-06-31'); // June has 30 days
