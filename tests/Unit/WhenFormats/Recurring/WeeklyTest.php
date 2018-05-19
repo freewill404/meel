@@ -20,7 +20,7 @@ class WeeklyTest extends RecurringWhenFormatTestCase
     }
 
     /** @test */
-    function it_can_get_the_next_day()
+    function it_can_get_the_next_date_on_the_same_day()
     {
         [$beforeNow, $exactlyNow, $afterNow] = $this->getTimeStrings();
 
@@ -40,6 +40,7 @@ class WeeklyTest extends RecurringWhenFormatTestCase
         // a wednesday
         Carbon::setTestNow('2018-03-14 12:00:00');
 
+        // default is Monday
         $this->assertNextDate('2018-03-19', 'weekly');
     }
 }
