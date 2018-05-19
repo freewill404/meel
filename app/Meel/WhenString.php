@@ -37,10 +37,10 @@ class WhenString
         'every saturday'  => 'weekly on saturday',
         'every sunday'    => 'weekly on sunday',
 
-        '1st' => 'first',
-        '2nd' => 'second',
-        '3rd' => 'third',
-        '4th' => 'fourth',
+        'first'  => '1st',
+        'second' => '2nd',
+        'third'  => '3rd',
+        'fourth' => '4th',
     ];
 
     public function __construct(string $string)

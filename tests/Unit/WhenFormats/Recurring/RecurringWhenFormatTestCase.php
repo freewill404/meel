@@ -38,6 +38,8 @@ abstract class RecurringWhenFormatTestCase extends TestCase
 
     protected function assertNextDate($expected, $string, $setTime = null, $timezone = null)
     {
+        $this->assertWhenFormatMatches($string);
+
         $preparedString = WhenString::prepare($string);
 
         /** @var $format RecurringWhenFormat */

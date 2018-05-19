@@ -19,12 +19,18 @@ class WeeklyNthDay extends RecurringWhenFormat
         // Match:
         //   "every third saturday of the month"
         //   "the last saturday of the month"
-        $this->usableMatch = preg_match('/(first|second|third|fourth|last) (monday|tuesday|wednesday|thursday|friday|saturday|sunday) of the month/', $string, $matches);
+        $this->usableMatch = preg_match('/(^| )(1st|2nd|3rd|4th|last) (monday|tuesday|wednesday|thursday|friday|saturday|sunday) of the month/', $string, $matches);
 
         if ($this->usableMatch) {
-            $this->nth = $matches[1];
+            // Carbon::parse needs written ordinal numbers
+            $this->nth = strtr($matches[2], [
+                '1st' => 'first',
+                '2nd' => 'second',
+                '3rd' => 'third',
+                '4th' => 'fourth',
+            ]);
 
-            $this->day = $matches[2];
+            $this->day = $matches[3];
         }
     }
 

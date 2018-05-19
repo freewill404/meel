@@ -28,6 +28,8 @@ class YearlyTest extends RecurringWhenFormatTestCase
     {
         Carbon::setTestNow('2018-05-01 12:00:00');
 
+        $this->assertNextDate('2019-04-02', 'yearly on the second of April');
+
         $this->assertNextDate('2019-04-01', 'yearly in April');
 
         $this->assertNextDate('2018-08-01', 'yearly in August');
