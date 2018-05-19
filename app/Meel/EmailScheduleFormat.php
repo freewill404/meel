@@ -8,9 +8,6 @@ use App\Meel\WhenFormats\DateInterpretation;
 use App\Meel\WhenFormats\RecurringInterpretation;
 use App\Meel\WhenFormats\RelativeToNowInterpretation;
 use App\Meel\WhenFormats\TimeInterpretation;
-use App\Support\Enums\Days;
-use App\Support\Enums\Intervals;
-use App\Support\Enums\Months;
 
 class EmailScheduleFormat
 {
