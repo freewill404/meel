@@ -11,17 +11,17 @@ class Weekly extends RecurringWhenFormat
 {
     protected $usableMatch = false;
 
-    protected $string;
-
     protected $day;
 
     public function __construct(string $string)
     {
         $this->usableMatch = strpos($string, 'weekly') !== false;
 
-        $this->string = $string;
-
         $this->day = Days::MONDAY;
+
+        if (preg_match('/(monday|tuesday|wednesday|thursday|friday|saturday|sunday)/', $string, $matches)) {
+            $this->day = $matches[1];
+        }
     }
 
     public function isUsableMatch(): bool
@@ -31,10 +31,6 @@ class Weekly extends RecurringWhenFormat
 
     public function getNextDate(TimeString $setTime, $timezone): DateString
     {
-        if (preg_match('/(monday|tuesday|wednesday|thursday|friday|saturday|sunday)/', $this->string, $matches)) {
-            $this->day = $matches[1];
-        }
-
         $setTimeIsEarlierThanNow = $setTime->earlierThanNow($timezone);
 
         $weeklyOnDay = new DateString(

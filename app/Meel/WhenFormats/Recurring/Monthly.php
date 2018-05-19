@@ -9,15 +9,19 @@ class Monthly extends RecurringWhenFormat
 {
     protected $usableMatch = false;
 
-    protected $string;
-
     protected $date = 1;
 
     public function __construct(string $string)
     {
         $this->usableMatch = strpos($string, 'monthly') !== false;
 
-        $this->string = $string;
+        if (preg_match('/monthly on the (\d+)/', $string, $matches)) {
+            $this->date = (int) $matches[1];
+
+            if ($this->date < 1 || $this->date > 31) {
+                $this->date = 1;
+            }
+        }
     }
 
     public function isUsableMatch(): bool
@@ -27,14 +31,6 @@ class Monthly extends RecurringWhenFormat
 
     public function getNextDate(TimeString $setTime, $timezone): DateString
     {
-        if (preg_match('/monthly on the (\d+)/', $this->string, $matches)) {
-            $this->date = (int) $matches[1];
-
-            if ($this->date < 1 || $this->date > 31) {
-                $this->date = 1;
-            }
-        }
-
         $setTimeIsEarlierThanNow = $setTime->earlierThanNow($timezone);
 
         $thisMonth = now()->lastOfMonth();
