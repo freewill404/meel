@@ -48,7 +48,9 @@ abstract class RecurringWhenFormatTestCase extends TestCase
         $this->assertSame(
             $expected,
             $actual = (string) $format->getNextDate($setTime, $timezone),
-            class_basename($this->whenFormat)." wrong next date, expected: '{$expected}', actual: '{$actual}'"
+            class_basename($this->whenFormat)." wrong next date, expected: '{$expected}', actual: '{$actual}'\n".
+            "Original string: {$string}\n".
+            "Prepared string: {$preparedString}"
         );
     }
 

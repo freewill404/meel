@@ -49,4 +49,9 @@ class Months extends Enum
 
         throw new LogicException('Invalid month');
     }
+
+    public static function regex()
+    {
+        return '(january|february|march|april|may|june|july|august|september|october|november|december)';
+    }
 }
