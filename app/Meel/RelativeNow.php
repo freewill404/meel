@@ -2,6 +2,7 @@
 
 namespace App\Meel;
 
+use App\Meel\DateTime\TimeString;
 use Illuminate\Support\Carbon;
 use LogicException;
 
@@ -102,9 +103,11 @@ class RelativeNow
         return '08:00:00';
     }
 
-    public function getTimeString()
+    public function getTimeString(): TimeString
     {
-        return $this->getTime()->format('H:i:s');
+        return new TimeString(
+            $this->getTime()->format('H:i:s')
+        );
     }
 
     protected function interpretNow($string)

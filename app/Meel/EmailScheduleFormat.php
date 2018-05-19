@@ -5,6 +5,7 @@ namespace App\Meel;
 use App\Meel\DateTime\DateString;
 use App\Meel\DateTime\TimeString;
 use App\Meel\WhenFormats\RecurringInterpretation;
+use App\Meel\WhenFormats\TimeInterpretation;
 use App\Support\Enums\Days;
 use App\Support\Enums\Intervals;
 use App\Support\Enums\Months;
@@ -59,17 +60,13 @@ class EmailScheduleFormat
 
     public function nextOccurrence()
     {
-        $time = new TimeString(
-            $this->getNextInterpretedTime() ?: $this->getDefaultTime()
-        );
+        $timeString = $this->getNextInterpretedTime() ?: $this->getDefaultTime();
 
-        $date = $this->getNextInterpretedDate($time);
+        $dateString = $this->getNextInterpretedDate($timeString);
 
-        if (! $date) {
-            return false;
-        }
-
-        return $date.' '.$time;
+        return $dateString
+            ? $dateString.' '.$timeString
+            : false;
     }
 
     protected function getNextInterpretedDate(TimeString $setTime): ?DateString
@@ -89,9 +86,9 @@ class EmailScheduleFormat
         return null;
     }
 
-    protected function getNextInterpretedTime()
+    protected function getNextInterpretedTime(): ?TimeString
     {
-        if ($this->timeInterpretation->isValidTime()) {
+        if ($this->timeInterpretation->isUsableMatch()) {
             return $this->timeInterpretation->getTimeString();
         }
 
@@ -99,12 +96,12 @@ class EmailScheduleFormat
             return $this->relativeNow->getTimeString();
         }
 
-        return false;
+        return null;
     }
 
-    protected function getDefaultTime()
+    protected function getDefaultTime(): TimeString
     {
-        return '08:00:00';
+        return new TimeString('08:00:00');
     }
 
     protected function getNextRecurringDate()

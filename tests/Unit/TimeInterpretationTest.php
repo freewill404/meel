@@ -2,7 +2,7 @@
 
 namespace Tests\Unit;
 
-use App\Meel\TimeInterpretation;
+use App\Meel\WhenFormats\TimeInterpretation;
 use Tests\TestCase;
 
 class TimeInterpretationTest extends TestCase
@@ -11,13 +11,13 @@ class TimeInterpretationTest extends TestCase
     {
         $timeInterpretation = new TimeInterpretation($input);
 
-        if (! $timeInterpretation->isValidTime()) {
+        if (! $timeInterpretation->isUsableMatch()) {
             $this->fail("TimeInterpretation interpreted '{$input}' as not being a valid time, expected '{$expected}'");
         }
 
         $this->assertSame(
             $expected,
-            $actual = $timeInterpretation->getTime()->format('H:i:s'),
+            $actual = (string) $timeInterpretation->getTimeString(),
             "TimeInterpretation interpreted '{$input}' as '{$actual}', expected '{$expected}'"
         );
     }
