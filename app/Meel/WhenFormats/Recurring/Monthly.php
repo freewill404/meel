@@ -31,7 +31,7 @@ class Monthly extends RecurringWhenFormat
 
     public function getNextDate(TimeString $setTime, $timezone = null): DateString
     {
-        $setTimeIsEarlierThanNow = $setTime->earlierThanNow($timezone);
+        $setTimeIsLaterThanNow = $setTime->laterThanNow($timezone);
 
         $thisMonth = now()->lastOfMonth();
 
@@ -47,7 +47,7 @@ class Monthly extends RecurringWhenFormat
             return $monthlyOnDate;
         }
 
-        if ($monthlyOnDate->isToday($timezone) && $setTimeIsEarlierThanNow) {
+        if ($monthlyOnDate->isToday($timezone) && $setTimeIsLaterThanNow) {
             return $monthlyOnDate;
         }
 

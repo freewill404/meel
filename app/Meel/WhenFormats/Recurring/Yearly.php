@@ -38,7 +38,7 @@ class Yearly extends RecurringWhenFormat
 
     public function getNextDate(TimeString $setTime, $timezone = null): DateString
     {
-        $setTimeIsEarlierThanNow = $setTime->earlierThanNow($timezone);
+        $setTimeIsLaterThanNow = $setTime->laterThanNow($timezone);
 
         $thisYear = Carbon::parse('this year '.$this->monthOfTheYear)->lastOfMonth();
 
@@ -52,7 +52,7 @@ class Yearly extends RecurringWhenFormat
             return $thisYearDateString;
         }
 
-        if ($thisYearDateString->isToday($timezone) && $setTimeIsEarlierThanNow) {
+        if ($thisYearDateString->isToday($timezone) && $setTimeIsLaterThanNow) {
             return $thisYearDateString;
         }
 

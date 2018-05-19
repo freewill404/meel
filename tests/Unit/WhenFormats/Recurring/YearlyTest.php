@@ -59,10 +59,10 @@ class YearlyTest extends RecurringWhenFormatTestCase
 
         [$beforeNow, $exactlyNow, $afterNow] = $this->getTimeStrings();
 
-        $this->assertNextDate('2018-03-14', 'yearly on the 14th of March', $beforeNow);
+        $this->assertNextDate('2019-03-14', 'yearly on the 14th of March', $beforeNow);
 
         $this->assertNextDate('2019-03-14', 'yearly on the 14th of March', $exactlyNow);
 
-        $this->assertNextDate('2019-03-14', 'yearly on the 14th of March', $afterNow);
+        $this->assertNextDate('2018-03-14', 'yearly on the 14th of March', $afterNow);
     }
 }

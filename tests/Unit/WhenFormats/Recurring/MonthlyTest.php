@@ -45,10 +45,10 @@ class MonthlyTest extends RecurringWhenFormatTestCase
 
         Carbon::setTestNow('2018-03-14 12:00:00');
 
-        $this->assertNextDate('2018-03-14', 'monthly on the 14th', $beforeNow);
+        $this->assertNextDate('2018-04-14', 'monthly on the 14th', $beforeNow);
 
         $this->assertNextDate('2018-04-14', 'monthly on the 14th', $exactlyNow);
 
-        $this->assertNextDate('2018-04-14', 'monthly on the 14th', $afterNow);
+        $this->assertNextDate('2018-03-14', 'monthly on the 14th', $afterNow);
     }
 }

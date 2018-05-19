@@ -41,7 +41,7 @@ class MonthlyNthDay extends RecurringWhenFormat
 
     public function getNextDate(TimeString $setTime, $timezone = null): DateString
     {
-        $setTimeIsEarlierThanNow = $setTime->earlierThanNow($timezone);
+        $setTimeIsLaterThanNow = $setTime->laterThanNow($timezone);
 
         $nthDayThisMonth = new DateString(
             Carbon::parse($this->nth.' '.$this->day.' of this month', $timezone)
@@ -51,7 +51,7 @@ class MonthlyNthDay extends RecurringWhenFormat
             return $nthDayThisMonth;
         }
 
-        if ($nthDayThisMonth->isToday($timezone) && $setTimeIsEarlierThanNow) {
+        if ($nthDayThisMonth->isToday($timezone) && $setTimeIsLaterThanNow) {
             return $nthDayThisMonth;
         }
 

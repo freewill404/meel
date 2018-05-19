@@ -31,7 +31,7 @@ class Weekly extends RecurringWhenFormat
 
     public function getNextDate(TimeString $setTime, $timezone = null): DateString
     {
-        $setTimeIsEarlierThanNow = $setTime->earlierThanNow($timezone);
+        $setTimeIsLaterThanNow = $setTime->laterThanNow($timezone);
 
         $weeklyOnDay = new DateString(
             Carbon::parse('this week '.$this->day, $timezone)
@@ -41,7 +41,7 @@ class Weekly extends RecurringWhenFormat
             return $weeklyOnDay;
         }
 
-        if ($weeklyOnDay->isToday($timezone) && $setTimeIsEarlierThanNow) {
+        if ($weeklyOnDay->isToday($timezone) && $setTimeIsLaterThanNow) {
             return $weeklyOnDay;
         }
 

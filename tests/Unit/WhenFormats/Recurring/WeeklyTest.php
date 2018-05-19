@@ -27,11 +27,11 @@ class WeeklyTest extends RecurringWhenFormatTestCase
         // a wednesday
         Carbon::setTestNow('2018-03-14 12:00:00');
 
-        $this->assertNextDate('2018-03-14', 'weekly bla bla bla wednesday', $beforeNow);
+        $this->assertNextDate('2018-03-21', 'weekly bla bla bla wednesday', $beforeNow);
 
         $this->assertNextDate('2018-03-21', 'weekly on wednesday', $exactlyNow);
 
-        $this->assertNextDate('2018-03-21', 'weekly on wednesday', $afterNow);
+        $this->assertNextDate('2018-03-14', 'weekly on wednesday', $afterNow);
     }
 
     /** @test */

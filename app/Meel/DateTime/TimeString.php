@@ -53,6 +53,13 @@ class TimeString
         return $this->difference($timeString) > 0;
     }
 
+    public function laterThanNow($timezone): bool
+    {
+        return $this->laterThan(
+            now($timezone)
+        );
+    }
+
     public function sameAs($timeString): bool
     {
         return $this->difference($timeString) === 0;
