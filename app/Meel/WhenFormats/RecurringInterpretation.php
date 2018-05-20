@@ -54,4 +54,9 @@ class RecurringInterpretation
 
         return $this->matchedFormat;
     }
+
+    public function intervalDescription()
+    {
+        return $this->matchedFormat->intervalDescription();
+    }
 }

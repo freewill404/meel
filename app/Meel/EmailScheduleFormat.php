@@ -49,12 +49,12 @@ class EmailScheduleFormat
 
     public function isRecurring(): bool
     {
-        return (bool) $this->getInterval();
+        return $this->recurringInterpretation->isUsableMatch();
     }
 
-    public function getInterval()
+    public function getIntervalDescription()
     {
-        return $this->recurringInterpretation->isUsableMatch() ? 'TODO' : false;
+        return $this->recurringInterpretation->intervalDescription();
     }
 
     public function nextOccurrence()

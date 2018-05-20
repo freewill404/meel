@@ -13,6 +13,8 @@ abstract class RecurringWhenFormat
 
     abstract public function getNextDate(TimeString $setTime, $timezone = null): DateString;
 
+    abstract public function intervalDescription();
+
     public static function matches(string $string): bool
     {
         $self = new static($string);

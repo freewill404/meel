@@ -59,4 +59,9 @@ class Monthly extends RecurringWhenFormat
 
         return new DateString($nextMonth);
     }
+
+    public function intervalDescription()
+    {
+        return 'monthly';
+    }
 }

@@ -59,4 +59,9 @@ class MonthlyNthDay extends RecurringWhenFormat
             Carbon::parse($this->nth.' '.$this->day.' of next month', $timezone)
         );
     }
+
+    public function intervalDescription()
+    {
+        return 'monthly';
+    }
 }

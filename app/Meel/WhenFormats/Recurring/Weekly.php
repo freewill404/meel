@@ -49,4 +49,9 @@ class Weekly extends RecurringWhenFormat
             Carbon::parse('next week '.$this->day, $timezone)
         );
     }
+
+    public function intervalDescription()
+    {
+        return 'weekly';
+    }
 }

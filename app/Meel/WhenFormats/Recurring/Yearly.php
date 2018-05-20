@@ -64,4 +64,9 @@ class Yearly extends RecurringWhenFormat
 
         return new DateString($nextYear);
     }
+
+    public function intervalDescription()
+    {
+        return 'yearly';
+    }
 }

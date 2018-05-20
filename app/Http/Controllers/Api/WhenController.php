@@ -32,7 +32,7 @@ class WhenController extends Controller
         $dayOfTheWeek = Carbon::parse($nextOccurrenceString)->format('l');
 
         $humanInterpretation = $emailSchedule->isRecurring()
-            ? 'Recurring '.$emailSchedule->getInterval().', first occurrence at '
+            ? 'Recurring '.$emailSchedule->getIntervalDescription().', first occurrence at '
             : 'Once, at ';
 
         return [
