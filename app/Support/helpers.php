@@ -1,5 +1,7 @@
 <?php
 
+use App\Support\Enums\Days;
+
 /**
  * @param $path
  * @param null|string $disk
@@ -52,4 +54,21 @@ function dd_delay($var, int $timesCalled = 2)
     }
 
     $calls[$caller] = $callCount + 1;
+}
+
+function days_until_next(string $day, $timezone = null): int
+{
+    $dayInt = Days::toInt($day);
+
+    $carbon = now($timezone);
+
+    for ($i = 1; $i <= 7; $i++) {
+        $carbon->addDays(1);
+
+        if ($carbon->dayOfWeek === $dayInt) {
+            return $i;
+        }
+    }
+
+    throw new LogicException();
 }

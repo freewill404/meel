@@ -25,7 +25,12 @@ class EmailScheduleFormatTest extends TestCase
         $this->assertSame(
             $expectedNextOccurrence,
             $actual = $scheduleFormat->nextOccurrence(),
-            "'{$writtenInput}' next occurrence was '{$actual}', should be '{$expectedNextOccurrence}'"
+
+            "\nWrong interpretation\n Input:    '{$writtenInput}'\n Expected: '{$expectedNextOccurrence}' ".
+            Carbon::parse($expectedNextOccurrence)->format('l').
+            "\n Actual:   '{$actual}' ".
+            Carbon::parse($actual)->format('l').
+            "\n\n Current now: ".now()." ".now()->format('l')."\n"
         );
     }
 
@@ -58,6 +63,9 @@ class EmailScheduleFormatTest extends TestCase
         $this->assertSingleOccurrenceSchedule('at 5', '2018-03-28 05:00:00');
 
         $this->assertSingleOccurrenceSchedule('tomorrow at 17', '2018-03-29 17:00:00');
+
+        $this->assertSingleOccurrenceSchedule('next wednesday', '2018-04-04 08:00:00');
+        $this->assertSingleOccurrenceSchedule('next saturday',  '2018-03-31 08:00:00');
     }
 
     /** @test */

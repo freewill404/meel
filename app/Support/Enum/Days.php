@@ -23,7 +23,7 @@ class Days extends Enum
     public static function toInt($day)
     {
         // Matches Carbon constants
-        switch ($day) {
+        switch (strtolower($day)) {
             case static::SUNDAY: return 0;
             case static::MONDAY: return 1;
             case static::TUESDAY: return 2;

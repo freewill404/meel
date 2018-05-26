@@ -3,6 +3,7 @@
 namespace Tests\Unit\WhenFormats;
 
 use App\Meel\WhenFormats\RelativeToNowInterpretation;
+use Carbon\Carbon;
 use Tests\TestCase;
 
 class RelativeToNowInterpretationTest extends TestCase
@@ -38,7 +39,12 @@ class RelativeToNowInterpretationTest extends TestCase
         $this->assertSame(
             $expected,
             $actual = $relativeNow->getTime()->format('Y-m-d H:i:s'),
-            "RelativeToNowInterpretation interpreted '{$input}' as '{$actual}', should be '{$expected}'"
+
+            "\nWrong RelativeToNowInterpretation\n Input:    '{$input}'\n Expected: '{$expected}' ".
+            Carbon::parse($expected)->format('l').
+            "\n Actual:   '{$actual}' ".
+            Carbon::parse($actual)->format('l').
+            "\n\n Current now: ".now()." ".now()->format('l')."\n"
         );
     }
 
@@ -126,4 +132,9 @@ class RelativeToNowInterpretationTest extends TestCase
         $this->assertRelativeNow('2018-04-04 08:00:00', 'in 1 week');
     }
 
+    /** @test */
+    function it_interprets_basic_sentences()
+    {
+        $this->assertRelativeNow('2018-03-31 08:00:00', 'next saturday');
+    }
 }
