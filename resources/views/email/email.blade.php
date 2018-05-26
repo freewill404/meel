@@ -1,1 +1,1 @@
-:)
+This email {{ $emailSchedule->is_recurring ? 'is' : 'was' }} scheduled: {{ $emailSchedule->when }}

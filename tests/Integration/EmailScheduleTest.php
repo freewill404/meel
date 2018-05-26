@@ -27,7 +27,7 @@ class EmailScheduleTest extends TestCase
         $emailSchedule->sendEmail();
 
         Mail::assertSent(Email::class, function (Email $mail) use ($user) {
-            return $mail->hasTo($user->email) && $mail->subject === 'The what text | Meel.me';
+            return $mail->hasTo($user->email) && $mail->subject === 'The what text';
         });
     }
 

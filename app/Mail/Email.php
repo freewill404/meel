@@ -11,14 +11,19 @@ class Email extends Mailable
 {
     use Queueable, SerializesModels;
 
+    protected $emailSchedule;
+
     public function __construct(EmailSchedule $emailSchedule)
     {
-        $this->to($emailSchedule->user->email)
-            ->subject($emailSchedule->what.' | Meel.me');
+        $this->emailSchedule = $emailSchedule;
+
+        $this->to($emailSchedule->user->email)->subject($emailSchedule->what);
     }
 
     public function build()
     {
-        return $this->view('email.email');
+        return $this->view('email.email', [
+            'emailSchedule' => $this->emailSchedule,
+        ]);
     }
 }
