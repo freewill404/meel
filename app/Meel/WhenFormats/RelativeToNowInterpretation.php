@@ -63,8 +63,6 @@ class RelativeToNowInterpretation
 
     public function hasSpecifiedTime()
     {
-        // ($this->years || $this->months || $this->weeks || $this->days)
-
         return $this->isRelativeToNow() && ($this->timeOffsetFromNow || $this->hours || $this->minutes);
     }
 
@@ -142,8 +140,11 @@ class RelativeToNowInterpretation
 
         // Match strings like:
         //   "next year"
+        //   "next tuesday"
         if (strpos($string, 'next ') === 0) {
-            return true;
+            if (preg_match('/(\d+ years?|next year|next month|next week|monday|tuesday|wednesday|thursday|friday|saturday|sunday|mon\b|tues?\b|wed\b|thu\b|fri\b|sat\b|sun\b)/', $string)) {
+                return true;
+            }
         }
 
         // Match patterns like:

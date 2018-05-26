@@ -8,6 +8,16 @@ use Tests\TestCase;
 
 class EmailScheduleFormatTest extends TestCase
 {
+    private function assertNotUsable(string $writtenInput)
+    {
+        $scheduleFormat = new EmailScheduleFormat($writtenInput);
+
+        $this->assertFalse(
+            $scheduleFormat->isUsableInterpretation(),
+            '"'.$writtenInput.'" should not be a usable interpretation'
+        );
+    }
+
     private function assertSingleOccurrenceSchedule(string $writtenInput, string $expectedNextOccurrence)
     {
         $scheduleFormat = new EmailScheduleFormat($writtenInput);
@@ -66,6 +76,7 @@ class EmailScheduleFormatTest extends TestCase
 
         $this->assertSingleOccurrenceSchedule('next wednesday', '2018-04-04 08:00:00');
         $this->assertSingleOccurrenceSchedule('next saturday',  '2018-03-31 08:00:00');
+        $this->assertSingleOccurrenceSchedule('next sat',       '2018-03-31 08:00:00');
     }
 
     /** @test */
@@ -95,5 +106,12 @@ class EmailScheduleFormatTest extends TestCase
         $this->assertRecurringSchedule('yearly', '2019-01-01 08:00:00');
 
         $this->assertRecurringSchedule('yearly in may', '2018-05-01 08:00:00');
+    }
+
+    /** @test */
+    function it_does_not_match_things()
+    {
+        $this->assertNotUsable('next');
+        $this->assertNotUsable('next durrday');
     }
 }
