@@ -19,7 +19,7 @@ class Weekly extends RecurringWhenFormat
 
         $this->day = Days::MONDAY;
 
-        if (preg_match('/(monday|tuesday|wednesday|thursday|friday|saturday|sunday)/', $string, $matches)) {
+        if (preg_match('/'.Days::regex().'/', $string, $matches)) {
             $this->day = $matches[1];
         }
     }

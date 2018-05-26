@@ -136,5 +136,7 @@ class RelativeToNowInterpretationTest extends TestCase
     function it_interprets_basic_sentences()
     {
         $this->assertRelativeNow('2018-03-31 08:00:00', 'next saturday');
+
+        $this->assertRelativeNow('2018-04-03 08:00:00', 'next tues');
     }
 }

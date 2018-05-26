@@ -22,7 +22,7 @@ class MonthlyNthDayTest extends RecurringWhenFormatTestCase
     /** @test */
     function it_does_not_match()
     {
-        $this->assertWhenFormatDoesNotMatch('every 5th saturday of the month');
+        $this->assertWhenFormatDoesNotMatch('every 5th sat of the month');
 
         $this->assertWhenFormatDoesNotMatch('every fifth saturday of the month');
     }
@@ -53,7 +53,7 @@ class MonthlyNthDayTest extends RecurringWhenFormatTestCase
 
         $this->assertNextDate('2018-04-25', 'every last wednesday of the month', $beforeNow);
 
-        $this->assertNextDate('2018-04-25', 'every last wednesday of the month', $exactlyNow);
+        $this->assertNextDate('2018-04-25', 'every last wed of the month', $exactlyNow);
 
         $this->assertNextDate('2018-03-28', 'every last wednesday of the month', $afterNow);
     }
@@ -66,7 +66,7 @@ class MonthlyNthDayTest extends RecurringWhenFormatTestCase
 
         $this->assertNextDate('2018-04-04', 'the first wednesday of the month');
 
-        $this->assertNextDate('2018-03-21', 'every third wednesday of the month');
+        $this->assertNextDate('2018-03-21', 'every third wed of the month');
 
         $this->assertNextDate('2018-03-28', 'every fourth wednesday of the month');
     }
@@ -81,7 +81,7 @@ class MonthlyNthDayTest extends RecurringWhenFormatTestCase
 
         $this->assertNextDate('2018-04-11', 'the second wednesday of the month', $beforeNow);
 
-        $this->assertNextDate('2018-04-11', 'the second wednesday of the month', $exactlyNow);
+        $this->assertNextDate('2018-04-11', 'the second wed of the month', $exactlyNow);
 
         $this->assertNextDate('2018-03-14', 'the second wednesday of the month', $afterNow);
     }

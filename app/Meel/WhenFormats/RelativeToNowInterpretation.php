@@ -3,6 +3,7 @@
 namespace App\Meel\WhenFormats;
 
 use App\Meel\DateTime\TimeString;
+use App\Support\Enums\Days;
 use Illuminate\Support\Carbon;
 use LogicException;
 
@@ -208,7 +209,7 @@ class RelativeToNowInterpretation
             return (int) $matches[1];
         }
 
-        if (preg_match('/next (monday|tuesday|wednesday|thursday|friday|saturday|sunday)/', $string, $matches)) {
+        if (preg_match('/next '.Days::regex().'/', $string, $matches)) {
             return days_until_next($matches[1], $this->timezone);
         }
 

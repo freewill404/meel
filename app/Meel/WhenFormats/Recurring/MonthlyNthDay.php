@@ -4,6 +4,7 @@ namespace App\Meel\WhenFormats\Recurring;
 
 use App\Meel\DateTime\DateString;
 use App\Meel\DateTime\TimeString;
+use App\Support\Enums\Days;
 use Carbon\Carbon;
 
 class MonthlyNthDay extends RecurringWhenFormat
@@ -19,7 +20,7 @@ class MonthlyNthDay extends RecurringWhenFormat
         // Match:
         //   "every third saturday of the month"
         //   "the last saturday of the month"
-        $this->usableMatch = preg_match('/(^| )(1st|2nd|3rd|4th|last) (monday|tuesday|wednesday|thursday|friday|saturday|sunday) of the month/', $string, $matches);
+        $this->usableMatch = preg_match('/(^| )(1st|2nd|3rd|4th|last) '.Days::regex().' of the month/', $string, $matches);
 
         if ($this->usableMatch) {
             // Carbon::parse needs written ordinal numbers

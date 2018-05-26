@@ -22,8 +22,10 @@ class Days extends Enum
 
     public static function toInt($day)
     {
+        $fullDay = self::regexToFullDay($day);
+
         // Matches Carbon constants
-        switch (strtolower($day)) {
+        switch (strtolower($fullDay)) {
             case static::SUNDAY: return 0;
             case static::MONDAY: return 1;
             case static::TUESDAY: return 2;
@@ -38,6 +40,23 @@ class Days extends Enum
 
     public static function regex()
     {
-        return '(monday|tuesday|wednesday|thursday|friday|saturday|sunday)';
+        return '(monday|tuesday|wednesday|thursday|friday|saturday|sunday|mon\b|tues?\b|wed\b|thu\b|fri\b|sat\b|sun\b)';
+    }
+
+    private static function regexToFullDay($day)
+    {
+        if (self::has($day)) {
+            return $day;
+        }
+
+        $regex = str_replace('\b', '', self::regex());
+
+        if (! preg_match('/^'.$regex.'$/', $day)) {
+            self::assert($day);
+        }
+
+        return self::all()->first(function ($enum) use ($day) {
+            return starts_with($enum, $day);
+        });
     }
 }
