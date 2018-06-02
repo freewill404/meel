@@ -69,9 +69,9 @@ class RelativeToNowInterpretationTest extends TestCase
     /** @test */
     function it_interprets_now()
     {
-        $this->assertRelativeNow('2018-03-28 12:01:00', 'now');
+        $this->assertRelativeNow('2018-03-28 12:00:00', 'now');
 
-        $this->assertRelativeNow('2018-03-28 12:01:00', 'right now');
+        $this->assertRelativeNow('2018-03-28 12:00:00', 'right now');
     }
 
     /** @test */

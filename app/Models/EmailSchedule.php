@@ -7,7 +7,6 @@ use App\Meel\EmailScheduleFormat;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Mail;
-use RuntimeException;
 
 class EmailSchedule extends Model
 {
@@ -72,22 +71,5 @@ class EmailSchedule extends Model
         return $emailSchedules->sortBy(function ($item) {
             return $item->id;
         })->values();
-    }
-
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::creating(function (EmailSchedule $emailSchedule) {
-            $schedule = new EmailScheduleFormat($emailSchedule->when, $emailSchedule->user->timezone);
-
-            $nextOccurrence = $schedule->nextOccurrence();
-
-            if ($nextOccurrence === null) {
-                throw new RuntimeException('Tried creating an EmailSchedule with an invalid "when": '.$emailSchedule->when);
-            }
-
-            $emailSchedule->next_occurrence = $nextOccurrence;
-        });
     }
 }

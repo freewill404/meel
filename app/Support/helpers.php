@@ -1,5 +1,8 @@
 <?php
 
+use App\Meel\DateTime\DateTimeString;
+use App\Meel\EmailScheduleFormat;
+use App\Models\EmailSchedule;
 use App\Support\Enums\Days;
 
 /**
@@ -71,4 +74,23 @@ function days_until_next(string $day, $timezone = null): int
     }
 
     throw new LogicException();
+}
+
+function next_occurrence($when, $timezone = null): DateTimeString
+{
+    if ($when instanceof EmailSchedule) {
+        $timezone = $when->user->timezone;
+
+        $when = $when->when;
+    }
+
+    $schedule = new EmailScheduleFormat($when, $timezone);
+
+    $nextOccurrence = $schedule->nextOccurrence();
+
+    if ($nextOccurrence === null) {
+        throw new RuntimeException('Invalid "when": '.$when);
+    }
+
+    return $nextOccurrence;
 }

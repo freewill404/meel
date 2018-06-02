@@ -3,6 +3,7 @@
 namespace App\Meel;
 
 use App\Meel\DateTime\DateString;
+use App\Meel\DateTime\DateTimeString;
 use App\Meel\DateTime\TimeString;
 use App\Meel\WhenFormats\DateInterpretation;
 use App\Meel\WhenFormats\RecurringInterpretation;
@@ -44,7 +45,7 @@ class EmailScheduleFormat
 
     public function isUsableInterpretation(): bool
     {
-        return $this->nextOccurrence() !== false;
+        return (bool) $this->nextOccurrence();
     }
 
     public function isRecurring(): bool
@@ -57,15 +58,15 @@ class EmailScheduleFormat
         return $this->recurringInterpretation->intervalDescription();
     }
 
-    public function nextOccurrence()
+    public function nextOccurrence(): ?DateTimeString
     {
         $timeString = $this->getNextInterpretedTime() ?: $this->getDefaultTime();
 
         $dateString = $this->getNextInterpretedDate($timeString);
 
         return $dateString
-            ? $dateString.' '.$timeString
-            : false;
+            ? new DateTimeString($dateString, $timeString)
+            : null;
     }
 
     protected function getNextInterpretedDate(TimeString $setTime): ?DateString

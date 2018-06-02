@@ -83,13 +83,6 @@ class RelativeToNowInterpretation
                 ->second(0) // Ensure the seconds are always at :00
                 ->addHours($this->hours)
                 ->addMinutes($this->minutes);
-
-            // The meel should be sent "now", set the time to the next minute
-            // so the cron sends it as soon as possible.
-            if (! $this->hours && ! $this->minutes) {
-                $dateTime->addMinute();
-            }
-
         } else {
             $dateTime->setTimeFromTimeString($this->getDefaultTimeString());
         }

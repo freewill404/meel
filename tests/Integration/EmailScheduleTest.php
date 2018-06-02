@@ -2,6 +2,7 @@
 
 namespace Tests\Integration;
 
+use App\Jobs\SendScheduledEmailJob;
 use App\Mail\Email;
 use App\Models\EmailSchedule;
 use App\Models\User;
@@ -21,8 +22,10 @@ class EmailScheduleTest extends TestCase
 
         $emailSchedule = $user->emailSchedules()->create([
             'what' => 'The what text',
-            'when' => 'now',
+            'when' => 'in 1 minute',
         ]);
+
+        $this->progressTimeInMinutes(1);
 
         $emailSchedule->sendEmail();
 
@@ -32,13 +35,30 @@ class EmailScheduleTest extends TestCase
     }
 
     /** @test */
+    function now_emails_are_sent_immediately()
+    {
+        $user = factory(User::class)->create();
+
+        $user->emailSchedules()->create([
+            'what' => 'WHAT?',
+            'when' => 'now',
+        ]);
+
+        Mail::assertSent(Email::class, function (Email $mail) use ($user) {
+            return $mail->hasTo($user->email) && $mail->subject === 'WHAT?';
+        });
+
+        // $this->expectsJobs(SendScheduledEmailJob::class);
+    }
+
+    /** @test */
     function it_creates_history_records_for_sent_emails()
     {
         $user = factory(User::class)->create(['timezone' => 'Asia/Shanghai']);
 
         $emailSchedule = $user->emailSchedules()->create([
             'what' => 'The what text',
-            'when' => 'now',
+            'when' => 'in 1 minute',
         ]);
 
         $this->progressTimeInMinutes(1);
@@ -86,7 +106,7 @@ class EmailScheduleTest extends TestCase
 
         $emailSchedule = $user->emailSchedules()->create([
             'what' => 'The what text',
-            'when' => 'now',
+            'when' => 'in 1 minute',
         ]);
 
         $this->assertSame('2018-03-28 12:01:00', EmailSchedule::find(1)->next_occurrence);
@@ -103,15 +123,14 @@ class EmailScheduleTest extends TestCase
         $chinaUser     = factory(User::class)->create(['timezone' => 'Asia/Shanghai']);
         $londonUser    = factory(User::class)->create(['timezone' => 'Europe/London']);
 
-        $chinaUser->emailSchedules()->create([    'what' => 'c1', 'when' => 'now']);
-        $londonUser->emailSchedules()->create([   'what' => 'l1', 'when' => 'now']);
-        $amsterdamUser->emailSchedules()->create(['what' => 'a1', 'when' => 'now']);
+        $chinaUser->emailSchedules()->create([    'what' => 'c1', 'when' => 'in 1 minute']);
+        $londonUser->emailSchedules()->create([   'what' => 'l1', 'when' => 'in 1 minute']);
+        $amsterdamUser->emailSchedules()->create(['what' => 'a1', 'when' => 'in 1 minute']);
 
         $chinaUser->emailSchedules()->create([    'what' => 'c2', 'when' => 'in 1 hour']);
         $londonUser->emailSchedules()->create([   'what' => 'l2', 'when' => 'in 1 hour']);
         $amsterdamUser->emailSchedules()->create(['what' => 'a2', 'when' => 'in 6 hours']);
 
-        // Emails scheduled for "now" are sent the next minute.
         $this->progressTimeInMinutes(1);
 
         $schedules = EmailSchedule::shouldBeSentNow()->map(function (EmailSchedule $schedule) {
