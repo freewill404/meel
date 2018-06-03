@@ -2,11 +2,10 @@
 
 namespace App\Models;
 
-use App\Mail\Email;
+use App\Jobs\SendScheduledEmailJob;
 use App\Meel\EmailScheduleFormat;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Mail;
 
 class EmailSchedule extends Model
 {
@@ -23,9 +22,7 @@ class EmailSchedule extends Model
 
     public function sendEmail()
     {
-        Mail::send(
-            new Email($this)
-        );
+        SendScheduledEmailJob::dispatch($this);
 
         $this->emailScheduleHistories()->create([
             'sent_at'             => $this->next_occurrence,

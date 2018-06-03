@@ -37,18 +37,14 @@ class EmailScheduleTest extends TestCase
     /** @test */
     function now_emails_are_sent_immediately()
     {
+        $this->expectsJobs(SendScheduledEmailJob::class);
+
         $user = factory(User::class)->create();
 
         $user->emailSchedules()->create([
             'what' => 'WHAT?',
             'when' => 'now',
         ]);
-
-        Mail::assertSent(Email::class, function (Email $mail) use ($user) {
-            return $mail->hasTo($user->email) && $mail->subject === 'WHAT?';
-        });
-
-        // $this->expectsJobs(SendScheduledEmailJob::class);
     }
 
     /** @test */
