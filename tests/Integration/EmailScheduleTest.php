@@ -2,6 +2,7 @@
 
 namespace Tests\Integration;
 
+use App\Events\EmailSent;
 use App\Jobs\SendScheduledEmailJob;
 use App\Mail\Email;
 use App\Models\EmailSchedule;
@@ -18,6 +19,8 @@ class EmailScheduleTest extends TestCase
     /** @test */
     function it_sends_emails()
     {
+        $this->expectsEvents(EmailSent::class);
+
         $user = factory(User::class)->create();
 
         $emailSchedule = $user->emailSchedules()->create([

@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Events\EmailSent;
 use App\Mail\Email;
 use App\Models\EmailSchedule;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -18,8 +19,10 @@ class SendScheduledEmailJob extends BaseJob implements ShouldQueue
 
     public function handle()
     {
-        Mail::send(
-            new Email($this->schedule)
-        );
+        $email = new Email($this->schedule);
+
+        Mail::send($email);
+
+        EmailSent::dispatch($this->schedule, $email);
     }
 }

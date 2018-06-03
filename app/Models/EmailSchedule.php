@@ -24,11 +24,6 @@ class EmailSchedule extends Model
     {
         SendScheduledEmailJob::dispatch($this);
 
-        $this->emailScheduleHistories()->create([
-            'sent_at'             => $this->next_occurrence,
-            'sent_at_server_time' => now(),
-        ]);
-
         $schedule = new EmailScheduleFormat($this->when);
 
         $this->update([
@@ -43,7 +38,9 @@ class EmailSchedule extends Model
 
     public function getLastSentAtAttribute()
     {
-        return optional($this->emailScheduleHistories->first())->sent_at;
+        $history = $this->emailScheduleHistories->first();
+
+        return optional($history)->sent_at;
     }
 
     public function emailScheduleHistories()
@@ -59,7 +56,7 @@ class EmailSchedule extends Model
             $timezoneNow = now($timezone)->second(0);
 
             $emailSchedules = EmailSchedule::query()
-                ->whereIn('user_id', $userIds) // Only query EmailSchedules of users that are in this "timezone"
+                ->whereIn('user_id', $userIds) // Only query EmailSchedules of users that are in this timezone
                 ->where('next_occurrence', $timezoneNow)
                 ->get()
                 ->merge($emailSchedules);
