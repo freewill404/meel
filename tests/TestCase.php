@@ -2,6 +2,7 @@
 
 namespace Tests;
 
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Support\Facades\Hash;
@@ -38,6 +39,13 @@ abstract class TestCase extends BaseTestCase
         );
 
         return $this;
+    }
+
+    protected function apiLogin($user = null)
+    {
+        $user = $user ?: factory(User::class)->create();
+
+        return $this->actingAs($user, 'api');
     }
 
     public function createApplication()

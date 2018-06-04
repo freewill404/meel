@@ -1,38 +1,34 @@
 <template>
     <div>
-        <input v-on:input="debounceInput" type="text" name="when" class="field" :class="{ 'border-red': ! valid }" placeholder="now">
-        <small class="block h-4" :class="{ 'text-red': ! valid }">{{ valid ? humanInterpretation : 'Huh?' }}</small>
+        <input v-model="when" v-on:input="debounceInput" name="when" class="field" :class="{ 'border-red': ! valid }" placeholder="now">
+
+        <div class="flex items-center justify-between h-4">
+            <small :class="{ 'text-red': ! valid }">
+                {{ valid ? humanInterpretation : 'Huh?' }}
+            </small>
+
+            <request-format v-if="! valid" :when="when"></request-format>
+        </div>
     </div>
 </template>
 
 <script>
     export default {
 
-        props: [
-
-        ],
-
         data: () => ({
-            exampleData: [],
             humanInterpretation: '',
             valid: true,
         }),
 
-        mounted() {
-
-        },
-
         methods: {
-            
             debounceInput: _.debounce(function (e) {
-                    axios.post('/api/v1/human-when-interpretation', {"when": e.target.value}).then(response => {
-                        this.valid = response.data.valid;
+                axios.post('/api/v1/human-when-interpretation', { 'when': this.when }).then(response => {
+                    this.valid = response.data.valid;
 
-                        this.humanInterpretation = response.data.humanInterpretation;
-                    });
-                }, 200)
+                    this.humanInterpretation = response.data.humanInterpretation;
+                });
+            }, 200)
 
         }
-
     }
 </script>
