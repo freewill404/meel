@@ -29,21 +29,29 @@ class HomeControllerTest extends TestCase
     /** @test */
     function it_keeps_track_of_schedules_created()
     {
+        $firstUser = factory(User::class)->create();
+
+        $this->assertSame(0, $firstUser->emails_sent);
+
         $this->assertSame(0, SiteStats::today()->schedules_created);
 
-        $user = factory(User::class)->create();
-
-        $this->actingAs($user)
+        $this->actingAs($firstUser)
             ->postHome(['what' => 'Example', 'when' => 'now'])
             ->assertRedirect(route('home.success'));
 
         $this->assertSame(1, SiteStats::today()->schedules_created);
 
-        $this->actingAs($user)
+        $this->assertSame(1, $firstUser->refresh()->schedules_created);
+
+        $secondUser = factory(User::class)->create();
+
+        $this->actingAs($secondUser)
             ->postHome(['what' => 'Example', 'when' => 'now'])
             ->assertRedirect(route('home.success'));
 
         $this->assertSame(2, SiteStats::today()->schedules_created);
+
+        $this->assertSame(1, $secondUser->refresh()->schedules_created);
     }
 
     private function postHome($data)

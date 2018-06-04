@@ -10,16 +10,16 @@ class User extends Authenticatable
 {
     use Notifiable, HasApiTokens;
 
-    protected $fillable = [
-        'name', 'email', 'password', 'email_confirmed', 'email_confirm_token'
-    ];
+    protected $guarded = [];
 
     protected $hidden = [
         'password', 'remember_token',
     ];
 
     protected $casts = [
-        'email_confirmed' => 'bool',
+        'email_confirmed'   => 'bool',
+        'emails_sent'       => 'integer',
+        'schedules_created' => 'integer',
     ];
 
     public function emailSchedules()

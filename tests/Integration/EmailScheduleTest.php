@@ -54,23 +54,31 @@ class EmailScheduleTest extends TestCase
     /** @test */
     function it_keeps_track_of_emails_sent()
     {
-        $user = factory(User::class)->create();
+        $firstUser = factory(User::class)->create();
 
         $this->assertSame(0, SiteStats::today()->emails_sent);
 
-        $user->emailSchedules()->create([
+        $this->assertSame(0, $firstUser->emails_sent);
+
+        $firstUser->emailSchedules()->create([
             'what' => 'The what text',
             'when' => 'now',
         ]);
 
         $this->assertSame(1, SiteStats::today()->emails_sent);
 
-        $user->emailSchedules()->create([
+        $this->assertSame(1, $firstUser->refresh()->emails_sent);
+
+        $secondUser = factory(User::class)->create();
+
+        $secondUser->emailSchedules()->create([
             'what' => 'The what text',
             'when' => 'now',
         ]);
 
         $this->assertSame(2, SiteStats::today()->emails_sent);
+
+        $this->assertSame(1, $firstUser->refresh()->emails_sent);
     }
 
     /** @test */

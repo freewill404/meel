@@ -12,5 +12,7 @@ $factory->define(App\Models\User::class, function (Faker $faker) {
         'email_confirm_token' => null,
         'email_confirmed'     => true,
         'role'                => UserRole::USER,
+        'emails_sent'         => 0,
+        'schedules_created'   => 0,
     ];
 });

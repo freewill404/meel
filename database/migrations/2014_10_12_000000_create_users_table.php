@@ -15,6 +15,8 @@ class CreateUsersTable extends Migration
             $table->boolean('email_confirmed')->default(false);
             $table->string('role')->default(UserRole::USER);
             $table->string('timezone')->default('Europe/Amsterdam');
+            $table->unsignedInteger('emails_sent')->default(0);
+            $table->unsignedInteger('schedules_created')->default(0);
             $table->string('password');
             $table->string('email_confirm_token')->nullable();
             $table->rememberToken();

@@ -16,6 +16,8 @@ class EmailScheduleObserver
     {
         SiteStats::incrementSchedulesCreated();
 
+        $emailSchedule->user->increment('schedules_created');
+
         $now = next_occurrence('now', $emailSchedule->user->timezone);
 
         if ($emailSchedule->next_occurrence == $now) {
