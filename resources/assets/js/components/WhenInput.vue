@@ -22,7 +22,7 @@
 
         methods: {
             debounceInput: _.debounce(function (e) {
-                axios.post('/api/v1/human-when-interpretation', { 'when': this.when }).then(response => {
+                axios.post('/api/v1/human-when-interpretation', { 'when': e.target.value }).then(response => {
                     this.valid = response.data.valid;
 
                     this.humanInterpretation = response.data.humanInterpretation;
