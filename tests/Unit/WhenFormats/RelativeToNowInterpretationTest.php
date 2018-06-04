@@ -8,46 +8,6 @@ use Tests\TestCase;
 
 class RelativeToNowInterpretationTest extends TestCase
 {
-    private function assertIsRelativeToNow($input)
-    {
-        $relativeNow = new RelativeToNowInterpretation($input);
-
-        $this->assertTrue(
-            $relativeNow->isRelativeToNow(),
-            "RelativeToNowInterpretation did not interpret '{$input}' to be relative to now"
-        );
-    }
-
-    private function assertIsNotRelativeToNow($input)
-    {
-        $relativeNow = new RelativeToNowInterpretation($input);
-
-        $this->assertFalse(
-            $relativeNow->isRelativeToNow(),
-            "RelativeToNowInterpretation interpreted '{$input}' to be relative to now"
-        );
-    }
-
-    private function assertRelativeNow($expected, $input)
-    {
-        $relativeNow = new RelativeToNowInterpretation($input);
-
-        if (! $relativeNow->isRelativeToNow()) {
-            $this->fail("RelativeToNowInterpretation interpreted '{$input}' as not being relative to now, should be '{$expected}'");
-        }
-
-        $this->assertSame(
-            $expected,
-            $actual = $relativeNow->getTime()->format('Y-m-d H:i:s'),
-
-            "\nWrong RelativeToNowInterpretation\n Input:    '{$input}'\n Expected: '{$expected}' ".
-            Carbon::parse($expected)->format('l').
-            "\n Actual:   '{$actual}' ".
-            Carbon::parse($actual)->format('l').
-            "\n\n Current now: ".now()." ".now()->format('l')."\n"
-        );
-    }
-
     /** @test */
     function it_interprets_when_a_string_is_relative_to_now()
     {
@@ -138,5 +98,45 @@ class RelativeToNowInterpretationTest extends TestCase
         $this->assertRelativeNow('2018-03-31 08:00:00', 'next saturday');
 
         $this->assertRelativeNow('2018-04-03 08:00:00', 'next tues');
+    }
+
+    private function assertIsRelativeToNow($input)
+    {
+        $relativeNow = new RelativeToNowInterpretation($input);
+
+        $this->assertTrue(
+            $relativeNow->isRelativeToNow(),
+            "RelativeToNowInterpretation did not interpret '{$input}' to be relative to now"
+        );
+    }
+
+    private function assertIsNotRelativeToNow($input)
+    {
+        $relativeNow = new RelativeToNowInterpretation($input);
+
+        $this->assertFalse(
+            $relativeNow->isRelativeToNow(),
+            "RelativeToNowInterpretation interpreted '{$input}' to be relative to now"
+        );
+    }
+
+    private function assertRelativeNow($expected, $input)
+    {
+        $relativeNow = new RelativeToNowInterpretation($input);
+
+        if (! $relativeNow->isRelativeToNow()) {
+            $this->fail("RelativeToNowInterpretation interpreted '{$input}' as not being relative to now, should be '{$expected}'");
+        }
+
+        $this->assertSame(
+            $expected,
+            $actual = $relativeNow->getTime()->format('Y-m-d H:i:s'),
+
+            "\nWrong RelativeToNowInterpretation\n Input:    '{$input}'\n Expected: '{$expected}' ".
+            Carbon::parse($expected)->format('l').
+            "\n Actual:   '{$actual}' ".
+            Carbon::parse($actual)->format('l').
+            "\n\n Current now: ".now()." ".now()->format('l')."\n"
+        );
     }
 }

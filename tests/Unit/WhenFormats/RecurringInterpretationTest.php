@@ -12,19 +12,6 @@ use Tests\TestCase;
 
 class RecurringInterpretationTest extends TestCase
 {
-    private function assertRecurringInterpretation($expectedFormat, $string)
-    {
-        $preparedString = WhenString::prepare($string);
-
-        $recurringInterpretation = new RecurringInterpretation($preparedString);
-
-        $this->assertInstanceOf(
-            $expectedFormat,
-            $actual = $recurringInterpretation->getMatchedFormat(),
-            "Interpreted '{$string}' as a '".get_class($actual)."' format, expected '{$expectedFormat}'"
-        );
-    }
-
     /** @test */
     function it_interprets_weekly_intervals()
     {
@@ -69,5 +56,18 @@ class RecurringInterpretationTest extends TestCase
         $this->assertRecurringInterpretation(MonthlyNthDay::class, 'fourth tuesday of the month');
 
         $this->assertRecurringInterpretation(MonthlyNthDay::class, 'last tuesday of the month');
+    }
+
+    private function assertRecurringInterpretation($expectedFormat, $string)
+    {
+        $preparedString = WhenString::prepare($string);
+
+        $recurringInterpretation = new RecurringInterpretation($preparedString);
+
+        $this->assertInstanceOf(
+            $expectedFormat,
+            $actual = $recurringInterpretation->getMatchedFormat(),
+            "Interpreted '{$string}' as a '".get_class($actual)."' format, expected '{$expectedFormat}'"
+        );
     }
 }

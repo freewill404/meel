@@ -7,17 +7,6 @@ use Tests\TestCase;
 
 class WhenStringTest extends TestCase
 {
-    private function assertPreparedInput($expected, $input)
-    {
-        $whenString = new WhenString($input);
-
-        $this->assertSame(
-            $expected,
-            $actual = $whenString->getPreparedString(),
-            "WhenString input '{$input}' was prepared as '{$actual}', should be '{$expected}'"
-        );
-    }
-
     /** @test */
     function it_trims_input()
     {
@@ -77,5 +66,16 @@ class WhenStringTest extends TestCase
         $this->assertPreparedInput('weekly on friday',    'every friday');
         $this->assertPreparedInput('weekly on saturday',  'every saturday');
         $this->assertPreparedInput('weekly on sunday',    'every sunday');
+    }
+
+    private function assertPreparedInput($expected, $input)
+    {
+        $whenString = new WhenString($input);
+
+        $this->assertSame(
+            $expected,
+            $actual = $whenString->getPreparedString(),
+            "WhenString input '{$input}' was prepared as '{$actual}', should be '{$expected}'"
+        );
     }
 }

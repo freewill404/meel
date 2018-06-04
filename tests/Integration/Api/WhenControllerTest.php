@@ -10,38 +10,6 @@ class WhenControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    private function assertValidHumanInterpretation($expected, $input)
-    {
-        return $this->assertHumanInterpretation($expected, $input, true);
-    }
-
-    private function assertInvalidHumanInterpretation($expected, $input)
-    {
-        return $this->assertHumanInterpretation($expected, $input, false);
-    }
-
-    private function assertHumanInterpretation($expected, $input, $isValid)
-    {
-        $response = $this->post(route('api.humanInterpretation'), [
-                'when' => $input,
-            ])
-            ->assertStatus(200);
-
-        $content = (array) json_decode($response->getContent());
-        $this->assertSame(
-            $isValid,
-            $content['valid'],
-            $isValid ? "Interpretation should be valid, was invalid: {$input}" : "Interpretation should be invalid, was valid: {$input}"
-        );
-
-        $this->assertSame(
-            $expected,
-            $content['humanInterpretation']
-        );
-
-        return $response;
-    }
-
     /** @test */
     function default_empty_value_is_valid()
     {
@@ -71,5 +39,37 @@ class WhenControllerTest extends TestCase
         );
 
         $this->assertValidHumanInterpretation('Once, at 2018-04-04 16:00:00 (Wednesday)', 'next week at 16:00');
+    }
+
+    private function assertValidHumanInterpretation($expected, $input)
+    {
+        return $this->assertHumanInterpretation($expected, $input, true);
+    }
+
+    private function assertInvalidHumanInterpretation($expected, $input)
+    {
+        return $this->assertHumanInterpretation($expected, $input, false);
+    }
+
+    private function assertHumanInterpretation($expected, $input, $isValid)
+    {
+        $response = $this->post(route('api.humanInterpretation'), [
+            'when' => $input,
+        ])
+            ->assertStatus(200);
+
+        $content = (array) json_decode($response->getContent());
+        $this->assertSame(
+            $isValid,
+            $content['valid'],
+            $isValid ? "Interpretation should be valid, was invalid: {$input}" : "Interpretation should be invalid, was valid: {$input}"
+        );
+
+        $this->assertSame(
+            $expected,
+            $content['humanInterpretation']
+        );
+
+        return $response;
     }
 }

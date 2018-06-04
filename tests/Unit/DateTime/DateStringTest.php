@@ -9,19 +9,6 @@ use Tests\TestCase;
 
 class DateStringTest extends TestCase
 {
-    private function assertInvalidDateString($string)
-    {
-        try {
-            new DateString($string);
-        } catch (RuntimeException $e) {
-            $this->assertTrue(true);
-
-            return;
-        }
-
-        $this->fail('DateString was not invalid: '.$string);
-    }
-
     /** @test */
     public function it_rejects_invalid_date_strings()
     {
@@ -82,5 +69,18 @@ class DateStringTest extends TestCase
         $this->assertFalse($dateString->isToday());
 
         $this->assertTrue($dateString->isBeforeToday());
+    }
+
+    private function assertInvalidDateString($string)
+    {
+        try {
+            new DateString($string);
+        } catch (RuntimeException $e) {
+            $this->assertTrue(true);
+
+            return;
+        }
+
+        $this->fail('DateString was not invalid: '.$string);
     }
 }

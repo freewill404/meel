@@ -8,25 +8,6 @@ use Tests\TestCase;
 
 class DateInterpretationTest extends TestCase
 {
-    private function assertDateInterpretation($expected, $string)
-    {
-        $preparedString = WhenString::prepare($string);
-
-        $dateInterpretation = new DateInterpretation($preparedString);
-
-        if (! $dateInterpretation->hasSpecifiedDate()) {
-            $this->fail("DateInterpretation interpreted '{$string}' as not having a specified date, expected '{$expected}'");
-        }
-
-        $this->assertSame(
-            $expected,
-            $actual = (string) $dateInterpretation->getDateString(),
-            "DateInterpretation interpreted '{$string}' as '{$actual}', expected '{$expected}'"
-        );
-
-        return $dateInterpretation;
-    }
-
     /** @test */
     function it_interprets_valid_long_dates()
     {
@@ -71,5 +52,24 @@ class DateInterpretationTest extends TestCase
         $this->assertTrue($dateInterpretation->hasSpecifiedYear());
         $this->assertFalse($dateInterpretation->hasSpecifiedMonth());
         $this->assertFalse($dateInterpretation->hasSpecifiedDay());
+    }
+
+    private function assertDateInterpretation($expected, $string)
+    {
+        $preparedString = WhenString::prepare($string);
+
+        $dateInterpretation = new DateInterpretation($preparedString);
+
+        if (! $dateInterpretation->hasSpecifiedDate()) {
+            $this->fail("DateInterpretation interpreted '{$string}' as not having a specified date, expected '{$expected}'");
+        }
+
+        $this->assertSame(
+            $expected,
+            $actual = (string) $dateInterpretation->getDateString(),
+            "DateInterpretation interpreted '{$string}' as '{$actual}', expected '{$expected}'"
+        );
+
+        return $dateInterpretation;
     }
 }

@@ -7,21 +7,6 @@ use Tests\TestCase;
 
 class TimeInterpretationTest extends TestCase
 {
-    private function assertTimeInterpretation($expected, $input)
-    {
-        $timeInterpretation = new TimeInterpretation($input);
-
-        if (! $timeInterpretation->isUsableMatch()) {
-            $this->fail("TimeInterpretation interpreted '{$input}' as not being a valid time, expected '{$expected}'");
-        }
-
-        $this->assertSame(
-            $expected,
-            $actual = (string) $timeInterpretation->getTimeString(),
-            "TimeInterpretation interpreted '{$input}' as '{$actual}', expected '{$expected}'"
-        );
-    }
-
     /** @test */
     function it_interprets_valid_times()
     {
@@ -36,5 +21,20 @@ class TimeInterpretationTest extends TestCase
         $this->assertTimeInterpretation('02:00:00', 'at 2');
 
         $this->assertTimeInterpretation('13:45:00', 'at 13:45');
+    }
+
+    private function assertTimeInterpretation($expected, $input)
+    {
+        $timeInterpretation = new TimeInterpretation($input);
+
+        if (! $timeInterpretation->isUsableMatch()) {
+            $this->fail("TimeInterpretation interpreted '{$input}' as not being a valid time, expected '{$expected}'");
+        }
+
+        $this->assertSame(
+            $expected,
+            $actual = (string) $timeInterpretation->getTimeString(),
+            "TimeInterpretation interpreted '{$input}' as '{$actual}', expected '{$expected}'"
+        );
     }
 }

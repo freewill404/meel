@@ -8,21 +8,8 @@ use Tests\TestCase;
 
 class TimeStringTest extends TestCase
 {
-    private function assertInvalidTimeString($string)
-    {
-        try {
-            new TimeString($string);
-        } catch (RuntimeException $e) {
-            $this->assertTrue(true);
-
-            return;
-        }
-
-        $this->fail('TimeString was not invalid: '.$string);
-    }
-
     /** @test */
-    public function it_rejects_invalid_time_strings()
+    function it_rejects_invalid_time_strings()
     {
         $this->assertInvalidTimeString('wow!');
         $this->assertInvalidTimeString('00:00');
@@ -90,5 +77,16 @@ class TimeStringTest extends TestCase
         $a = new TimeString('01:30:45');
 
         $this->assertSame(5445, $a->toSeconds());
+    }
+
+    private function assertInvalidTimeString($string)
+    {
+        try {
+            new TimeString($string);
+
+            $this->fail('TimeString was not invalid: '.$string);
+        } catch (RuntimeException $e) {
+            $this->assertTrue(true);
+        }
     }
 }
