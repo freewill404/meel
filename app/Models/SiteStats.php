@@ -8,6 +8,8 @@ class SiteStats extends Model
 {
     protected $guarded = [];
 
+    public $timestamps = false;
+
     protected $casts = [
         'users_registered'  => 'integer',
         'schedules_created' => 'integer',

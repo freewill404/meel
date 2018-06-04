@@ -13,7 +13,6 @@ class CreateEmailScheduleHistoriesTable extends Migration
 
             $table->unsignedInteger('email_schedule_id');
             $table->dateTime('sent_at');
-            $table->dateTime('sent_at_server_time');
 
             $table->foreign('email_schedule_id')->references('id')->on('email_schedules')->onDelete('cascade');
         });

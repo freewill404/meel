@@ -15,8 +15,6 @@ class CreateSiteStatsTable extends Migration
             $table->unsignedInteger('users_registered')->default(0);
             $table->unsignedInteger('schedules_created')->default(0);
             $table->unsignedInteger('emails_sent')->default(0);
-
-            $table->timestamps();
         });
     }
 

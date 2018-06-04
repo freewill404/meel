@@ -89,16 +89,11 @@ class EmailScheduleTest extends TestCase
 
         $histories = $emailSchedule->emailScheduleHistories;
 
-        $this->assertSame(1, $histories->count());
+        $this->assertCount(1, $histories);
 
         $this->assertSame(
             '2018-03-28 18:01:00',
             (string) $histories->first()->sent_at
-        );
-
-        $this->assertSame(
-            '2018-03-28 12:01:00',
-            (string) $histories->first()->sent_at_server_time
         );
     }
 
