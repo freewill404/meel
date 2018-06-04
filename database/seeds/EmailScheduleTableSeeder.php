@@ -1,5 +1,7 @@
 <?php
 
+use App\Events\EmailSent;
+use App\Mail\Email;
 use App\Models\EmailSchedule;
 use App\Models\User;
 use Carbon\Carbon;
@@ -40,8 +42,6 @@ class EmailScheduleTableSeeder extends Seeder
             shuffle($this->whens);
 
             foreach ($this->whens as $when) {
-
-
                 Carbon::setTestNow(
                     $this->getRandomPastDateTime()
                 );
@@ -67,14 +67,16 @@ class EmailScheduleTableSeeder extends Seeder
             EmailSchedule::shouldBeSentNow()
                 ->each(function (EmailSchedule $schedule) {
                     $schedule->sendEmail();
+
+                    EmailSent::dispatch($schedule, new Email($schedule));
                 });
 
             Carbon::setTestNow(
                 now()->addMinute()
             );
 
-            if (($minuteDifference = now()->diffInMinutes($realNow)) % 1000 === 0) {
-                $this->consoleWriteLine('           '.str_pad($minuteDifference, strlen($totalMinuteDifference), ' '), STR_PAD_RIGHT);
+            if (($minuteDifference = now()->diffInMinutes($realNow)) % 1000 === 0 && $minuteDifference !== 0) {
+                $this->consoleWriteLine('           '.str_pad($minuteDifference, strlen($totalMinuteDifference), ' '));
             }
         }
 
@@ -83,13 +85,13 @@ class EmailScheduleTableSeeder extends Seeder
 
     protected function getRandomPastDateTime()
     {
+        $randomDays = $this->faker->numberBetween(1, $this->maximumDaysAgo);
+
+        $randomSeconds = $this->faker->numberBetween(0, 86400); // seconds in 24 hours
+
         return now()
-            ->subDays(
-                $this->faker->numberBetween(1, $this->maximumDaysAgo)
-            )
-            ->subSeconds(
-                $this->faker->numberBetween(0, 86400) // seconds in 24 hours
-            );
+            ->subDays($randomDays)
+            ->subSeconds($randomSeconds);
     }
 
     protected function consoleWriteLine($string)
