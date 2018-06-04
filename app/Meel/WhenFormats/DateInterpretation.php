@@ -2,7 +2,7 @@
 
 namespace App\Meel\WhenFormats;
 
-use App\Meel\DateTime\DateString;
+use App\Support\DateTime\DateString;
 
 class DateInterpretation
 {

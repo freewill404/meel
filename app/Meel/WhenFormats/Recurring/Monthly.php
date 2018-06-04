@@ -2,8 +2,8 @@
 
 namespace App\Meel\WhenFormats\Recurring;
 
-use App\Meel\DateTime\DateString;
-use App\Meel\DateTime\TimeString;
+use App\Support\DateTime\DateString;
+use App\Support\DateTime\TimeString;
 
 class Monthly extends RecurringWhenFormat
 {

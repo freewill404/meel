@@ -2,9 +2,9 @@
 
 namespace App\Meel;
 
-use App\Meel\DateTime\DateString;
-use App\Meel\DateTime\DateTimeString;
-use App\Meel\DateTime\TimeString;
+use App\Support\DateTime\DateString;
+use App\Support\DateTime\DateTimeString;
+use App\Support\DateTime\TimeString;
 use App\Meel\WhenFormats\DateInterpretation;
 use App\Meel\WhenFormats\RecurringInterpretation;
 use App\Meel\WhenFormats\RelativeToNowInterpretation;

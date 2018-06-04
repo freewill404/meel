@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Meel\DateTime;
+namespace App\Support\DateTime;
 
 use Carbon\Carbon;
 use RuntimeException;

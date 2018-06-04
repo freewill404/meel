@@ -2,7 +2,7 @@
 
 namespace App\Meel\WhenFormats;
 
-use App\Meel\DateTime\TimeString;
+use App\Support\DateTime\TimeString;
 use RuntimeException;
 
 class TimeInterpretation

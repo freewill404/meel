@@ -1,6 +1,6 @@
 <?php
 
-use App\Meel\DateTime\DateTimeString;
+use App\Support\DateTime\DateTimeString;
 use App\Meel\EmailScheduleFormat;
 use App\Models\EmailSchedule;
 use App\Support\Enums\Days;

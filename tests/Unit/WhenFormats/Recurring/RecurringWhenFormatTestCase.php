@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\WhenFormats\Recurring;
 
-use App\Meel\DateTime\TimeString;
+use App\Support\DateTime\TimeString;
 use App\Meel\WhenFormats\Recurring\RecurringWhenFormat;
 use App\Meel\WhenString;
 use Tests\TestCase;

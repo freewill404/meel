@@ -1,8 +1,8 @@
 <?php
 
-namespace Tests\Unit\DateTime;
+namespace Tests\Unit\Support\DateTime;
 
-use App\Meel\DateTime\DateString;
+use App\Support\DateTime\DateString;
 use Carbon\Carbon;
 use RuntimeException;
 use Tests\TestCase;
