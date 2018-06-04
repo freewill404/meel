@@ -34,16 +34,13 @@ class User extends Authenticatable
 
     public static function getIdsByTimezone(): array
     {
-        $users = static::all();
-
-        $timezones = $users->pluck('timezone')->unique()->sort();
-
-        $userIdsByTimezone = [];
-
-        foreach ($timezones as $timezone) {
-            $userIdsByTimezone[$timezone] = $users->where('timezone', $timezone)->pluck('id')->all();
-        }
-
-        return $userIdsByTimezone;
+        return static::query()
+            ->select('id', 'timezone')
+            ->get()
+            ->mapToGroups(function ($user) {
+                return [$user->timezone => $user->id];
+            })
+            ->sortKeys()
+            ->toArray();
     }
 }
