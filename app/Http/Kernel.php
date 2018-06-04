@@ -3,6 +3,7 @@
 namespace App\Http;
 
 use App\Http\Middleware\EncryptCookies;
+use App\Http\Middleware\IsAdmin;
 use App\Http\Middleware\RedirectIfAuthenticated;
 use App\Http\Middleware\TrimStrings;
 use App\Http\Middleware\TrustProxies;
@@ -56,5 +57,6 @@ class Kernel extends HttpKernel
         'can'           => \Illuminate\Auth\Middleware\Authorize::class,
         'throttle'      => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'guest'         => RedirectIfAuthenticated::class,
+        'is-admin'      => IsAdmin::class,
     ];
 }
