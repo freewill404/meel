@@ -20,6 +20,6 @@ class CreateSiteStatsTable extends Migration
 
     public function down()
     {
-        Schema::dropIfExists('email_stats');
+        Schema::dropIfExists('site_stats');
     }
 }
