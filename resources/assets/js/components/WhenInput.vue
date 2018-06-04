@@ -7,7 +7,7 @@
                 {{ valid ? humanInterpretation : 'Huh?' }}
             </small>
 
-            <request-format v-if="! valid" :when="when"></request-format>
+            <request-format v-if="! valid" :when="requestFormat"></request-format>
         </div>
     </div>
 </template>
@@ -18,11 +18,14 @@
         data: () => ({
             humanInterpretation: '',
             valid: true,
+            requestFormat: '', // passing "when" to the RequestFormat component was causing errors
         }),
 
         methods: {
-            debounceInput: _.debounce(function (e) {
-                axios.post('/api/v1/human-when-interpretation', { 'when': e.target.value }).then(response => {
+            debounceInput: _.debounce(function () {
+                this.requestFormat = this.when;
+
+                axios.post('/api/v1/human-when-interpretation', { 'when': this.when }).then(response => {
                     this.valid = response.data.valid;
 
                     this.humanInterpretation = response.data.humanInterpretation;
