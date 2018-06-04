@@ -3,6 +3,7 @@
 namespace App\Listeners\Observers;
 
 use App\Models\EmailSchedule;
+use App\Models\SiteStats;
 
 class EmailScheduleObserver
 {
@@ -13,6 +14,8 @@ class EmailScheduleObserver
 
     public function created(EmailSchedule $emailSchedule)
     {
+        SiteStats::incrementSchedulesCreated();
+
         $now = next_occurrence('now', $emailSchedule->user->timezone);
 
         if ($emailSchedule->next_occurrence == $now) {

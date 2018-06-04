@@ -6,6 +6,7 @@ use App\Events\EmailSent;
 use App\Jobs\SendScheduledEmailJob;
 use App\Mail\Email;
 use App\Models\EmailSchedule;
+use App\Models\SiteStats;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -48,6 +49,28 @@ class EmailScheduleTest extends TestCase
             'what' => 'WHAT?',
             'when' => 'now',
         ]);
+    }
+
+    /** @test */
+    function it_keeps_track_of_emails_sent()
+    {
+        $user = factory(User::class)->create();
+
+        $this->assertSame(0, SiteStats::today()->emails_sent);
+
+        $user->emailSchedules()->create([
+            'what' => 'The what text',
+            'when' => 'now',
+        ]);
+
+        $this->assertSame(1, SiteStats::today()->emails_sent);
+
+        $user->emailSchedules()->create([
+            'what' => 'The what text',
+            'when' => 'now',
+        ]);
+
+        $this->assertSame(2, SiteStats::today()->emails_sent);
     }
 
     /** @test */

@@ -3,6 +3,7 @@
 namespace Tests\Integration;
 
 use App\Mail\ConfirmAccountEmail;
+use App\Models\SiteStats;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Mail;
@@ -15,12 +16,7 @@ class RegisterControllerTest extends TestCase
     /** @test */
     function it_registers_users_and_sends_the_confirm_account_email()
     {
-        $this->post(route('register.post'), [
-                'email'                 => 'test@example.com',
-                'timezone'              => 'Asia/Shanghai',
-                'password'              => 'secret',
-                'password_confirmation' => 'secret',
-            ])
+        $this->registerUser()
             ->assertStatus(302)
             ->assertRedirect(route('register.done'));
 
@@ -53,5 +49,29 @@ class RegisterControllerTest extends TestCase
         $this->assertSame(true, $user->email_confirmed);
 
         $this->assertSame(null, $user->email_confirm_token);
+    }
+
+    /** @test */
+    function it_keeps_track_of_users_registered()
+    {
+        $this->registerUser()->assertRedirect(route('register.done'));
+
+        $this->assertSame(1, SiteStats::today()->users_registered);
+
+        $this->registerUser([
+            'email' => 'new@example.com',
+        ])->assertRedirect(route('register.done'));
+
+        $this->assertSame(2, SiteStats::today()->users_registered);
+    }
+
+    private function registerUser($data = [])
+    {
+        return $this->post(route('register.post'), $data + [
+            'email'                 => 'test@example.com',
+            'timezone'              => 'Europe/Amsterdam',
+            'password'              => 'secret',
+            'password_confirmation' => 'secret',
+        ]);
     }
 }

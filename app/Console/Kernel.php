@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Models\SiteStats;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -16,6 +17,11 @@ class Kernel extends ConsoleKernel
         $schedule->command('meel:queue-scheduled-emails')->everyMinute();
 
         // $schedule->command('sitemap:generate')->dailyAt('2:00');
+
+        // Make sure every date has a SiteStats model.
+        $schedule->call(function () {
+            SiteStats::today();
+        })->dailyAt('00:05');
     }
 
     protected function commands()
