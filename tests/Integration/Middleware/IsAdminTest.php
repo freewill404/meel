@@ -29,7 +29,7 @@ class IsAdminTest extends TestCase
 
         $this->actingAs($normalUser)
             ->get('/test-route')
-            ->assertStatus(401);
+            ->assertStatus(403);
 
         $this->actingAs($adminUser)
             ->get('/test-route')
@@ -44,6 +44,6 @@ class IsAdminTest extends TestCase
         });
 
         $this->get('/test-route')
-            ->assertStatus(401);
+            ->assertStatus(403);
     }
 }

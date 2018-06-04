@@ -12,7 +12,7 @@ class IsAdmin
         $user = Auth::user();
 
         if (! $user || $user->role !== UserRole::ADMIN) {
-            abort(401);
+            abort(403);
         }
 
         return $next($request);
