@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Http\Rules\UniqueEmail;
 use App\Models\User;
 use App\Http\Controllers\Controller;
 use App\Support\Enums\Timezones;
@@ -26,7 +27,7 @@ class RegisterController extends Controller
     public function register(Request $request)
     {
         $request->validate([
-            'email'    => 'required|string|email|max:255|unique:users',
+            'email'    => ['required', 'string', 'email', 'max:255', new UniqueEmail],
             'timezone' => Timezones::required(),
             'password' => 'required|string|min:6|confirmed',
         ]);
@@ -61,11 +62,9 @@ class RegisterController extends Controller
         $user = User::query()
             ->where('email_confirmed', false)
             ->where('email_confirm_token', $token)
-            ->first();
-
-        if (! $user) {
-            return response('invalid token', 400);
-        }
+            ->firstOr(function () {
+                abort(400, 'invalid token');
+            });
 
         $user->update([
             'email_confirmed'     => true,
