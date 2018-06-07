@@ -11,20 +11,16 @@ class ConfirmAccountEmail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    protected $user;
+    public $user;
 
     public function __construct(User $user)
     {
         $this->user = $user;
-
-        $this->to($user->email)
-            ->subject('Confirm your account | Meel.me');
     }
 
     public function build()
     {
-        return $this->view('email.confirm-account', [
-            'user' => $this->user,
-        ]);
+        return $this->subject('Confirm your account | Meel.me')
+                    ->view('email.confirm-account');
     }
 }

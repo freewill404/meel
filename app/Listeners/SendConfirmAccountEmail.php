@@ -11,7 +11,7 @@ class SendConfirmAccountEmail implements ShouldQueue
 {
     public function handle(Registered $event)
     {
-        Mail::send(
+        Mail::to($event->user)->send(
             new ConfirmAccountEmail($event->user)
         );
     }

@@ -31,12 +31,10 @@ class EmailScheduleTest extends TestCase
             'when' => 'in 1 minute',
         ]);
 
-        $this->progressTimeInMinutes(1);
-
         $emailSchedule->sendEmail();
 
         Mail::assertSent(Email::class, function (Email $mail) use ($user) {
-            return $mail->hasTo($user->email) && $mail->subject === 'The what text';
+            return count($mail->to) === 1 && $mail->hasTo($user);
         });
     }
 

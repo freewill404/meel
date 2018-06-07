@@ -19,9 +19,9 @@ class SendScheduledEmailJob extends BaseJob implements ShouldQueue
 
     public function handle()
     {
-        $email = new Email($this->emailSchedule);
-
-        Mail::send($email);
+        Mail::to($this->emailSchedule->user)->send(
+            $email = new Email($this->emailSchedule)
+        );
 
         EmailSent::dispatch($this->emailSchedule, $email);
     }

@@ -28,7 +28,7 @@ class RegisterControllerTest extends TestCase
         $this->assertNotSame(null, $user->email_confirm_token);
 
         Mail::assertSent(ConfirmAccountEmail::class, function (ConfirmAccountEmail $mail) use ($user) {
-            return $mail->hasTo($user->email);
+            return count($mail->to) === 1 && $mail->hasTo($user->email);
         });
     }
 
