@@ -4,7 +4,7 @@ namespace App\Listeners;
 
 use App\Events\EmailSent;
 
-class CreateSentEmailHistory
+class CreateEmailScheduleHistory
 {
     public function handle(EmailSent $event)
     {

@@ -2,19 +2,16 @@
 
 namespace App\Console;
 
+use App\Jobs\QueueDueEmailsJob;
 use App\Models\SiteStats;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
 class Kernel extends ConsoleKernel
 {
-    protected $commands = [
-
-    ];
-
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('meel:queue-scheduled-emails')->everyMinute();
+        $schedule->job(QueueDueEmailsJob::class)->everyMinute();
 
         // $schedule->command('sitemap:generate')->dailyAt('2:00');
 
@@ -26,6 +23,6 @@ class Kernel extends ConsoleKernel
 
     protected function commands()
     {
-        $this->load(__DIR__.'/Commands');
+        // $this->load(__DIR__.'/Commands');
     }
 }

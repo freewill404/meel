@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Events\EmailNotSent;
 use App\Jobs\SendScheduledEmailJob;
 use App\Meel\EmailScheduleFormat;
 use Illuminate\Database\Eloquent\Model;
@@ -22,13 +23,9 @@ class EmailSchedule extends Model
 
     public function sendEmail()
     {
-        SendScheduledEmailJob::dispatch($this);
-
-        $schedule = new EmailScheduleFormat($this->when);
-
-        $this->update([
-            'next_occurrence' => $schedule->isRecurring() ? $schedule->nextOccurrence() : null,
-        ]);
+        $this->user->has_emails_left
+            ? SendScheduledEmailJob::dispatch($this)
+            : EmailNotSent::dispatch($this);
     }
 
     public function getIsRecurringAttribute()

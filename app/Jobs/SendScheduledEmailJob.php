@@ -10,19 +10,19 @@ use Illuminate\Support\Facades\Mail;
 
 class SendScheduledEmailJob extends BaseJob implements ShouldQueue
 {
-    protected $schedule;
+    public $emailSchedule;
 
-    public function __construct(EmailSchedule $schedule)
+    public function __construct(EmailSchedule $emailSchedule)
     {
-        $this->schedule = $schedule;
+        $this->emailSchedule = $emailSchedule;
     }
 
     public function handle()
     {
-        $email = new Email($this->schedule);
+        $email = new Email($this->emailSchedule);
 
         Mail::send($email);
 
-        EmailSent::dispatch($this->schedule, $email);
+        EmailSent::dispatch($this->emailSchedule, $email);
     }
 }

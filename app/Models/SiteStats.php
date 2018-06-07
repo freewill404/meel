@@ -14,6 +14,7 @@ class SiteStats extends Model
         'users_registered'  => 'integer',
         'schedules_created' => 'integer',
         'emails_sent'       => 'integer',
+        'emails_not_sent'   => 'integer',
     ];
 
     public static function today()
@@ -24,6 +25,7 @@ class SiteStats extends Model
             'users_registered'  => 0,
             'schedules_created' => 0,
             'emails_sent'       => 0,
+            'emails_not_sent'   => 0,
         ]);
     }
 
@@ -40,5 +42,10 @@ class SiteStats extends Model
     public static function incrementEmailsSent()
     {
         static::today()->increment('emails_sent');
+    }
+
+    public static function incrementEmailsNotSent()
+    {
+        static::today()->increment('emails_not_sent');
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Tests\Integration;
 
+use App\Events\EmailNotSent;
 use App\Events\EmailSent;
 use App\Jobs\SendScheduledEmailJob;
 use App\Mail\Email;
@@ -11,6 +12,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Notification;
 use Tests\TestCase;
 
 class EmailScheduleTest extends TestCase
@@ -52,6 +54,24 @@ class EmailScheduleTest extends TestCase
     }
 
     /** @test */
+    function users_with_no_emails_left_can_not_send_emails()
+    {
+        $this->expectsEvents(EmailNotSent::class);
+
+        /** @var User $user */
+        $user = factory(User::class)->create([
+            'free_emails_left' => 0,
+            'paid_emails_left' => 0,
+        ]);
+
+        /** @var EmailSchedule $schedule */
+        $user->emailSchedules()->create([
+            'what' => 'The what text',
+            'when' => 'now',
+        ]);
+    }
+
+    /** @test */
     function it_keeps_track_of_emails_sent()
     {
         $firstUser = factory(User::class)->create();
@@ -86,6 +106,7 @@ class EmailScheduleTest extends TestCase
     {
         $user = factory(User::class)->create(['timezone' => 'Asia/Shanghai']);
 
+        /** @var EmailSchedule $emailSchedule */
         $emailSchedule = $user->emailSchedules()->create([
             'what' => 'The what text',
             'when' => 'in 1 minute',
@@ -106,10 +127,11 @@ class EmailScheduleTest extends TestCase
     }
 
     /** @test */
-    function it_sets_the_next_occurrence_for_recurring_emails_after_sending()
+    function it_sets_the_next_occurrence_for_emails_after_sending()
     {
         $user = factory(User::class)->create();
 
+        /** @var EmailSchedule $emailSchedule */
         $emailSchedule = $user->emailSchedules()->create([
             'what' => 'The what text',
             'when' => 'every monday at 12:00',
@@ -125,20 +147,41 @@ class EmailScheduleTest extends TestCase
     }
 
     /** @test */
-    function it_sets_the_next_occurrence_for_non_recurring_emails_to_null()
+    function it_does_not_send_an_email_if_the_user_does_not_have_emails_left()
     {
-        $user = factory(User::class)->create();
+        Notification::fake();
 
-        $emailSchedule = $user->emailSchedules()->create([
-            'what' => 'The what text',
-            'when' => 'in 1 minute',
+        $user = factory(User::class)->create([
+            'emails_not_sent'  => 0,
+            'free_emails_left' => 0,
+            'paid_emails_left' => 0,
         ]);
 
-        $this->assertSame('2018-03-28 12:01:00', EmailSchedule::find(1)->next_occurrence);
+        /** @var EmailSchedule $emailSchedule */
+        $emailSchedule = $user->emailSchedules()->create([
+            'what' => 'The what text',
+            'when' => 'every month at 12:00',
+        ]);
+
+        $this->assertSame('2018-04-01 12:00:00', EmailSchedule::find(1)->next_occurrence);
+
+        $this->assertSame(0, SiteStats::today()->emails_sent);
+        $this->assertSame(0, SiteStats::today()->emails_not_sent);
+
+        Carbon::setTestNow('2018-04-15 12:00:00');
 
         $emailSchedule->sendEmail();
 
-        $this->assertSame(null, EmailSchedule::find(1)->next_occurrence);
+        // The user has no emails left, so the email is not sent.
+        Notification::assertNothingSent();
+
+        // The next occurrence is set after not sending the email.
+        $this->assertSame('2018-05-01 12:00:00', EmailSchedule::find(1)->next_occurrence);
+
+        $this->assertSame(0, SiteStats::today()->emails_sent);
+        $this->assertSame(1, SiteStats::today()->emails_not_sent);
+
+        $this->assertSame(1, $user->refresh()->emails_not_sent);
     }
 
     /** @test */
