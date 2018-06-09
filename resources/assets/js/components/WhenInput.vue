@@ -1,6 +1,13 @@
 <template>
     <div>
-        <input v-model="when" v-on:input="debounceInput" name="when" class="field" :class="{ 'border-red': ! valid }" placeholder="now">
+        <input v-model="when"
+               v-on:input="debounceInput"
+               name="when"
+               class="field"
+               :class="{ 'border-red': ! valid }"
+               placeholder="now"
+               :pattern="valid ? '.*' : '^$'"
+        >
 
         <div class="flex items-center justify-between h-4">
             <small :class="{ 'text-red': ! valid }">
