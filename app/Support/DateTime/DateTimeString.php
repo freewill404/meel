@@ -15,6 +15,19 @@ class DateTimeString
         $this->timeString = new TimeString($timeString);
     }
 
+    public function isInThePast($timezone): bool
+    {
+        if ($this->dateString->isBeforeToday($timezone)) {
+            return true;
+        }
+
+        if ($this->dateString->isAfterToday($timezone)) {
+            return false;
+        }
+
+        return $this->timeString->earlierThanNow($timezone);
+    }
+
     public function __toString()
     {
         return $this->dateString.' '.$this->timeString;

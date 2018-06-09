@@ -60,13 +60,17 @@ class EmailScheduleFormat
 
     public function nextOccurrence(): ?DateTimeString
     {
-        $timeString = $this->getNextInterpretedTime() ?: $this->getDefaultTime();
+        $time = $this->getNextInterpretedTime() ?: $this->getDefaultTime();
 
-        $dateString = $this->getNextInterpretedDate($timeString);
+        $date = $this->getNextInterpretedDate($time);
 
-        return $dateString
-            ? new DateTimeString($dateString, $timeString)
-            : null;
+        if (! $date) {
+            return null;
+        }
+
+        $dateTime = new DateTimeString($date, $time);
+
+        return $dateTime->isInThePast($this->timezone) ? null : $dateTime;
     }
 
     protected function getNextInterpretedDate(TimeString $setTime): ?DateString
