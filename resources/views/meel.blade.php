@@ -16,7 +16,7 @@
 
         <label class="block mt-8">
             What?
-            <input type="text" name="what" class="field" autocomplete="off" autofocus required>
+            <input type="text" name="what" value="{{ old('what') }}" class="field" autocomplete="off" autofocus required>
         </label>
 
         <label class="block mt-8">
