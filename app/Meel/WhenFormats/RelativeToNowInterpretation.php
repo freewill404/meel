@@ -2,7 +2,7 @@
 
 namespace App\Meel\WhenFormats;
 
-use App\Support\DateTime\TimeString;
+use App\Support\DateTime\SecondlessTimeString;
 use App\Support\Enums\Days;
 use Illuminate\Support\Carbon;
 use LogicException;
@@ -95,9 +95,9 @@ class RelativeToNowInterpretation
         return '08:00:00';
     }
 
-    public function getTimeString(): TimeString
+    public function getTimeString(): SecondlessTimeString
     {
-        return new TimeString(
+        return new SecondlessTimeString(
             $this->getTime()->format('H:i:s')
         );
     }

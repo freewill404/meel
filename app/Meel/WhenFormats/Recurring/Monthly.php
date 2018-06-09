@@ -3,7 +3,7 @@
 namespace App\Meel\WhenFormats\Recurring;
 
 use App\Support\DateTime\DateString;
-use App\Support\DateTime\TimeString;
+use App\Support\DateTime\SecondlessTimeString;
 
 class Monthly extends RecurringWhenFormat
 {
@@ -29,7 +29,7 @@ class Monthly extends RecurringWhenFormat
         return $this->usableMatch;
     }
 
-    public function getNextDate(TimeString $setTime, $timezone = null): DateString
+    public function getNextDate(SecondlessTimeString $setTime, $timezone = null): DateString
     {
         $setTimeIsLaterThanNow = $setTime->laterThanNow($timezone);
 

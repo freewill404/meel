@@ -3,7 +3,7 @@
 namespace App\Meel\WhenFormats;
 
 use App\Support\DateTime\DateString;
-use App\Support\DateTime\TimeString;
+use App\Support\DateTime\SecondlessTimeString;
 use App\Meel\WhenFormats\Recurring\RecurringWhenFormat;
 use RuntimeException;
 
@@ -37,7 +37,7 @@ class RecurringInterpretation
         return $this->matchedFormat !== null;
     }
 
-    public function getNextDate(TimeString $setTime, $timezone): DateString
+    public function getNextDate(SecondlessTimeString $setTime, $timezone): DateString
     {
         if (! $this->isUsableMatch()) {
             throw new RuntimeException('Not a usable match');

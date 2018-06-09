@@ -2,7 +2,7 @@
 
 namespace App\Meel\WhenFormats;
 
-use App\Support\DateTime\TimeString;
+use App\Support\DateTime\SecondlessTimeString;
 use RuntimeException;
 
 class TimeInterpretation
@@ -37,7 +37,7 @@ class TimeInterpretation
         return (bool) $this->time;
     }
 
-    public function getTimeString(): TimeString
+    public function getTimeString(): SecondlessTimeString
     {
         if (! $this->isUsableMatch()) {
             throw new RuntimeException('The given input does not contain a time');
@@ -45,7 +45,7 @@ class TimeInterpretation
 
         [$hours, $minutes] = explode(':', $this->time);
 
-        return new TimeString(
+        return new SecondlessTimeString(
             now()->setTime($hours, $minutes, 0, 0)
         );
     }

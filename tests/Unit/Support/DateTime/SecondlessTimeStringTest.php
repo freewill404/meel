@@ -2,11 +2,11 @@
 
 namespace Tests\Unit\Support\DateTime;
 
-use App\Support\DateTime\TimeString;
+use App\Support\DateTime\SecondlessTimeString;
 use RuntimeException;
 use Tests\TestCase;
 
-class TimeStringTest extends TestCase
+class SecondlessTimeStringTest extends TestCase
 {
     /** @test */
     function it_rejects_invalid_time_strings()
@@ -26,17 +26,17 @@ class TimeStringTest extends TestCase
     /** @test */
     function it_casts_back_to_string()
     {
-        $timeString = new TimeString('12:30:45');
+        $timeString = new SecondlessTimeString('12:30:45');
 
-        $this->assertSame('12:30:45', (string) $timeString);
+        $this->assertSame('12:30:00', (string) $timeString);
     }
 
     /** @test */
     function it_compares_later_than()
     {
-        $a = new TimeString('01:30:00');
+        $a = new SecondlessTimeString('01:30:00');
 
-        $b = new TimeString('01:00:00');
+        $b = new SecondlessTimeString('01:00:00');
 
         $this->assertTrue($a->laterThan($b));
 
@@ -48,9 +48,9 @@ class TimeStringTest extends TestCase
     /** @test */
     function it_compares_earlier_than()
     {
-        $a = new TimeString('01:30:00');
+        $a = new SecondlessTimeString('01:30:00');
 
-        $b = new TimeString('01:00:00');
+        $b = new SecondlessTimeString('01:00:00');
 
         $this->assertFalse($a->earlierThan($b));
 
@@ -62,9 +62,9 @@ class TimeStringTest extends TestCase
     /** @test */
     function it_compares_same_as()
     {
-        $a = new TimeString('01:30:00');
+        $a = new SecondlessTimeString('01:30:00');
 
-        $b = new TimeString('01:00:00');
+        $b = new SecondlessTimeString('01:00:00');
 
         $this->assertFalse($a->sameAs($b));
 
@@ -74,17 +74,18 @@ class TimeStringTest extends TestCase
     /** @test */
     function it_converts_to_seconds()
     {
-        $a = new TimeString('01:30:45');
+        $a = new SecondlessTimeString('01:30:45');
 
-        $this->assertSame(5445, $a->toSeconds());
+        // With seconds it is "5445".
+        $this->assertSame(5400, $a->toSeconds());
     }
 
     private function assertInvalidTimeString($string)
     {
         try {
-            new TimeString($string);
+            new SecondlessTimeString($string);
 
-            $this->fail('TimeString was not invalid: '.$string);
+            $this->fail('SecondlessTimeString was not invalid: '.$string);
         } catch (RuntimeException $e) {
             $this->assertTrue(true);
         }

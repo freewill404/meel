@@ -33,12 +33,12 @@ class MonthlyNthDayTest extends RecurringWhenFormatTestCase
         [$beforeNow, $exactlyNow, $afterNow] = $this->getTimeStrings();
 
         // few days before the last wednesday
-        Carbon::setTestNow('2018-03-26 12:00:00');
+        Carbon::setTestNow('2018-03-26 12:00:15');
 
         $this->assertNextDate('2018-03-28', 'every last wednesday of the month', $afterNow);
 
         // few days after the last wednesday
-        Carbon::setTestNow('2018-03-30 12:00:00');
+        Carbon::setTestNow('2018-03-30 12:00:15');
 
         $this->assertNextDate('2018-04-25', 'every last wednesday of the month', $exactlyNow);
     }
@@ -49,7 +49,7 @@ class MonthlyNthDayTest extends RecurringWhenFormatTestCase
         [$beforeNow, $exactlyNow, $afterNow] = $this->getTimeStrings();
 
         // The last wednesday
-        Carbon::setTestNow('2018-03-28 12:00:00');
+        Carbon::setTestNow('2018-03-28 12:00:15');
 
         $this->assertNextDate('2018-04-25', 'every last wednesday of the month', $beforeNow);
 
@@ -62,7 +62,7 @@ class MonthlyNthDayTest extends RecurringWhenFormatTestCase
     function it_can_get_the_nth_day()
     {
         // The second wednesday
-        Carbon::setTestNow('2018-03-14 12:00:00');
+        Carbon::setTestNow('2018-03-14 12:00:15');
 
         $this->assertNextDate('2018-04-04', 'the first wednesday of the month');
 
@@ -74,10 +74,10 @@ class MonthlyNthDayTest extends RecurringWhenFormatTestCase
     /** @test */
     function it_can_get_the_nth_day_if_it_is_today()
     {
-        [$beforeNow, $exactlyNow, $afterNow] = $this->getTimeStrings();
-
         // The second wednesday
-        Carbon::setTestNow('2018-03-14 12:00:00');
+        Carbon::setTestNow('2018-03-14 12:00:15');
+
+        [$beforeNow, $exactlyNow, $afterNow] = $this->getTimeStrings();
 
         $this->assertNextDate('2018-04-11', 'the second wednesday of the month', $beforeNow);
 

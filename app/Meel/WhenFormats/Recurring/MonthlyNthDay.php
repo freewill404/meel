@@ -3,7 +3,7 @@
 namespace App\Meel\WhenFormats\Recurring;
 
 use App\Support\DateTime\DateString;
-use App\Support\DateTime\TimeString;
+use App\Support\DateTime\SecondlessTimeString;
 use App\Support\Enums\Days;
 use Carbon\Carbon;
 
@@ -40,7 +40,7 @@ class MonthlyNthDay extends RecurringWhenFormat
         return (bool) $this->usableMatch;
     }
 
-    public function getNextDate(TimeString $setTime, $timezone = null): DateString
+    public function getNextDate(SecondlessTimeString $setTime, $timezone = null): DateString
     {
         $setTimeIsLaterThanNow = $setTime->laterThanNow($timezone);
 

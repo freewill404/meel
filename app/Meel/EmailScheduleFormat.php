@@ -3,8 +3,8 @@
 namespace App\Meel;
 
 use App\Support\DateTime\DateString;
-use App\Support\DateTime\DateTimeString;
-use App\Support\DateTime\TimeString;
+use App\Support\DateTime\SecondlessDateTimeString;
+use App\Support\DateTime\SecondlessTimeString;
 use App\Meel\WhenFormats\DateInterpretation;
 use App\Meel\WhenFormats\RecurringInterpretation;
 use App\Meel\WhenFormats\RelativeToNowInterpretation;
@@ -58,7 +58,7 @@ class EmailScheduleFormat
         return $this->recurringInterpretation->intervalDescription();
     }
 
-    public function nextOccurrence(): ?DateTimeString
+    public function nextOccurrence(): ?SecondlessDateTimeString
     {
         $time = $this->getNextInterpretedTime() ?: $this->getDefaultTime();
 
@@ -68,12 +68,12 @@ class EmailScheduleFormat
             return null;
         }
 
-        $dateTime = new DateTimeString($date, $time);
+        $dateTime = new SecondlessDateTimeString($date, $time);
 
         return $dateTime->isInThePast($this->timezone) ? null : $dateTime;
     }
 
-    protected function getNextInterpretedDate(TimeString $setTime): ?DateString
+    protected function getNextInterpretedDate(SecondlessTimeString $setTime): ?DateString
     {
         if ($this->isRecurring()) {
             return $this->recurringInterpretation->getNextDate($setTime, $this->timezone);
@@ -90,7 +90,7 @@ class EmailScheduleFormat
         return null;
     }
 
-    protected function getNextInterpretedTime(): ?TimeString
+    protected function getNextInterpretedTime(): ?SecondlessTimeString
     {
         if ($this->timeInterpretation->isUsableMatch()) {
             return $this->timeInterpretation->getTimeString();
@@ -103,8 +103,8 @@ class EmailScheduleFormat
         return null;
     }
 
-    protected function getDefaultTime(): TimeString
+    protected function getDefaultTime(): SecondlessTimeString
     {
-        return new TimeString('08:00:00');
+        return new SecondlessTimeString('08:00:00');
     }
 }

@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Events\EmailNotSent;
 use App\Jobs\SendScheduledEmailJob;
 use App\Meel\EmailScheduleFormat;
+use App\Support\DateTime\SecondlessDateTimeString;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 
@@ -50,7 +51,7 @@ class EmailSchedule extends Model
         $emailSchedules = collect();
 
         foreach (User::getIdsByTimezone() as $timezone => $userIds) {
-            $timezoneNow = now($timezone)->second(0);
+            $timezoneNow = secondless_now($timezone);
 
             $emailSchedules = EmailSchedule::query()
                 ->whereIn('user_id', $userIds) // Only query EmailSchedules of users that are in this timezone

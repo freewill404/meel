@@ -41,7 +41,7 @@ class EmailScheduleFormatTest extends TestCase
 
         $this->assertRecurringSchedule('every third saturday of the month at 7:00', '2018-04-21 07:00:00');
 
-        Carbon::setTestNow('2018-05-19 14:00:00');
+        Carbon::setTestNow('2018-05-19 14:00:15');
         $this->assertRecurringSchedule('every third saturday of the month', '2018-06-16 08:00:00');
     }
 

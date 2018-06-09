@@ -32,7 +32,7 @@ class DateStringTest extends TestCase
     /** @test */
     function it_can_tell_if_a_date_is_after_today()
     {
-        Carbon::setTestNow('2018-03-28 12:00:00');
+        Carbon::setTestNow('2018-03-28 12:00:15');
 
         $dateString = new DateString('2018-03-29');
 
@@ -46,7 +46,7 @@ class DateStringTest extends TestCase
     /** @test */
     function it_can_tell_if_a_date_is_today()
     {
-        Carbon::setTestNow('2018-03-28 12:00:00');
+        Carbon::setTestNow('2018-03-28 12:00:15');
 
         $dateString = new DateString('2018-03-28');
 
@@ -60,7 +60,7 @@ class DateStringTest extends TestCase
     /** @test */
     function it_can_tell_if_a_date_before_today()
     {
-        Carbon::setTestNow('2018-03-28 12:00:00');
+        Carbon::setTestNow('2018-03-28 12:00:15');
 
         $dateString = new DateString('2018-03-27');
 
@@ -75,12 +75,12 @@ class DateStringTest extends TestCase
     {
         try {
             new DateString($string);
-        } catch (RuntimeException $e) {
-            $this->assertTrue(true);
 
-            return;
+            $this->fail('DateString was not invalid: '.$string);
+        } catch (RuntimeException $e) {
+
         }
 
-        $this->fail('DateString was not invalid: '.$string);
+        $this->assertTrue(true);
     }
 }

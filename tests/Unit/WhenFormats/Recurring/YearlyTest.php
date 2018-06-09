@@ -26,7 +26,7 @@ class YearlyTest extends RecurringWhenFormatTestCase
     /** @test */
     function it_can_get_the_next_date()
     {
-        Carbon::setTestNow('2018-05-01 12:00:00');
+        Carbon::setTestNow('2018-05-01 12:00:15');
 
         $this->assertNextDate('2019-04-02', 'yearly on the second of April');
 
@@ -41,12 +41,12 @@ class YearlyTest extends RecurringWhenFormatTestCase
     function it_can_get_the_next_date_on_short_months()
     {
         // May has 31 days
-        Carbon::setTestNow('2018-05-01 12:00:00');
+        Carbon::setTestNow('2018-05-01 12:00:15');
 
         $this->assertNextDate('2018-05-31', 'yearly on the 31st of May');
 
         // June has 30 days
-        Carbon::setTestNow('2018-06-01 12:00:00');
+        Carbon::setTestNow('2018-06-01 12:00:15');
 
         // It uses the closest possible date if the month is short.
         $this->assertNextDate('2018-06-30', 'yearly on the 31st of June');
@@ -55,7 +55,7 @@ class YearlyTest extends RecurringWhenFormatTestCase
     /** @test */
     function it_can_get_the_next_date_on_the_same_day()
     {
-        Carbon::setTestNow('2018-03-14 12:00:00');
+        Carbon::setTestNow('2018-03-14 12:00:15');
 
         [$beforeNow, $exactlyNow, $afterNow] = $this->getTimeStrings();
 

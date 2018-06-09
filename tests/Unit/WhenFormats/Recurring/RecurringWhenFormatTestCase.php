@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\WhenFormats\Recurring;
 
-use App\Support\DateTime\TimeString;
+use App\Support\DateTime\SecondlessTimeString;
 use App\Meel\WhenFormats\Recurring\RecurringWhenFormat;
 use App\Meel\WhenString;
 use Tests\TestCase;
@@ -45,7 +45,7 @@ abstract class RecurringWhenFormatTestCase extends TestCase
         /** @var $format RecurringWhenFormat */
         $format = new $this->whenFormat($preparedString);
 
-        $setTime = new TimeString($setTime ?? now($timezone));
+        $setTime = new SecondlessTimeString($setTime ?? now($timezone));
 
         $this->assertSame(
             $expected,
@@ -59,9 +59,9 @@ abstract class RecurringWhenFormatTestCase extends TestCase
     protected function getTimeStrings()
     {
         return [
-            new TimeString(now()->subHours(1)),
-            new TimeString(now()),
-            new TimeString(now()->addHours(1)),
+            new SecondlessTimeString(now()->subHours(1)),
+            new SecondlessTimeString(now()),
+            new SecondlessTimeString(now()->addHours(1)),
         ];
     }
 

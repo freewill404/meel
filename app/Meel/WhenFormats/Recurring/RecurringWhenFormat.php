@@ -3,7 +3,7 @@
 namespace App\Meel\WhenFormats\Recurring;
 
 use App\Support\DateTime\DateString;
-use App\Support\DateTime\TimeString;
+use App\Support\DateTime\SecondlessTimeString;
 
 abstract class RecurringWhenFormat
 {
@@ -11,7 +11,7 @@ abstract class RecurringWhenFormat
 
     abstract public function isUsableMatch(): bool;
 
-    abstract public function getNextDate(TimeString $setTime, $timezone = null): DateString;
+    abstract public function getNextDate(SecondlessTimeString $setTime, $timezone = null): DateString;
 
     abstract public function intervalDescription();
 

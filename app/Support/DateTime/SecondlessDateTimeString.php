@@ -2,7 +2,7 @@
 
 namespace App\Support\DateTime;
 
-class DateTimeString
+class SecondlessDateTimeString
 {
     protected $dateString;
 
@@ -12,7 +12,7 @@ class DateTimeString
     {
         $this->dateString = new DateString($dateString);
 
-        $this->timeString = new TimeString($timeString);
+        $this->timeString = new SecondlessTimeString($timeString);
     }
 
     public function isInThePast($timezone): bool
@@ -31,5 +31,10 @@ class DateTimeString
     public function __toString()
     {
         return $this->dateString.' '.$this->timeString;
+    }
+
+    public static function now($timezone)
+    {
+        return new static(DateString::now($timezone), SecondlessTimeString::now($timezone));
     }
 }

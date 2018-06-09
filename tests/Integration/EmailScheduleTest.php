@@ -175,7 +175,7 @@ class EmailScheduleTest extends TestCase
 
         $this->assertSame('2018-04-02 12:00:00', EmailSchedule::find(1)->next_occurrence);
 
-        Carbon::setTestNow('2018-04-02 12:00:00');
+        Carbon::setTestNow('2018-04-02 12:00:15');
 
         $emailSchedule->sendEmail();
 
@@ -206,7 +206,7 @@ class EmailScheduleTest extends TestCase
         $this->assertSame(0, SiteStats::today()->emails_sent);
         $this->assertSame(0, SiteStats::today()->emails_not_sent);
 
-        Carbon::setTestNow('2018-04-15 12:00:00');
+        Carbon::setTestNow('2018-04-15 12:00:15');
 
         $emailSchedule->sendEmail();
 
