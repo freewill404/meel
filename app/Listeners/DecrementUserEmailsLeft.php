@@ -3,6 +3,8 @@
 namespace App\Listeners;
 
 use App\Events\EmailSent;
+use App\Events\UserAlmostOutOfEmails;
+use App\Events\UserOutOfEmails;
 
 class DecrementUserEmailsLeft
 {
@@ -15,5 +17,11 @@ class DecrementUserEmailsLeft
             : 'paid_emails_left';
 
         $user->decrement($emailsLeftField);
+
+        if ($user->emails_left === 9) {
+            UserAlmostOutOfEmails::dispatch($user);
+        } elseif ($user->emails_left === 0) {
+            UserOutOfEmails::dispatch($user);
+        }
     }
 }

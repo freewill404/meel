@@ -2,22 +2,8 @@
 
 namespace App\Mail;
 
-use App\Models\User;
-use Illuminate\Bus\Queueable;
-use Illuminate\Mail\Mailable;
-use Illuminate\Queue\SerializesModels;
-
-class ConfirmAccountEmail extends Mailable
+class ConfirmAccountEmail extends UserEmail
 {
-    use Queueable, SerializesModels;
-
-    public $user;
-
-    public function __construct(User $user)
-    {
-        $this->user = $user;
-    }
-
     public function build()
     {
         return $this->subject('Confirm your account | Meel.me')

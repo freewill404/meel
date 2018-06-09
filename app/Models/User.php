@@ -34,9 +34,9 @@ class User extends Authenticatable
         return 'now';
     }
 
-    public function getHasEmailsLeftAttribute()
+    public function getEmailsLeftAttribute()
     {
-        return $this->free_emails_left > 0 || $this->paid_emails_left > 0;
+        return $this->free_emails_left + $this->paid_emails_left;
     }
 
     public static function getIdsByTimezone(): array

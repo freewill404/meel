@@ -4,11 +4,15 @@ namespace App\Providers;
 
 use App\Events\EmailNotSent;
 use App\Events\EmailSent;
+use App\Events\UserAlmostOutOfEmails;
+use App\Events\UserOutOfEmails;
 use App\Listeners\CreateEmailScheduleHistory;
 use App\Listeners\IncrementEmailsNotSent;
 use App\Listeners\IncrementEmailsSent;
 use App\Listeners\IncrementUsersRegistered;
+use App\Listeners\SendAlmostOutOfEmailsEmail;
 use App\Listeners\SendConfirmAccountEmail;
+use App\Listeners\SendOutOfEmailsEmail;
 use App\Listeners\SetNextOccurrence;
 use App\Listeners\DecrementUserEmailsLeft;
 use Illuminate\Auth\Events\Registered;
@@ -32,6 +36,14 @@ class EventServiceProvider extends ServiceProvider
         EmailNotSent::class => [
             SetNextOccurrence::class,
             IncrementEmailsNotSent::class,
+        ],
+
+        UserAlmostOutOfEmails::class => [
+            SendAlmostOutOfEmailsEmail::class,
+        ],
+
+        UserOutOfEmails::class => [
+            SendOutOfEmailsEmail::class,
         ],
     ];
 }

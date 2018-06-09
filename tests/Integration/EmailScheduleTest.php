@@ -5,7 +5,9 @@ namespace Tests\Integration;
 use App\Events\EmailNotSent;
 use App\Events\EmailSent;
 use App\Jobs\SendScheduledEmailJob;
+use App\Mail\AlmostOutOfEmailsEmail;
 use App\Mail\Email;
+use App\Mail\OutOfEmailsEmail;
 use App\Models\EmailSchedule;
 use App\Models\SiteStats;
 use App\Models\User;
@@ -49,6 +51,42 @@ class EmailScheduleTest extends TestCase
             'what' => 'WHAT?',
             'when' => 'now',
         ]);
+    }
+
+    /** @test */
+    function it_notifies_users_when_they_are_almost_out_of_emails()
+    {
+        $user = factory(User::class)->create([
+            'free_emails_left' => 0,
+            'paid_emails_left' => 10,
+        ]);
+
+        $user->emailSchedules()->create([
+            'what' => 'The what text',
+            'when' => 'now',
+        ]);
+
+        Mail::assertSent(AlmostOutOfEmailsEmail::class, function (AlmostOutOfEmailsEmail $mail) use ($user) {
+            return count($mail->to) === 1 && $mail->hasTo($user);
+        });
+    }
+
+    /** @test */
+    function it_notifies_users_when_they_are_out_of_emails()
+    {
+        $user = factory(User::class)->create([
+            'free_emails_left' => 0,
+            'paid_emails_left' => 1,
+        ]);
+
+        $user->emailSchedules()->create([
+            'what' => 'The what text',
+            'when' => 'now',
+        ]);
+
+        Mail::assertSent(OutOfEmailsEmail::class, function (OutOfEmailsEmail $mail) use ($user) {
+            return count($mail->to) === 1 && $mail->hasTo($user);
+        });
     }
 
     /** @test */
@@ -154,6 +192,8 @@ class EmailScheduleTest extends TestCase
             'free_emails_left' => 0,
             'paid_emails_left' => 0,
         ]);
+
+        $this->assertSame(0, $user->emails_left);
 
         /** @var EmailSchedule $emailSchedule */
         $emailSchedule = $user->emailSchedules()->create([

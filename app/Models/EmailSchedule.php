@@ -23,7 +23,7 @@ class EmailSchedule extends Model
 
     public function sendEmail()
     {
-        $this->user->has_emails_left
+        $this->user->emails_left
             ? SendScheduledEmailJob::dispatch($this)
             : EmailNotSent::dispatch($this);
     }
