@@ -26,14 +26,34 @@ class LoginControllerTest extends TestCase
             ])
             ->assertSessionHasErrors();
 
+        $this->assertGuest();
+
         $this->get(route('register.confirm').'?token=UNIQUE_TOKEN')
             ->assertStatus(302)
             ->assertRedirect(route('home'));
+
+        $this->assertAuthenticated();
 
         $this->post(route('login'), [
                 'email'    => 'a@a.nl',
                 'password' => 'secret',
             ])
             ->assertRedirect(route('home'));
+    }
+
+    /** @test */
+    function users_with_an_unconfirmed_email_can_never_be_authenticated()
+    {
+        $user = factory(User::class)->create([
+            'email_confirm_token' => 'UNIQUE_TOKEN',
+            'email_confirmed'     => false,
+        ]);
+
+        $this->actingAs($user)
+            ->get(route('home'))
+            ->assertStatus(403)
+            ->assertSeeText('Email not confirmed');
+
+        $this->assertGuest();
     }
 }
