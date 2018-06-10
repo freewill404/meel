@@ -4,9 +4,7 @@ namespace App\Meel;
 
 class WhenString
 {
-    protected $string;
-
-    protected $originalString;
+    protected $preparedString;
 
     protected $replaceWords = [
         'a'       => '1',
@@ -46,13 +44,6 @@ class WhenString
 
     public function __construct(string $string)
     {
-        $this->originalString = $string;
-
-        $this->string = $this->prepareInput($string);
-    }
-
-    protected function prepareInput($string): string
-    {
         $string = trim($string);
 
         $string = strtolower($string);
@@ -61,7 +52,7 @@ class WhenString
             $string = $this->replaceWord($string, $search, $replace);
         }
 
-        return $string;
+        $this->preparedString = $string;
     }
 
     protected function replaceWord($input, $search, $replace)
@@ -77,12 +68,7 @@ class WhenString
 
     public function getPreparedString()
     {
-        return $this->string;
-    }
-
-    public function getOriginalString()
-    {
-        return $this->originalString;
+        return $this->preparedString;
     }
 
     public static function prepare($string): string
