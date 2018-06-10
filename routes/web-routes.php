@@ -6,6 +6,8 @@ Route::get('/ok', ['uses' => 'HomeController@success', 'as' => 'home.success']);
 
 Route::get('/more', ['uses' => 'MoreController@more', 'as' => 'more']);
 
+Route::view('/help', 'help.index');
+
 Route::get('/account', ['uses' => 'AccountController@index', 'as' => 'account']);
 
 Route::get('login',   ['uses' => 'Auth\LoginController@showLoginForm', 'as' => 'login']);
