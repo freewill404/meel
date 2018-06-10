@@ -9,7 +9,7 @@ use Carbon\Carbon;
 
 class MonthlyNthDay extends RecurringWhenFormat
 {
-    protected $usableMatch = false;
+    protected $intervalDescription = 'monthly';
 
     protected $nth;
 
@@ -35,11 +35,6 @@ class MonthlyNthDay extends RecurringWhenFormat
         }
     }
 
-    public function isUsableMatch(): bool
-    {
-        return (bool) $this->usableMatch;
-    }
-
     public function getNextDate(SecondlessTimeString $setTime, $timezone = null): DateString
     {
         $setTimeIsLaterThanNow = $setTime->laterThanNow($timezone);
@@ -59,10 +54,5 @@ class MonthlyNthDay extends RecurringWhenFormat
         return new DateString(
             Carbon::parse($this->nth.' '.$this->day.' of next month', $timezone)
         );
-    }
-
-    public function intervalDescription()
-    {
-        return 'monthly';
     }
 }

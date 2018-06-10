@@ -8,7 +8,7 @@ use Carbon\Carbon;
 
 class Yearly extends RecurringWhenFormat
 {
-    protected $usableMatch = false;
+    protected $intervalDescription = 'yearly';
 
     protected $dateOfTheMonth = 1;
 
@@ -29,11 +29,6 @@ class Yearly extends RecurringWhenFormat
                 $this->dateOfTheMonth = $date;
             }
         }
-    }
-
-    public function isUsableMatch(): bool
-    {
-        return $this->usableMatch;
     }
 
     public function getNextDate(SecondlessTimeString $setTime, $timezone = null): DateString
@@ -63,10 +58,5 @@ class Yearly extends RecurringWhenFormat
         }
 
         return new DateString($nextYear);
-    }
-
-    public function intervalDescription()
-    {
-        return 'yearly';
     }
 }

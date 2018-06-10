@@ -9,13 +9,10 @@ class MonthlyTest extends RecurringWhenFormatTestCase
 {
     protected $whenFormat = Monthly::class;
 
-    /** @test */
-    function it_matches()
-    {
-        $this->assertWhenFormatMatches('monthly');
-
-        $this->assertWhenFormatMatches('monthly on the 28th');
-    }
+    protected $shouldMatch = [
+        'monthly',
+        'monthly on the 28th',
+    ];
 
     /** @test */
     function it_uses_a_default_date_if_no_date_is_specified()

@@ -7,7 +7,7 @@ use App\Support\DateTime\SecondlessTimeString;
 
 class Monthly extends RecurringWhenFormat
 {
-    protected $usableMatch = false;
+    protected $intervalDescription = 'monthly';
 
     protected $date = 1;
 
@@ -24,16 +24,11 @@ class Monthly extends RecurringWhenFormat
         }
     }
 
-    public function isUsableMatch(): bool
-    {
-        return $this->usableMatch;
-    }
-
     public function getNextDate(SecondlessTimeString $setTime, $timezone = null): DateString
     {
         $setTimeIsLaterThanNow = $setTime->laterThanNow($timezone);
 
-        $thisMonth = now()->lastOfMonth();
+        $thisMonth = now($timezone)->lastOfMonth();
 
         // When the request is for date 28, 29, 30 or 31, and the current month
         // has less days than that, set the date to the last day of the month.
@@ -51,17 +46,12 @@ class Monthly extends RecurringWhenFormat
             return $monthlyOnDate;
         }
 
-        $nextMonth = now()->addMonth()->lastOfMonth();
+        $nextMonth = now($timezone)->addMonth()->lastOfMonth();
 
         if ($nextMonth->day >= $this->date) {
             $nextMonth->day($this->date);
         }
 
         return new DateString($nextMonth);
-    }
-
-    public function intervalDescription()
-    {
-        return 'monthly';
     }
 }

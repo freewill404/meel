@@ -9,15 +9,11 @@ class MonthlyNthDayTest extends RecurringWhenFormatTestCase
 {
     protected $whenFormat = MonthlyNthDay::class;
 
-    /** @test */
-    function it_matches()
-    {
-        $this->assertWhenFormatMatches('every 3rd saturday of the month');
-
-        $this->assertWhenFormatMatches('every 4th saturday of the month');
-
-        $this->assertWhenFormatMatches('the last monday of the month');
-    }
+    protected $shouldMatch = [
+        'every 3rd saturday of the month',
+        'every 4th saturday of the month',
+        'the last monday of the month',
+    ];
 
     /** @test */
     function it_does_not_match()
@@ -30,10 +26,10 @@ class MonthlyNthDayTest extends RecurringWhenFormatTestCase
     /** @test */
     function it_can_get_the_last_day()
     {
-        [$beforeNow, $exactlyNow, $afterNow] = $this->getTimeStrings();
-
         // few days before the last wednesday
         Carbon::setTestNow('2018-03-26 12:00:15');
+
+        [$beforeNow, $exactlyNow, $afterNow] = $this->getTimeStrings();
 
         $this->assertNextDate('2018-03-28', 'every last wednesday of the month', $afterNow);
 
@@ -46,10 +42,10 @@ class MonthlyNthDayTest extends RecurringWhenFormatTestCase
     /** @test */
     function it_can_get_the_last_day_if_today_is_the_last_day()
     {
-        [$beforeNow, $exactlyNow, $afterNow] = $this->getTimeStrings();
-
         // The last wednesday
         Carbon::setTestNow('2018-03-28 12:00:15');
+
+        [$beforeNow, $exactlyNow, $afterNow] = $this->getTimeStrings();
 
         $this->assertNextDate('2018-04-25', 'every last wednesday of the month', $beforeNow);
 

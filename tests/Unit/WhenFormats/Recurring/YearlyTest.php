@@ -9,13 +9,10 @@ class YearlyTest extends RecurringWhenFormatTestCase
 {
     protected $whenFormat = Yearly::class;
 
-    /** @test */
-    function it_matches()
-    {
-        $this->assertWhenFormatMatches('yearly');
-
-        $this->assertWhenFormatMatches('yearly on the 28th of March');
-    }
+    protected $shouldMatch = [
+        'yearly',
+        'yearly on the 28th of March',
+    ];
 
     /** @test */
     function it_uses_a_default_date_if_no_date_is_specified()

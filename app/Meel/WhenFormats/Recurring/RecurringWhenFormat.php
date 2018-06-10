@@ -7,13 +7,23 @@ use App\Support\DateTime\SecondlessTimeString;
 
 abstract class RecurringWhenFormat
 {
+    protected $usableMatch = false;
+
+    protected $intervalDescription = 'TODO';
+
     abstract public function __construct(string $string);
 
-    abstract public function isUsableMatch(): bool;
+    public function isUsableMatch(): bool
+    {
+        return (bool) $this->usableMatch;
+    }
+
+    public function intervalDescription(): string
+    {
+        return $this->intervalDescription;
+    }
 
     abstract public function getNextDate(SecondlessTimeString $setTime, $timezone = null): DateString;
-
-    abstract public function intervalDescription();
 
     public static function matches(string $string): bool
     {

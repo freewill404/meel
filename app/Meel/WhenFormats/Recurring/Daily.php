@@ -7,16 +7,11 @@ use App\Support\DateTime\SecondlessTimeString;
 
 class Daily extends RecurringWhenFormat
 {
-    protected $usableMatch = false;
+    protected $intervalDescription = 'daily';
 
     public function __construct(string $string)
     {
         $this->usableMatch = strpos($string, 'daily') !== false;
-    }
-
-    public function isUsableMatch(): bool
-    {
-        return $this->usableMatch;
     }
 
     public function getNextDate(SecondlessTimeString $setTime, $timezone = null): DateString
@@ -24,10 +19,5 @@ class Daily extends RecurringWhenFormat
         return $setTime->laterThanNow($timezone)
             ? DateString::now($timezone)
             : DateString::tomorrow($timezone);
-    }
-
-    public function intervalDescription()
-    {
-        return 'daily';
     }
 }

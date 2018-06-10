@@ -9,7 +9,7 @@ use Carbon\Carbon;
 
 class Weekly extends RecurringWhenFormat
 {
-    protected $usableMatch = false;
+    protected $intervalDescription = 'weekly';
 
     protected $day;
 
@@ -22,11 +22,6 @@ class Weekly extends RecurringWhenFormat
         if (preg_match('/'.Days::regex().'/', $string, $matches)) {
             $this->day = $matches[1];
         }
-    }
-
-    public function isUsableMatch(): bool
-    {
-        return $this->usableMatch;
     }
 
     public function getNextDate(SecondlessTimeString $setTime, $timezone = null): DateString
@@ -48,10 +43,5 @@ class Weekly extends RecurringWhenFormat
         return new DateString(
             Carbon::parse('next week '.$this->day, $timezone)
         );
-    }
-
-    public function intervalDescription()
-    {
-        return 'weekly';
     }
 }

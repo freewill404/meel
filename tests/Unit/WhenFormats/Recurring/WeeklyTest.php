@@ -9,15 +9,11 @@ class WeeklyTest extends RecurringWhenFormatTestCase
 {
     protected $whenFormat = Weekly::class;
 
-    /** @test */
-    function it_matches()
-    {
-        $this->assertWhenFormatMatches('weekly');
-
-        $this->assertWhenFormatMatches('weekly on wednesday');
-
-        $this->assertWhenFormatMatches('weekly bla bla bla wednesday');
-    }
+    protected $shouldMatch = [
+        'weekly',
+        'weekly on wednesday',
+        'weekly bla bla bla wednesday',
+    ];
 
     /** @test */
     function it_can_get_the_next_date_on_the_same_day()

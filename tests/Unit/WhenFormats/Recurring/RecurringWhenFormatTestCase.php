@@ -12,6 +12,16 @@ abstract class RecurringWhenFormatTestCase extends TestCase
     /** @var $whenFormat RecurringWhenFormat */
     protected $whenFormat;
 
+    protected $shouldMatch = [];
+
+    /** @test */
+    function it_should_match()
+    {
+        foreach ($this->shouldMatch as $string) {
+            $this->assertWhenFormatMatches($string);
+        }
+    }
+
     protected function assertWhenFormatMatches($string)
     {
         $preparedString = WhenString::prepare($string);
