@@ -28,6 +28,16 @@ class SecondlessDateTimeString
         return $this->timeString->earlierThanNow($timezone);
     }
 
+    public function getTimeString(): SecondlessTimeString
+    {
+        return $this->timeString;
+    }
+
+    public function getDateString(): DateString
+    {
+        return $this->dateString;
+    }
+
     public function __toString()
     {
         return $this->dateString.' '.$this->timeString;
@@ -36,5 +46,10 @@ class SecondlessDateTimeString
     public static function now($timezone)
     {
         return new static(DateString::now($timezone), SecondlessTimeString::now($timezone));
+    }
+
+    public static function fromCarbon($carbon)
+    {
+        return new static($carbon, $carbon);
     }
 }

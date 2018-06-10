@@ -16,7 +16,6 @@ class RelativeToNowInterpretationTest extends TestCase
         $this->assertIsRelativeToNow('an hour from now');
         $this->assertIsRelativeToNow('in two hours');
         $this->assertIsRelativeToNow('next month');
-        $this->assertIsRelativeToNow('at 5');
     }
 
     /** @test */
@@ -130,7 +129,7 @@ class RelativeToNowInterpretationTest extends TestCase
 
         $this->assertSame(
             $expected,
-            $actual = $relativeNow->getTime()->format('Y-m-d H:i:s'),
+            $actual = (string) $relativeNow->getDateTime(),
 
             "\nWrong RelativeToNowInterpretation\n Input:    '{$input}'\n Expected: '{$expected}' ".
             Carbon::parse($expected)->format('l').

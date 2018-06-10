@@ -12,10 +12,6 @@ use App\Meel\WhenFormats\TimeInterpretation;
 
 class EmailScheduleFormat
 {
-    protected $writtenInput;
-
-    protected $preparedWrittenInput;
-
     protected $dateInterpretation;
 
     protected $relativeNow;
@@ -28,19 +24,17 @@ class EmailScheduleFormat
 
     public function __construct($writtenInput, $timezone = null)
     {
-        $this->writtenInput = $writtenInput;
-
         $this->timezone = $timezone;
 
-        $this->preparedWrittenInput = WhenString::prepare($writtenInput);
+        $preparedWrittenInput = WhenString::prepare($writtenInput);
 
-        $this->dateInterpretation = new DateInterpretation($this->preparedWrittenInput, $timezone);
+        $this->dateInterpretation = new DateInterpretation($preparedWrittenInput, $timezone);
 
-        $this->relativeNow = new RelativeToNowInterpretation($this->preparedWrittenInput, $timezone);
+        $this->relativeNow = new RelativeToNowInterpretation($preparedWrittenInput, $timezone);
 
-        $this->timeInterpretation = new TimeInterpretation($this->preparedWrittenInput);
+        $this->timeInterpretation = new TimeInterpretation($preparedWrittenInput);
 
-        $this->recurringInterpretation = new RecurringInterpretation($this->preparedWrittenInput);
+        $this->recurringInterpretation = new RecurringInterpretation($preparedWrittenInput);
     }
 
     public function isUsableInterpretation(): bool
@@ -60,15 +54,23 @@ class EmailScheduleFormat
 
     public function nextOccurrence(): ?SecondlessDateTimeString
     {
-        $time = $this->getNextInterpretedTime() ?: $this->getDefaultTime();
+        $time = $this->getNextInterpretedTime();
+
+        $usedDefaultTime = false;
+
+        if (! $time) {
+            $time = $this->getDefaultTime();
+
+            $usedDefaultTime = true;
+        }
 
         $date = $this->getNextInterpretedDate($time);
 
-        if (! $date) {
+        if (! $date && $usedDefaultTime) {
             return null;
         }
 
-        $dateTime = new SecondlessDateTimeString($date, $time);
+        $dateTime = new SecondlessDateTimeString($date ?? now($this->timezone), $time);
 
         return $dateTime->isInThePast($this->timezone) ? null : $dateTime;
     }
@@ -84,7 +86,7 @@ class EmailScheduleFormat
         }
 
         if ($this->relativeNow->isRelativeToNow()) {
-            return new DateString($this->relativeNow->getTime()->format('Y-m-d'));
+            return $this->relativeNow->getDateString();
         }
 
         return null;

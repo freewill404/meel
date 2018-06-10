@@ -58,6 +58,9 @@ class EmailScheduleFormatTest extends TestCase
     {
         $this->assertNotUsable('next');
         $this->assertNotUsable('next durrday');
+
+        // "at 7" is in the past (now: 2018-03-28 12:00:00)
+        $this->assertNotUsable('at 7');
     }
 
     private function assertNotUsable(string $writtenInput)
