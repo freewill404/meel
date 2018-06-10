@@ -26,13 +26,13 @@ class Days extends Enum
 
         // Matches Carbon constants
         switch (strtolower($fullDay)) {
-            case static::SUNDAY: return 0;
-            case static::MONDAY: return 1;
-            case static::TUESDAY: return 2;
+            case static::SUNDAY:    return 0;
+            case static::MONDAY:    return 1;
+            case static::TUESDAY:   return 2;
             case static::WEDNESDAY: return 3;
-            case static::THURSDAY: return 4;
-            case static::FRIDAY: return 5;
-            case static::SATURDAY: return 6;
+            case static::THURSDAY:  return 4;
+            case static::FRIDAY:    return 5;
+            case static::SATURDAY:  return 6;
         }
 
         throw new LogicException('Invalid day');

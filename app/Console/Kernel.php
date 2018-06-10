@@ -20,9 +20,4 @@ class Kernel extends ConsoleKernel
             SiteStats::today();
         })->dailyAt('00:05');
     }
-
-    protected function commands()
-    {
-        // $this->load(__DIR__.'/Commands');
-    }
 }

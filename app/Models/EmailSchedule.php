@@ -5,7 +5,6 @@ namespace App\Models;
 use App\Events\EmailNotSent;
 use App\Jobs\SendScheduledEmailJob;
 use App\Meel\EmailScheduleFormat;
-use App\Support\DateTime\SecondlessDateTimeString;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 
@@ -31,14 +30,16 @@ class EmailSchedule extends Model
 
     public function getIsRecurringAttribute()
     {
-        return (new EmailScheduleFormat($this->when))->isRecurring();
+        $schedule = new EmailScheduleFormat($this->when);
+
+        return $schedule->isRecurring();
     }
 
     public function getLastSentAtAttribute()
     {
         $history = $this->emailScheduleHistories->first();
 
-        return optional($history)->sent_at;
+        return $history ? $history->sent_at : null;
     }
 
     public function emailScheduleHistories()
@@ -54,7 +55,7 @@ class EmailSchedule extends Model
             $timezoneNow = secondless_now($timezone);
 
             $emailSchedules = EmailSchedule::query()
-                ->whereIn('user_id', $userIds) // Only query EmailSchedules of users that are in this timezone
+                ->whereIn('user_id', $userIds)
                 ->where('next_occurrence', $timezoneNow)
                 ->get()
                 ->merge($emailSchedules);
