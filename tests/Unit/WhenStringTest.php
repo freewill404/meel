@@ -56,8 +56,11 @@ class WhenStringTest extends TestCase
     function it_changes_recurring_text_to_single_words()
     {
         $this->assertPreparedInput('weekly', 'every week');
-        $this->assertPreparedInput('monthly', 'every month');
         $this->assertPreparedInput('yearly', 'every year');
+
+        $this->assertPreparedInput('every 1 month', 'every month');
+        $this->assertPreparedInput('every 1 month', 'monthly');
+        $this->assertPreparedInput('every 3 months', 'every 3 months');
 
         $this->assertPreparedInput('weekly on monday',    'every monday');
         $this->assertPreparedInput('weekly on tuesday',   'every tuesday');

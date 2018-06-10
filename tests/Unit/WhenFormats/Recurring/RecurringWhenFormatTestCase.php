@@ -14,11 +14,27 @@ abstract class RecurringWhenFormatTestCase extends TestCase
 
     protected $shouldMatch = [];
 
+    protected $shouldNotMatch = [];
+
     /** @test */
     function it_should_match()
     {
         foreach ($this->shouldMatch as $string) {
             $this->assertWhenFormatMatches($string);
+        }
+    }
+
+    /** @test */
+    function it_should_not_match()
+    {
+        if (count($this->shouldNotMatch) === 0) {
+            $this->assertTrue(true);
+
+            return;
+        }
+
+        foreach ($this->shouldNotMatch as $string) {
+            $this->assertWhenFormatDoesNotMatch($string);
         }
     }
 
@@ -63,6 +79,19 @@ abstract class RecurringWhenFormatTestCase extends TestCase
             class_basename($this->whenFormat)." wrong next date, expected: '{$expected}', actual: '{$actual}'\n".
             "Original string: {$string}\n".
             "Prepared string: {$preparedString}"
+        );
+    }
+
+    protected function assertIntervalDescription($expected, $string)
+    {
+        $this->assertWhenFormatMatches($string);
+
+        $whenFormat = new $this->whenFormat(
+            WhenString::prepare($string)
+        );
+
+        $this->assertSame(
+            $expected, $whenFormat->intervalDescription()
         );
     }
 

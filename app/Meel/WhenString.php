@@ -25,8 +25,13 @@ class WhenString
 
         'every day'   => 'daily',
         'every week'  => 'weekly',
-        'every month' => 'monthly',
         'every year'  => 'yearly',
+
+        'bimonthly'   => 'every 2 month',
+        'bi monthly'  => 'every 2 month',
+        'bi-monthly'  => 'every 2 month',
+        'every month' => 'every 1 month',
+        'monthly'     => 'every 1 month',
 
         'every monday'    => 'weekly on monday',
         'every tuesday'   => 'weekly on tuesday',

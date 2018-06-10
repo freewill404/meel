@@ -10,8 +10,13 @@ class MonthlyTest extends RecurringWhenFormatTestCase
     protected $whenFormat = Monthly::class;
 
     protected $shouldMatch = [
-        'monthly',
+        'every month',
+        'every 2 months',
         'monthly on the 28th',
+    ];
+
+    protected $shouldNotMatch = [
+        'every 0 months'
     ];
 
     /** @test */
@@ -47,5 +52,24 @@ class MonthlyTest extends RecurringWhenFormatTestCase
         $this->assertNextDate('2018-04-14', 'monthly on the 14th', $exactlyNow);
 
         $this->assertNextDate('2018-03-14', 'monthly on the 14th', $afterNow);
+    }
+
+    /** @test */
+    function it_can_have_a_month_interval()
+    {
+        $this->assertNextDate('2018-03-31', 'every 1 months on the 31st');
+        $this->assertNextDate('2018-05-31', 'bimonthly on the 31st');
+        $this->assertNextDate('2018-06-30', 'every 3 months on the 31st');
+
+        Carbon::setTestNow('2018-05-31 12:00:15');
+
+        $this->assertNextDate('2018-07-31', 'bimonthly on the 31st');
+    }
+
+    /** @test */
+    function it_has_the_correct_interval_description()
+    {
+        $this->assertIntervalDescription('monthly', 'every month');
+        $this->assertIntervalDescription('every 2 months', 'bimonthly');
     }
 }

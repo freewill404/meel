@@ -9,13 +9,25 @@ class Monthly extends RecurringWhenFormat
 {
     protected $intervalDescription = 'monthly';
 
+    protected $monthInterval = 1;
+
     protected $date = 1;
 
     public function __construct(string $string)
     {
         $this->usableMatch = strpos($string, 'monthly') !== false;
 
-        if (preg_match('/monthly on the (\d+)/', $string, $matches)) {
+        if (preg_match('/every (\d+) months?/', $string, $matches)) {
+            $this->monthInterval = (int) $matches[1];
+
+            $this->usableMatch = $this->monthInterval > 0;
+
+            if ($this->monthInterval > 1) {
+                $this->intervalDescription = 'every '.$this->monthInterval.' months';
+            }
+        }
+
+        if (preg_match('/every \d+ months? on the (\d+)/', $string, $matches)) {
             $this->date = (int) $matches[1];
 
             if ($this->date < 1 || $this->date > 31) {
@@ -28,15 +40,17 @@ class Monthly extends RecurringWhenFormat
     {
         $setTimeIsLaterThanNow = $setTime->laterThanNow($timezone);
 
-        $thisMonth = now($timezone)->lastOfMonth();
+        $baseMonth = $this->monthInterval === 1
+            ? now($timezone)->lastOfMonth()
+            : now($timezone)->addMonths($this->monthInterval)->lastOfMonth();
 
         // When the request is for date 28, 29, 30 or 31, and the current month
         // has less days than that, set the date to the last day of the month.
-        if ($thisMonth->day >= $this->date) {
-            $thisMonth->day($this->date);
+        if ($baseMonth->day >= $this->date) {
+            $baseMonth->day($this->date);
         }
 
-        $monthlyOnDate = new DateString($thisMonth);
+        $monthlyOnDate = new DateString($baseMonth);
 
         if ($monthlyOnDate->isAfterToday($timezone)) {
             return $monthlyOnDate;
@@ -46,7 +60,7 @@ class Monthly extends RecurringWhenFormat
             return $monthlyOnDate;
         }
 
-        $nextMonth = now($timezone)->addMonth()->lastOfMonth();
+        $nextMonth = now($timezone)->addMonths($this->monthInterval)->lastOfMonth();
 
         if ($nextMonth->day >= $this->date) {
             $nextMonth->day($this->date);
