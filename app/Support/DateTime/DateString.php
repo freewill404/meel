@@ -94,6 +94,15 @@ class DateString
 
     public static function now($timezone)
     {
-        return new static(now($timezone));
+        return new static(
+            now($timezone)
+        );
+    }
+
+    public static function tomorrow($timezone)
+    {
+        return new static(
+            now($timezone)->addDays(1)
+        );
     }
 }

@@ -54,6 +54,14 @@ class EmailScheduleFormatTest extends TestCase
     }
 
     /** @test */
+    function it_determines_the_next_occurrence_for_daily_recurring_schedules()
+    {
+        $this->assertRecurringSchedule('daily', '2018-03-29 08:00:00');
+
+        $this->assertRecurringSchedule('daily at 16:20', '2018-03-28 16:20:00');
+    }
+
+    /** @test */
     function it_does_not_match_things()
     {
         $this->assertNotUsable('next');
