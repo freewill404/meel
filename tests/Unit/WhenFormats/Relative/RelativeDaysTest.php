@@ -18,6 +18,8 @@ class RelativeDaysTest extends RelativeWhenFormatTestCase
         'next tue',
         'this wednesday',
         'this thu',
+        'monday',
+        'monday at 22:00',
     ];
 
     protected $shouldNotMatch = [

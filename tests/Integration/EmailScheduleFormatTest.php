@@ -23,6 +23,9 @@ class EmailScheduleFormatTest extends TestCase
         $this->assertSingleOccurrenceSchedule('next sat',       '2018-03-31 08:00:00');
 
         $this->assertSingleOccurrenceSchedule('this saturday at 22:00', '2018-03-31 22:00:00');
+        $this->assertSingleOccurrenceSchedule('saturday at 22:00',      '2018-03-31 22:00:00');
+        $this->assertSingleOccurrenceSchedule('sat at 22:00',           '2018-03-31 22:00:00');
+        $this->assertSingleOccurrenceSchedule('sat',                    '2018-03-31 08:00:00');
     }
 
     /** @test */
