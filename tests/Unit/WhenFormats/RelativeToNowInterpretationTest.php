@@ -92,11 +92,11 @@ class RelativeToNowInterpretationTest extends TestCase
     }
 
     /** @test */
-    function it_interprets_basic_sentences()
+    function it_interprets_written_days()
     {
         $this->assertRelativeNow('2018-03-31 08:00:00', 'next saturday');
 
-        $this->assertRelativeNow('2018-04-03 08:00:00', 'next tues');
+        $this->assertRelativeNow('2018-04-03 08:00:00', 'this tues');
     }
 
     private function assertIsRelativeToNow($input)

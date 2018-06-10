@@ -16,6 +16,8 @@ class RelativeDaysTest extends RelativeWhenFormatTestCase
         '3 days and 1 hour from now',
         'next monday',
         'next tue',
+        'this wednesday',
+        'this thu',
     ];
 
     protected $shouldNotMatch = [
@@ -29,6 +31,6 @@ class RelativeDaysTest extends RelativeWhenFormatTestCase
     {
         $this->assertTransformedNow('2018-03-31 12:00:15', 'next saturday');
 
-        $this->assertTransformedNow('2018-04-03 12:00:15', 'next tues');
+        $this->assertTransformedNow('2018-04-03 12:00:15', 'this tues');
     }
 }
