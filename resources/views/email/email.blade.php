@@ -1,6 +1,3 @@
-Meel.me
-<br>
-<br>
 What: {{ $emailSchedule->what }}
 <br>
 <br>
