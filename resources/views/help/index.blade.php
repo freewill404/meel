@@ -7,22 +7,9 @@
 
     <div class="max-w-md mx-auto mt-2 mb-16">
 
-        <div class="flex justify-between items-center">
-            <a href="/" class="text-black font-bold">Meel.me</a>
+        @include('layout.header', ['title' => 'Help'])
 
-            <div class="text-sm font-mono">
-                <a href="{{ route('register') }}">register</a>
-
-                <span class="mx-1">|</span>
-
-                <a href="{{ route('login') }}">login</a>
-            </div>
-
-        </div>
-
-
-        <h1 class="mt-8">Help</h1>
-        <p class="text-md ml-4">
+        <p class="text-md mt-8 ml-4">
             Need help emailing yourself?
             This page should give you enough information to use the site.
         </p>

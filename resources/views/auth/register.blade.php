@@ -5,8 +5,11 @@
 
 @section('content')
 
-    <form class="max-w-xs bg-white border mx-auto p-2" method="post" action="{{ route('register.post') }}">
-        <h2 class="mb-4">Register | Meel.me</h2>
+    <div class="max-w-sm mx-auto mb-8">
+        @include('layout.header', ['title' => 'Register'])
+    </div>
+
+    <form class="max-w-xs mx-auto p-2" method="post" action="{{ route('register.post') }}">
         {{ csrf_field() }}
 
         <label>
@@ -35,5 +38,18 @@
 
         <button type="submit" class="btn block ml-auto mt-4">Register</button>
     </form>
+
+    <div class="max-w-sm mx-auto text-sm">
+        @if($errors->count())
+            <div class="p-2 mt-8 bg-red-lighter rounded border-l-4 border-red">
+                <strong class="block mb-2">The following errors occurred:</strong>
+                <ul>
+                    @foreach($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+    </div>
 
 @endsection

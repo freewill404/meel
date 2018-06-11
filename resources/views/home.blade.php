@@ -10,12 +10,10 @@
         <div class="flex justify-between items-center">
             <h1>Meel.me</h1>
 
-            <div class="text-sm font-mono">
-                <a href="{{ route('register') }}">register</a>
+            <div>
+                <a class="text-black mr-4" href="{{ route('register') }}">register</a>
 
-                <span class="mx-1">|</span>
-
-                <a href="{{ route('login') }}">login</a>
+                <a class="text-black" href="{{ route('login') }}">login</a>
             </div>
 
         </div>

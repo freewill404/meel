@@ -18,4 +18,14 @@ class ForgotPasswordController extends Controller
     {
         return view('auth.request-password-reset');
     }
+
+    protected function sendResetLinkResponse($response)
+    {
+        return redirect()->route('password.requested');
+    }
+
+    public function requestedPassword()
+    {
+        return view('auth.requested-password');
+    }
 }

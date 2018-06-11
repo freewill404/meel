@@ -21,5 +21,6 @@ Route::get('confirm-account', ['uses' => 'Auth\RegisterController@confirm',     
 
 Route::get('password/reset',         ['uses' => 'Auth\ForgotPasswordController@showLinkRequestForm', 'as' => 'password.request']);
 Route::post('password/email',        ['uses' => 'Auth\ForgotPasswordController@sendResetLinkEmail',  'as' => 'password.email']);
+Route::get('password/requested',     ['uses' => 'Auth\ForgotPasswordController@requestedPassword',   'as' => 'password.requested']);
 Route::get('password/reset/{token}', ['uses' => 'Auth\ResetPasswordController@showResetForm',        'as' => 'password.reset']);
 Route::post('password/reset',        ['uses' => 'Auth\ResetPasswordController@reset']);

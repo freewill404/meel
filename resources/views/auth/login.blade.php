@@ -5,9 +5,13 @@
 
 @section('content')
 
-    <form class="max-w-xs bg-white border mx-auto p-2" method="post" action="{{ route('login') }}">
-        <h2 class="mb-4">Login | Meel.me</h2>
+    <div class="max-w-sm mx-auto mb-8">
+        @include('layout.header', ['title' => 'Login'])
+    </div>
+
+    <form class="max-w-xs mx-auto p-2" method="post" action="{{ route('login') }}">
         {{ csrf_field() }}
+        <input type="hidden" name="remember" value="1">
 
         <label>
             Email
@@ -15,21 +19,21 @@
         </label>
 
         <label>
-            Wachtwoord
+            Password
             <input class="field" type="password" name="password" required>
         </label>
 
-        <label class="block mb-3 cursor-pointer">
-            <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}> Remember me
-        </label>
+        @if($errors->count())
+            <div class="text-center p-2 mt-8 bg-red-lighter rounded border-l-4 border-red">
+                Invalid credentials
+            </div>
+        @endif
 
-        <button type="submit" class="btn block ml-auto">Login</button>
+        <div class="flex justify-between items-center mt-8">
+            <a class="text-sm text-grey-dark" href="{{ route('password.request') }}">Forgot password?</a>
+
+            <button type="submit" class="btn block ml-auto">Login</button>
+        </div>
     </form>
-
-    <div class="max-w-xs flex justify-between mx-auto px-1 mt-4">
-        <a class="text-sm text-grey" href="{{ route('password.request') }}">Forgot password?</a>
-
-        <a class="text-sm text-grey" href="{{ route('register') }}">No account yet?</a>
-    </div>
 
 @endsection

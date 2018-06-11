@@ -1,17 +1,12 @@
 @extends('layout.base-template', [
-    'title'       => 'Meel.me | Account',
-    'description' => 'SEO description',
+    'title' => 'Account | Meel.me',
 ])
-
-@section('header')
-    @include('layout.account-header')
-@endsection
 
 @section('content')
 
-    <div class="max-w-lg mx-auto mt-2">
+    @include('layout.header', ['title' => 'Account'])
 
-        <h1 class="mb-8">Account</h1>
+    <div class="max-w-lg mx-auto mt-8">
 
         <h2 class="mb-4">Upcoming</h2>
         @foreach($emailSchedules->where('next_occurrence', '!=', null) as $emailSchedule)
