@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="google-site-verification" content="_5MZK0aUBG7BmZz2YTyqlYVMDjQpJ2I9yJvSzQE7Rz8" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="description" content="{{ $description ?? '' }}" />
 
@@ -18,7 +19,13 @@
     <link rel="stylesheet" type="text/css" href="{{ mix('css/main.css') }}" />
 
     @if(App::environment('production'))
-        {{-- google analytics goes here --}}
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-85344990-5"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'UA-85344990-5');
+        </script>
     @endif
 
 </head>
