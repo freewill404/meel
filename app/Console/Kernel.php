@@ -6,6 +6,7 @@ use App\Jobs\QueueDueEmailsJob;
 use App\Models\SiteStats;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use Spatie\Sitemap\SitemapGenerator;
 
 class Kernel extends ConsoleKernel
 {
@@ -13,7 +14,13 @@ class Kernel extends ConsoleKernel
     {
         $schedule->job(QueueDueEmailsJob::class)->everyMinute();
 
-        // $schedule->command('sitemap:generate')->dailyAt('2:00');
+        $schedule->call(function () {
+            $applicationUrl = config('app.url');
+
+            $sitemapFilePath = public_path('sitemap.xml');
+
+            SitemapGenerator::create($applicationUrl)->writeToFile($sitemapFilePath);
+        })->dailyAt('2:05');
 
         // Make sure every date has a SiteStats model.
         $schedule->call(function () {
