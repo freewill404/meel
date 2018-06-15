@@ -6,7 +6,15 @@ Route::get('/ok', ['uses' => 'HomeController@success', 'as' => 'home.success']);
 
 Route::get('/more', ['uses' => 'MoreController@more', 'as' => 'more']);
 
-Route::view('/help', 'help.index');
+Route::get('/request-format',      ['uses' => 'RequestFormatController@index', 'as' => 'requestFormat']);
+Route::post('/request-format',     ['uses' => 'RequestFormatController@post',  'as' => 'requestFormat.post']);
+Route::get('/request-format/done', ['uses' => 'RequestFormatController@done',  'as' => 'requestFormat.done']);
+
+Route::get('/feedback',      ['uses' => 'FeedbackController@index', 'as' => 'feedback']);
+Route::post('/feedback',     ['uses' => 'FeedbackController@post',  'as' => 'feedback.post']);
+Route::get('/feedback/done', ['uses' => 'FeedbackController@done',  'as' => 'feedback.done']);
+
+Route::view('/help', 'help.index')->name('help');
 
 Route::get('/account', ['uses' => 'AccountController@index', 'as' => 'account']);
 

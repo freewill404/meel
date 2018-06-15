@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Integration;
+namespace Tests\Integration\Meel;
 
 use App\Meel\EmailScheduleFormat;
 use Illuminate\Support\Carbon;

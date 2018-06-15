@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="{{ app()->getLocale() }}">
+<html lang="{{ app()->getLocale() }}" class="h-full">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -22,9 +22,9 @@
     @endif
 
 </head>
-<body class="bg-grey-lighter">
+<body class="bg-grey-lighter min-h-full relative">
 
-    <div id="app" class="container mx-auto p-2">
+    <div id="app" class="container mx-auto p-4">
         @yield('content')
     </div>
 

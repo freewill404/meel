@@ -7,11 +7,11 @@
     <div class="max-w-sm mx-auto flex justify-between items-center">
         <h1>Meel.me</h1>
 
-        <a class="text-grey" href="{{ route('account') }}">account</a>
+        <a class="text-grey-dark" href="{{ route('account') }}">account</a>
     </div>
 
 
-    <form method="POST" class="max-w-xs mx-auto mt-2">
+    <form method="post" class="max-w-xs mx-auto mt-2">
         {{ csrf_field() }}
 
         <label class="block mt-8">

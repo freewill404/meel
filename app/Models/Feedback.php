@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class FormatRequest extends Model
+class Feedback extends Model
 {
     protected $guarded = [];
 

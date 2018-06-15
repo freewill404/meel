@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Integration;
+namespace Tests\Integration\Models;
 
 use App\Models\SiteStats;
 use Illuminate\Foundation\Testing\RefreshDatabase;
