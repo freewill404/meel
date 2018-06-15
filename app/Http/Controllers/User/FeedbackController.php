@@ -1,17 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\User;
 
+use App\Http\Controllers\Controller;
 use App\Models\Feedback;
 use Illuminate\Http\Request;
 
 class FeedbackController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
     public function index()
     {
         return view('feedback.index');
@@ -28,7 +24,7 @@ class FeedbackController extends Controller
             'feedback' => $request->get('feedback'),
         ]);
 
-        return redirect()->route('feedback.done');
+        return redirect()->route('user.feedback.done');
     }
 
     public function done()

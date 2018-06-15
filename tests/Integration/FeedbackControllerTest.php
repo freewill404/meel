@@ -14,13 +14,13 @@ class FeedbackControllerTest extends TestCase
     /** @test */
     function you_need_to_be_logged_in()
     {
-        $this->get(route('feedback'))
+        $this->get(route('user.feedback'))
             ->assertStatus(302);
 
         $user = factory(User::class)->create();
 
         $this->actingAs($user)
-            ->get(route('feedback'))
+            ->get(route('user.feedback'))
             ->assertStatus(200);
     }
 
@@ -30,10 +30,10 @@ class FeedbackControllerTest extends TestCase
         $user = factory(User::class)->create();
 
         $this->actingAs($user)
-            ->post(route('feedback'), [
+            ->post(route('user.feedback'), [
                 'feedback' => 'FEEDBACK',
             ])
-            ->assertRedirect(route('feedback.done'));
+            ->assertRedirect(route('user.feedback.done'));
 
         $feedback = Feedback::find(1);
 

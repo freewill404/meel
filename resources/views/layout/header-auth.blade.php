@@ -9,7 +9,7 @@
     </span>
 
     <div>
-        <a class="mr-4 text-grey-dark" href="{{ route('account') }}">account</a>
+        <a class="mr-4 text-grey-dark" href="{{ route('user.account') }}">account</a>
 
         <form method="post" class="inline-block" action="{{ route('logout') }}">
             {{ csrf_field() }}

@@ -4,17 +4,9 @@ namespace App\Http\Requests;
 
 use App\Http\Rules\UsableWhen;
 use App\Meel\EmailScheduleFormat;
-use App\Models\User;
-use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Auth;
 
-class MeelRequest extends FormRequest
+class MeelRequest extends BaseRequest
 {
-    public function authorize()
-    {
-        return Auth::check();
-    }
-
     public function rules()
     {
         return [
@@ -26,16 +18,5 @@ class MeelRequest extends FormRequest
     public function getScheduleFormat()
     {
         return new EmailScheduleFormat($this->get('when'));
-    }
-
-    /**
-     * @param null $guard
-     *
-     * @return User
-     */
-    public function user($guard = null)
-    {
-        // Overridden for better IDE intellisense
-        return parent::user($guard);
     }
 }

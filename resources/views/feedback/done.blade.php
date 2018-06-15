@@ -16,7 +16,7 @@
             Thank you for helping to improve the site
         </p>
 
-        <a href="{{ route('feedback') }}" class="btn block mx-8 mt-8">Back</a>
+        <a href="{{ route('user.feedback') }}" class="btn block mx-8 mt-8">Back</a>
 
     </div>
 

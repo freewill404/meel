@@ -14,13 +14,13 @@ class RequestFormatControllerTest extends TestCase
     /** @test */
     function you_need_to_be_logged_in()
     {
-        $this->get(route('requestFormat'))
+        $this->get(route('user.requestFormat'))
             ->assertStatus(302);
 
         $user = factory(User::class)->create();
 
         $this->actingAs($user)
-            ->get(route('requestFormat'))
+            ->get(route('user.requestFormat'))
             ->assertStatus(200);
     }
 
@@ -30,10 +30,10 @@ class RequestFormatControllerTest extends TestCase
         $user = factory(User::class)->create();
 
         $this->actingAs($user)
-            ->post(route('requestFormat'), [
+            ->post(route('user.requestFormat'), [
                 'format' => 'REQUEST',
             ])
-            ->assertRedirect(route('requestFormat.done'));
+            ->assertRedirect(route('user.requestFormat.done'));
 
         $formatRequest = FormatRequest::find(1);
 

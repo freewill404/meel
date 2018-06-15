@@ -7,7 +7,7 @@
     <div class="max-w-sm mx-auto flex justify-between items-center">
         <h1>Meel.me</h1>
 
-        <a class="text-grey-dark" href="{{ route('account') }}">account</a>
+        <a class="text-grey-dark" href="{{ route('user.account') }}">account</a>
     </div>
 
 

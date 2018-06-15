@@ -1,17 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\User;
 
+use App\Http\Controllers\Controller;
 use App\Models\FormatRequest;
 use Illuminate\Http\Request;
 
 class RequestFormatController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
     public function index()
     {
         return view('request-format.index');
@@ -28,7 +24,7 @@ class RequestFormatController extends Controller
             'format'  => $request->get('format'),
         ]);
 
-        return redirect()->route('requestFormat.done');
+        return redirect()->route('user.requestFormat.done');
     }
 
     public function done()

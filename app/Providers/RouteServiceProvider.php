@@ -13,14 +13,24 @@ class RouteServiceProvider extends ServiceProvider
     {
         $this->mapApiRoutes();
 
-        $this->mapWebRoutes();
+        $this->mapGuestWebRoutes();
+
+        $this->mapUserWebRoutes();
     }
 
-    protected function mapWebRoutes()
+    protected function mapGuestWebRoutes()
     {
         Route::middleware('web')
              ->namespace($this->namespace)
              ->group(base_path('routes/web-routes.php'));
+    }
+
+    protected function mapUserWebRoutes()
+    {
+        Route::middleware(['web', 'auth'])
+             ->name('user.')
+             ->namespace($this->namespace.'\\User')
+             ->group(base_path('routes/web-user-routes.php'));
     }
 
     protected function mapApiRoutes()

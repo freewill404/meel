@@ -21,7 +21,7 @@ class HomeControllerTest extends TestCase
                 'when' => '',
             ])
             ->assertStatus(302)
-            ->assertRedirect(route('home.success'));
+            ->assertRedirect(route('user.meel.ok'));
 
         $this->assertSame('now', EmailSchedule::find(1)->when);
     }
@@ -37,7 +37,7 @@ class HomeControllerTest extends TestCase
 
         $this->actingAs($firstUser)
             ->postHome(['what' => 'Example', 'when' => 'now'])
-            ->assertRedirect(route('home.success'));
+            ->assertRedirect(route('user.meel.ok'));
 
         $this->assertSame(1, SiteStats::today()->schedules_created);
 
@@ -47,7 +47,7 @@ class HomeControllerTest extends TestCase
 
         $this->actingAs($secondUser)
             ->postHome(['what' => 'Example', 'when' => 'now'])
-            ->assertRedirect(route('home.success'));
+            ->assertRedirect(route('user.meel.ok'));
 
         $this->assertSame(2, SiteStats::today()->schedules_created);
 
@@ -56,6 +56,6 @@ class HomeControllerTest extends TestCase
 
     private function postHome($data)
     {
-        return $this->post(route('home.post'), $data);
+        return $this->post(route('user.meel.post'), $data);
     }
 }
