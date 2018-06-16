@@ -11,6 +11,8 @@
     <div>
         <a class="mr-4 text-grey-dark" href="{{ route('user.account') }}">account</a>
 
+        <a class="mr-4 text-grey-dark" href="{{ route('user.account.settings') }}">settings</a>
+
         <form method="post" class="inline-block" action="{{ route('logout') }}">
             {{ csrf_field() }}
             <button class="text-grey-dark">logout</button>

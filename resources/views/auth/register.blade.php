@@ -39,17 +39,17 @@
         <button type="submit" class="btn block ml-auto mt-4">Register</button>
     </form>
 
-    <div class="max-w-sm mx-auto text-sm">
-        @if($errors->count())
-            <div class="p-2 mt-8 bg-red-lighter rounded border-l-4 border-red">
-                <strong class="block mb-2">The following errors occurred:</strong>
-                <ul>
-                    @foreach($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
-    </div>
+
+    @if($errors->count())
+        <div class="max-w-sm mx-auto text-sm p-2 mt-8 bg-red-lighter rounded border-l-4 border-red">
+            <strong class="block mb-2">The following errors occurred:</strong>
+            <ul>
+                @foreach($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
 
 @endsection
