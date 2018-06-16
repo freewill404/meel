@@ -24,6 +24,7 @@ class EmailScheduleTableSeeder extends Seeder
         'every week on saturday',
         'every month on the 15th',
         'every year in may',
+        'daily',
     ];
 
     public function run()

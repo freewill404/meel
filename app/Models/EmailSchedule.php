@@ -13,7 +13,12 @@ class EmailSchedule extends Model
     protected $guarded = [];
 
     protected $casts = [
+        'user_id'             => 'integer',
         'previous_occurrence' => 'datetime',
+    ];
+
+    protected $with = [
+        'emailScheduleHistories',
     ];
 
     public function user()
@@ -33,6 +38,11 @@ class EmailSchedule extends Model
         $schedule = new EmailScheduleFormat($this->when);
 
         return $schedule->isRecurring();
+    }
+
+    public function getTimesSentAttribute()
+    {
+        return $this->emailScheduleHistories->count();
     }
 
     public function getLastSentAtAttribute()
