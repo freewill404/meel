@@ -19,13 +19,13 @@ class SecondlessTimeString
             $string = $string->format('H:i:s');
         }
 
-        if (! preg_match('/^\d\d?:\d\d?:\d\d?$/', $string)) {
+        if (! preg_match('/^\d\d?:\d\d(:\d\d|)$/', $string)) {
             throw new RuntimeException('Invalid SecondlessTimeString input: '.$string);
         }
 
-        [$hours, $minutes, $seconds] = explode(':', $string);
+        [$hours, $minutes] = explode(':', $string);
 
-        if ($hours < 0 || $hours > 23 || $minutes < 0 || $minutes > 59 || $seconds < 0 || $seconds > 59) {
+        if ($hours < 0 || $hours > 23 || $minutes < 0 || $minutes > 59) {
             throw new RuntimeException('Invalid SecondlessTimeString input: '.$string);
         }
 
@@ -75,11 +75,6 @@ class SecondlessTimeString
     public function toSeconds(): int
     {
         return ($this->hours * 60 * 60) + ($this->minutes * 60);
-    }
-
-    public function toString()
-    {
-        return $this->__toString();
     }
 
     public function __toString()

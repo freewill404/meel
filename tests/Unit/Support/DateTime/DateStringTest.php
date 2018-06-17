@@ -75,12 +75,12 @@ class DateStringTest extends TestCase
     {
         try {
             new DateString($string);
-
-            $this->fail('DateString was not invalid: '.$string);
         } catch (RuntimeException $e) {
+            $this->assertTrue(true);
 
+            return;
         }
 
-        $this->assertTrue(true);
+        $this->fail('DateString was not invalid: '.$string);
     }
 }

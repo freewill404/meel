@@ -12,15 +12,12 @@ class SecondlessTimeStringTest extends TestCase
     function it_rejects_invalid_time_strings()
     {
         $this->assertInvalidTimeString('wow!');
-        $this->assertInvalidTimeString('00:00');
         $this->assertInvalidTimeString('00:000:00');
 
         $this->assertInvalidTimeString('24:00:00');
         $this->assertInvalidTimeString('25:00:00');
         $this->assertInvalidTimeString('01:60:00');
         $this->assertInvalidTimeString('01:61:00');
-        $this->assertInvalidTimeString('01:01:60');
-        $this->assertInvalidTimeString('01:01:61');
     }
 
     /** @test */
@@ -84,10 +81,12 @@ class SecondlessTimeStringTest extends TestCase
     {
         try {
             new SecondlessTimeString($string);
-
-            $this->fail('SecondlessTimeString was not invalid: '.$string);
         } catch (RuntimeException $e) {
-            $this->assertTrue(true);
+            $this->assertStringStartsWith('Invalid SecondlessTimeString input:', $e->getMessage());
+
+            return;
         }
+
+        $this->fail('SecondlessTimeString was not invalid: '.$string);
     }
 }

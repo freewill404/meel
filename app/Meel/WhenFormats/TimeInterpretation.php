@@ -12,6 +12,14 @@ class TimeInterpretation
     public function __construct(string $string)
     {
         $this->time = $this->interpretTime($string);
+
+        if ($this->time) {
+            [$hours, $minutes] = explode(':', $this->time);
+
+            if ($hours > 23 || $minutes > 59) {
+                $this->time = null;
+            }
+        }
     }
 
     protected function interpretTime($string)
@@ -43,10 +51,6 @@ class TimeInterpretation
             throw new RuntimeException('The given input does not contain a time');
         }
 
-        [$hours, $minutes] = explode(':', $this->time);
-
-        return new SecondlessTimeString(
-            now()->setTime($hours, $minutes, 0, 0)
-        );
+        return new SecondlessTimeString($this->time);
     }
 }
