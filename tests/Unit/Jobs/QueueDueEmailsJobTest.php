@@ -34,11 +34,18 @@ class QueueDueEmailsJobTest extends TestCase
 
         $this->progressTimeInMinutes(1);
 
+        $this->assertSame('2018-03-28 12:01:00', (string) secondless_now());
+        $this->assertSame('2018-03-28 12:01:00', (string) $a1->next_occurrence);
+
         QueueDueEmailsJob::dispatchNow();
 
         $this->assertJobsPushed(2)
             ->assertJobQueued($a1)
             ->assertJobQueued($b1);
+
+        // Next occurrence is set to null when they are sent.
+        $a1->update(['next_occurrence' => null]);
+        $b1->update(['next_occurrence' => null]);
 
         $this->progressTimeInMinutes(29);
 
@@ -54,6 +61,29 @@ class QueueDueEmailsJobTest extends TestCase
         $this->assertJobsPushed(4)
             ->assertJobQueued($a2)
             ->assertJobQueued($b2);
+    }
+
+    /** @test */
+    function it_queues_schedules_that_should_have_already_occurred()
+    {
+        Queue::fake();
+
+        $user = factory(User::class)->create();
+
+        $schedule = $user->emailSchedules()->create(['what' => 'text', 'when' => 'in 1 minute']);
+
+        QueueDueEmailsJob::dispatchNow();
+
+        // The schedule now has a "next_occurrence" in the past.
+        $this->progressTimeInMinutes(5);
+
+        $this->assertSame('2018-03-28 12:05:00', (string) secondless_now());
+        $this->assertSame('2018-03-28 12:01:00', (string) $schedule->next_occurrence);
+
+        QueueDueEmailsJob::dispatchNow();
+
+        $this->assertJobsPushed(1)
+            ->assertJobQueued($schedule);
     }
 
     private function assertJobQueued(EmailSchedule $emailSchedule)

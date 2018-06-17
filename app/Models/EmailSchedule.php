@@ -66,7 +66,7 @@ class EmailSchedule extends Model
 
             $emailSchedules = EmailSchedule::query()
                 ->whereIn('user_id', $userIds)
-                ->where('next_occurrence', $timezoneNow)
+                ->where('next_occurrence', '<=', $timezoneNow)
                 ->get()
                 ->merge($emailSchedules);
         }

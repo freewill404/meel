@@ -60,7 +60,7 @@ function next_occurrence($when, $timezone = null): SecondlessDateTimeString
     return $nextOccurrence;
 }
 
-function secondless_now($timezone): SecondlessDateTimeString
+function secondless_now($timezone = null): SecondlessDateTimeString
 {
     return SecondlessDateTimeString::now($timezone);
 }
