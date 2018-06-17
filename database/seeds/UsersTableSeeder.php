@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\User;
+use App\Support\Enums\UserRole;
 use Illuminate\Database\Seeder;
 
 class UsersTableSeeder extends Seeder
@@ -9,6 +10,7 @@ class UsersTableSeeder extends Seeder
     {
         User::create([
             'email'           => 'test@example.com',
+            'role'            => UserRole::ADMIN,
             'email_confirmed' => true,
             'timezone'        => 'Europe/Amsterdam',
             'password'        => '$2y$10$TKh8H1.PfQx37YgCzwiKb.KjNyWgaHb9cbcoQgdIVFlYg7B77UdFm', // secret

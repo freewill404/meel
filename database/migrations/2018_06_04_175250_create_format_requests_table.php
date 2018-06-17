@@ -14,8 +14,6 @@ class CreateFormatRequestsTable extends Migration
             $table->unsignedInteger('user_id')->nullable();
             $table->string('format');
 
-            $table->boolean('has_notified_admin')->default(false);
-
             $table->foreign('user_id')->references('id')->on('users')->onDelete('set null');
 
             $table->timestamps();
