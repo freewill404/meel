@@ -9,13 +9,13 @@
 
         @include('layout.header', ['title' => 'Help'])
 
-        <p class="text-md mt-8 ml-4">
+        <p class="text-md mt-8 sm:ml-4">
             Need help emailing yourself?
             This page should give you enough information to use the site.
         </p>
 
         <h2 class="mt-8">When formats</h2>
-        <p class="ml-4">
+        <p class="sm:ml-4">
             The format used for the "when" field is split up into three parts: recurring, relative and absolute.
             Each part is described in more detail below.
             <br>
@@ -25,7 +25,7 @@
 
 
         <h3 class="mt-8">Recurring when formats</h3>
-        <div class="ml-4">
+        <div class="sm:ml-4">
             <p>
                 Recurring email schedules allow you to keep your life on track.
                 Create email schedules for the future you and hope that you'll actually listen to them.
@@ -52,7 +52,7 @@
 
 
         <h3 class="mt-8">Absolute when formats</h3>
-        <div class="ml-4">
+        <div class="sm:ml-4">
             <p>
                 Absolute formats are not based on the current time, they are absolute.
                 An absolute format is either a time or a date.
@@ -79,7 +79,7 @@
 
 
         <h3 class="mt-8">Relative when formats</h3>
-        <div class="ml-4">
+        <div class="sm:ml-4">
             <p>
                 Relative when formats are relative to the current time.
                 In some cases they can be combined with absolute formats.
