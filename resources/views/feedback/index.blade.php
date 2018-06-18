@@ -5,10 +5,10 @@
 @section('content')
 
     <div class="max-w-sm mx-auto">
-        @include('layout.header', ['title' => 'Feedback'])
+        @include('layout.header-auth', ['title' => 'Feedback'])
 
         <p class="mt-8">
-            If you have any feedback or questions about the site, you can submit them here.
+            You can use this form to send feedback, ask questions or request a new <i>what format</i>.
             Every message is read and greatly appreciated.
             <br><br>
             Your email will be included with the message, that way i can send you a reply if necessary.

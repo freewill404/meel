@@ -10,7 +10,7 @@
 
         <h2 class="mb-4">Upcoming</h2>
 
-        <div class="pl-4">
+        <div class="sm:pl-4">
             @forelse($emailSchedules->where('next_occurrence', '!=', null) as $emailSchedule)
                 <email-schedule email-schedule-id="{{ $emailSchedule->id }}"
                                 :is-recurring="{{ json_encode($emailSchedule->is_recurring) }}"
@@ -30,7 +30,7 @@
 
         <h2 class="mt-8 mb-4">Ended</h2>
 
-        <div class="pl-4">
+        <div class="sm:pl-4">
             @forelse($emailSchedules->where('next_occurrence', null)->reverse() as $emailSchedule)
                 <email-schedule email-schedule-id="{{ $emailSchedule->id }}"
                                 :is-recurring="{{ json_encode($emailSchedule->is_recurring) }}"

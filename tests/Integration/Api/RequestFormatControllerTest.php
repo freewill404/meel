@@ -2,7 +2,7 @@
 
 namespace Tests\Integration\Api;
 
-use App\Models\FormatRequest;
+use App\Models\Feedback;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -24,9 +24,9 @@ class RequestFormatControllerTest extends TestCase
             ->postRequestFormat('aaaaa')
             ->assertStatus(200);
 
-        $formatRequest = FormatRequest::findOrFail(1);
+        $feedback = Feedback::findOrFail(1);
 
-        $this->assertSame('aaaaa', $formatRequest->format);
+        $this->assertStringEndsWith('aaaaa', $feedback->feedback);
     }
 
     private function postRequestFormat(string $when)

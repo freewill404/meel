@@ -5,12 +5,16 @@
             @include('helpers.svg.logo')
         </a>
 
-        <h1 class="ml-4 pt-1">{{ $title }}</h1>
+        <h1 class="text-xl sm:text-3xl sm:ml-4 ml-2 pt-1">{{ $title }}</h1>
     </span>
 
     <div>
-        <a class="text-black mr-4" href="{{ route('register') }}">register</a>
+        @if(Route::currentRouteName() !== 'register')
+            <a class="text-black mr-2 sm:mr-4" href="{{ route('register') }}">register</a>
+        @endif
 
-        <a class="text-black" href="{{ route('login') }}">login</a>
+        @if(Route::currentRouteName() !== 'login')
+            <a class="text-black" href="{{ route('login') }}">login</a>
+        @endif
     </div>
 </div>

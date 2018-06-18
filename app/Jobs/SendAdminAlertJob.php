@@ -3,7 +3,6 @@
 namespace App\Jobs;
 
 use App\Models\Feedback;
-use App\Models\FormatRequest;
 use App\Models\User;
 use App\Support\Enums\UserRole;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -22,8 +21,6 @@ class SendAdminAlertJob extends BaseJob implements ShouldQueue
         $this->maybeAppendErrorLogSize($lines);
 
         $this->maybeAppendFeedbackCount($lines);
-
-        $this->maybeAppendFormatRequestCount($lines);
 
         if (count($lines) === 0) {
             return;
@@ -68,15 +65,6 @@ class SendAdminAlertJob extends BaseJob implements ShouldQueue
 
         if ($feedbackCount) {
             $lines[] = 'New feedback! ('.$feedbackCount.'x)';
-        }
-    }
-
-    protected function maybeAppendFormatRequestCount(array &$lines)
-    {
-        $formatRequestCount = FormatRequest::count();
-
-        if ($formatRequestCount) {
-            $lines[] = 'New format requests! ('.$formatRequestCount.'x)';
         }
     }
 }

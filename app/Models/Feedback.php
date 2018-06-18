@@ -9,7 +9,6 @@ class Feedback extends Model
     protected $guarded = [];
 
     protected $casts = [
-        'user_id'            => 'integer',
-        'has_notified_admin' => 'boolean',
+        'user_id' => 'integer',
     ];
 }

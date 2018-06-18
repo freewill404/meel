@@ -5,18 +5,17 @@
             @include('helpers.svg.logo')
         </a>
 
-        <h1 class="ml-4 pt-1">{{ $title }}</h1>
+        <h1 class="text-xl sm:text-3xl sm:ml-4 ml-2 pt-1">{{ $title }}</h1>
     </span>
 
-    <div>
-        <a class="mr-4 text-grey-dark" href="{{ route('user.account') }}">account</a>
+    <div class="flex flex-wrap">
+        <a class="mr-2 sm:mr-4 text-grey-dark" href="{{ route('user.account') }}">account</a>
 
-        <a class="mr-4 text-grey-dark" href="{{ route('user.account.settings') }}">settings</a>
+        <a class="mr-2 sm:mr-4 text-grey-dark" href="{{ route('user.account.settings') }}">settings</a>
 
         <form method="post" class="inline-block" action="{{ route('logout') }}">
             {{ csrf_field() }}
             <button class="text-grey-dark">logout</button>
         </form>
-
     </div>
 </div>

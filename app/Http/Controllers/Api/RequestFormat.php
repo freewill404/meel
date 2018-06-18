@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\FormatRequest;
+use App\Models\Feedback;
 use Illuminate\Http\Request;
 
 class RequestFormat extends Controller
@@ -14,9 +14,9 @@ class RequestFormat extends Controller
             'when' => 'required|string|max:255',
         ]);
 
-        FormatRequest::create([
-            'user_id' => $request->user()->id,
-            'format'  => $request->get('when'),
+        Feedback::create([
+            'user_id'  => $request->user()->id,
+            'feedback' => 'Api format request: '.$request->get('when'),
         ]);
     }
 }
