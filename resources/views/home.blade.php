@@ -1,6 +1,6 @@
 @extends('layout.base-template', [
     'title'       => 'Meel.me | Schedule and send (recurring) emails to yourself',
-    'description' => 'Never forget anything by mailing yourself. Don\'t clog up your agenda with reminders, fill up your gmail with emails instead!',
+    'description' => 'Keep your life on track by emailing yourself. Don\'t clog up your agenda with reminders, fill up your gmail with emails instead!',
 ])
 
 @section('content')
@@ -56,6 +56,11 @@
             A detailed guide can be found on the <a class="font-bold" href="{{ route('help') }}">help page.</a>
             <br><br>
             <a class="font-bold" href="{{ route('register') }}">Register an account</a> and start emailing yourself today!
+        </p>
+
+        <h3 class="mt-8">Open source</h3>
+        <p>
+            Meel.me is open-source. You can view the code and contribute on <a class="font-bold" href="https://github.com/SjorsO/meel" target="_blank">Github</a>!
         </p>
 
     </div>

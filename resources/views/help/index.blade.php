@@ -1,6 +1,6 @@
 @extends('layout.base-template', [
     'title'       => 'Help | Meel.me',
-    'description' => '',
+    'description' => 'Need help emailing yourself? You\'ve come to the right place.,
 ])
 
 @section('content')

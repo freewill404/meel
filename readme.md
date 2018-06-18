@@ -1,5 +1,26 @@
 # Meel.me
 Email yourself.
 
-## Timezones
-The `next_occurrence` field in `EmailSchedule`, and the `sent_at` field in `EmailScheduleHistory` are in the timezone of the `User` they belong to. All other datetimes are in the timezone of the server (Europe/Amsterdam).
+## Install
+
+```bash
+cp .env.example .env
+
+# fill in the arrows in the .env file
+
+composer install
+
+php artisan key:generate
+
+php artisan passport:keys
+ 
+php artisan migrate (--seed)
+ 
+npm install
+ 
+npm run dev
+```
+
+## License
+
+This project is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT)

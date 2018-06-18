@@ -5,7 +5,7 @@
         </a>
 
         <a class="block text-grey-dark mb-1" href="{{ route('user.feedback') }}">Feedback</a>
-        <a class="block text-grey-dark mb-1" href="{{ route('help') }}">Help</a>
         <a class="block text-grey-dark mb-1" href="https://github.com/SjorsO/meel" target="_blank">Github</a>
+        <a class="block text-grey-dark mb-1" href="{{ route('help') }}">Help</a>
     </div>
 @endauth

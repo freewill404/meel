@@ -26,6 +26,13 @@ class AccountController extends Controller
         ]);
     }
 
+    public function more()
+    {
+        return view('account.more', [
+            'user' => Auth::user(),
+        ]);
+    }
+
     public function updateTimezone(Request $request)
     {
         $values = $request->validate([
