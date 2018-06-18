@@ -54,6 +54,14 @@ class DateInterpretationTest extends TestCase
         $this->assertFalse($dateInterpretation->hasSpecifiedDay());
     }
 
+    /** @test */
+    function it_handles_the_amount_of_days_in_a_month()
+    {
+        $this->assertNotUsable('31-06');
+        $this->assertNotUsable('32-05');
+        $this->assertNotUsable('00-06');
+    }
+
     private function assertDateInterpretation($expected, $string)
     {
         $preparedString = WhenString::prepare($string);
@@ -71,5 +79,16 @@ class DateInterpretationTest extends TestCase
         );
 
         return $dateInterpretation;
+    }
+
+    private function assertNotUsable($string)
+    {
+        $preparedString = WhenString::prepare($string);
+
+        $dateInterpretation = new DateInterpretation($preparedString);
+
+        $this->assertFalse(
+            $dateInterpretation->hasSpecifiedDate()
+        );
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Meel\WhenFormats;
 
 use App\Support\DateTime\DateString;
+use Carbon\Carbon;
 
 class DateInterpretation
 {
@@ -19,6 +20,16 @@ class DateInterpretation
         $this->timezone = $timezone;
 
         $this->interpretDate($string);
+
+        if ($this->hasSpecifiedDay()) {
+            $carbon = Carbon::parse('01-'.$this->getMonth().'-'.$this->getYear())->lastOfMonth();
+
+            if ($this->getDay() > $carbon->day) {
+                $this->day = null;
+                $this->month = null;
+                $this->year = null;
+            }
+        }
     }
 
     public function getDateString(): DateString
