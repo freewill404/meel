@@ -8,7 +8,11 @@
 
     <div class="max-w-lg mx-auto mt-8 mb-16">
 
-        <h2 class="mb-4">Upcoming</h2>
+        <div class="flex justify-between">
+            <h2 class="mb-4">Upcoming</h2>
+
+            <a class="text-black text-sm" href="{{ route('user.more') }}">Emails left: {{ $user->emails_left }}</a>
+        </div>
 
         <div class="sm:pl-4">
             @forelse($emailSchedules->where('next_occurrence', '!=', null) as $emailSchedule)

@@ -3,11 +3,14 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class MoreController extends Controller
 {
     public function more()
     {
-        return 'The site is still in beta. Buying more emails is not possible yet. Email sjorsottjes@gmail.com for more free emails.';
+        return view('more.index', [
+           'user' => Auth::user(),
+        ]);
     }
 }
