@@ -62,13 +62,10 @@ class WhenString
 
     protected function replaceWord($input, $search, $replace)
     {
-        $input = preg_replace('/(^'.$search.'$)/', "{$replace}", $input);
-
-        $input = preg_replace('/(^'.$search.' )/', "{$replace} ", $input);
-
-        $input = preg_replace('/( '.$search.'$)/', " {$replace}", $input);
-
-        return preg_replace('/( '.$search.' )/', " {$replace} ", $input);
+        $input = preg_replace('/(^'.$search.'$)/', "{$replace}",   $input);
+        $input = preg_replace('/(^'.$search.' )/', "{$replace} ",  $input);
+        $input = preg_replace('/( '.$search.'$)/', " {$replace}",  $input);
+        return   preg_replace('/( '.$search.' )/', " {$replace} ", $input);
     }
 
     public function getPreparedString()

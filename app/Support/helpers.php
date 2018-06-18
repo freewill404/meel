@@ -5,21 +5,6 @@ use App\Meel\EmailScheduleFormat;
 use App\Models\EmailSchedule;
 
 /**
- * @param $path
- * @param null|string $disk
- *
- * @return string Absolute path to a file from the storage facade
- */
-function storage_disk_file_path($path, $disk = null)
-{
-    $disk = $disk ?: env('FILESYSTEM_DRIVER');
-
-    $storagePath = \Storage::disk($disk)->getDriver()->getAdapter()->getPathPrefix();
-
-    return str_finish($storagePath, '/').ltrim($path, '/');
-}
-
-/**
  * Trigger a "dd()" after it has been called "timesCalled" times.
  *
  * @param $var

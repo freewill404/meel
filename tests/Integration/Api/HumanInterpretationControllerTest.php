@@ -5,7 +5,7 @@ namespace Tests\Integration\Api;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-class WhenControllerTest extends TestCase
+class HumanInterpretationControllerTest extends TestCase
 {
     use RefreshDatabase;
 

@@ -4,6 +4,7 @@ namespace App\Meel\WhenFormats\Recurring;
 
 use App\Support\DateTime\DateString;
 use App\Support\DateTime\SecondlessTimeString;
+use App\Support\Enums\Months;
 use Carbon\Carbon;
 
 class Yearly extends RecurringWhenFormat
@@ -18,7 +19,7 @@ class Yearly extends RecurringWhenFormat
     {
         $this->usableMatch = strpos($string, 'yearly') !== false;
 
-        if (preg_match('/(january|february|march|april|may|june|july|august|september|october|november|december)/', $string, $matches)) {
+        if (preg_match('/'.Months::regex().'/', $string, $matches)) {
             $this->monthOfTheYear = $matches[1];
         }
 

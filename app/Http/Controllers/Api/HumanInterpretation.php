@@ -7,9 +7,9 @@ use App\Meel\EmailScheduleFormat;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
-class WhenController extends Controller
+class HumanInterpretation extends Controller
 {
-    public function humanInterpretation(Request $request)
+    public function __invoke(Request $request)
     {
         $request->validate([
             'when' => 'nullable|string|max:255',

@@ -20,18 +20,18 @@ class MonthlyNthDay extends RecurringWhenFormat
         // Match:
         //   "every third saturday of the month"
         //   "the last saturday of the month"
-        $this->usableMatch = preg_match('/(^| )(1st|2nd|3rd|4th|last) '.Days::regex().' of the month/', $string, $matches);
+        $this->usableMatch = preg_match('/(?:^| )(1st|2nd|3rd|4th|last) '.Days::regex().' of the month/', $string, $matches);
 
         if ($this->usableMatch) {
             // Carbon::parse needs written ordinal numbers
-            $this->nth = strtr($matches[2], [
+            $this->nth = strtr($matches[1], [
                 '1st' => 'first',
                 '2nd' => 'second',
                 '3rd' => 'third',
                 '4th' => 'fourth',
             ]);
 
-            $this->day = $matches[3];
+            $this->day = $matches[2];
         }
     }
 

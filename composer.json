@@ -18,8 +18,7 @@
         "filp/whoops": "^2.0",
         "fzaninotto/faker": "^1.4",
         "mockery/mockery": "^1.0",
-        "phpunit/phpunit": "^7.0",
-        "spatie/phpunit-snapshot-assertions": "^1.1"
+        "phpunit/phpunit": "^7.0"
     },
     "autoload": {
         "classmap": [
@@ -41,7 +40,6 @@
     "extra": {
         "laravel": {
             "dont-discover": [
-                "barryvdh/laravel-ide-helper"
             ]
         }
     },

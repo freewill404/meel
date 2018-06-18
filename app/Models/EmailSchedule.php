@@ -13,8 +13,7 @@ class EmailSchedule extends Model
     protected $guarded = [];
 
     protected $casts = [
-        'user_id'             => 'integer',
-        'previous_occurrence' => 'datetime',
+        'user_id' => 'integer',
     ];
 
     protected $with = [

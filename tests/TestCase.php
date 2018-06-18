@@ -7,20 +7,13 @@ use Carbon\Carbon;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
-use Spatie\Snapshots\MatchesSnapshots;
 use Illuminate\Contracts\Console\Kernel;
 
 abstract class TestCase extends BaseTestCase
 {
-    use MatchesSnapshots;
-
-    protected $testFilePath;
-
     public function setUp()
     {
         parent::setUp();
-
-        $this->testFilePath = base_path('tests/Files/');
 
         Carbon::setTestNow('2018-03-28 12:00:15');
 
@@ -40,11 +33,6 @@ abstract class TestCase extends BaseTestCase
         }
 
         parent::tearDown();
-    }
-
-    protected function getSnapshotDirectory(): string
-    {
-        return $this->testFilePath.'_snapshots_';
     }
 
     protected function progressTimeInMinutes($minutes = 1)
