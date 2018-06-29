@@ -15,8 +15,6 @@ class Monthly extends RecurringWhenFormat
 
     public function __construct(string $string)
     {
-        $this->usableMatch = strpos($string, 'monthly') !== false;
-
         if (preg_match('/every (\d+) months?/', $string, $matches)) {
             $this->monthInterval = (int) $matches[1];
 

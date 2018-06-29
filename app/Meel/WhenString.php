@@ -54,18 +54,10 @@ class WhenString
         $string = strtolower($string);
 
         foreach ($this->replaceWords as $search => $replace) {
-            $string = $this->replaceWord($string, $search, $replace);
+            $string = preg_replace('/(^| )'.$search.'( |$)/', '${1}'.$replace.'${2}', $string);
         }
 
         $this->preparedString = $string;
-    }
-
-    protected function replaceWord($input, $search, $replace)
-    {
-        $input = preg_replace('/(^'.$search.'$)/', "{$replace}",   $input);
-        $input = preg_replace('/(^'.$search.' )/', "{$replace} ",  $input);
-        $input = preg_replace('/( '.$search.'$)/', " {$replace}",  $input);
-        return   preg_replace('/( '.$search.' )/', " {$replace} ", $input);
     }
 
     public function getPreparedString()
