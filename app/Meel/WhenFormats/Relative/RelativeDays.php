@@ -33,7 +33,7 @@ class RelativeDays extends RelativeWhenFormat
             return (int) $matches[1];
         }
 
-        if (preg_match('/(?:next |this |^)'.Days::regex().'/', $string, $matches)) {
+        if (preg_match('/(?:next |this |on |^)'.Days::regex().'/', $string, $matches)) {
             return $this->daysUntilNext($matches[1], $timezone);
         }
 
