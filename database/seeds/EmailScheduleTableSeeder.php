@@ -1,107 +1,74 @@
 <?php
 
+use App\Events\EmailNotSent;
 use App\Events\EmailSent;
 use App\Mail\Email;
 use App\Models\EmailSchedule;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
-use Illuminate\Foundation\Testing\WithFaker;
 
 class EmailScheduleTableSeeder extends Seeder
 {
-    use WithFaker;
+    protected $maximumDaysAgo = 60;
 
-    protected $maximumDaysAgo = 20;
-
-    protected $whens = [
-        'now',
-        'tomorrow',
-        'next week',
-        'next month at 11:30',
-        'in 2 hours',
-        'in 3 days',
-        'every week on saturday',
-        'every month on the 15th',
-        'every year in may',
-        'daily',
+    protected $schedules = [
+        'now'                     => 'Seed the database',
+        'tomorrow'                => 'Commit my changes',
+        'next week'               => 'Clean my shoes',
+        'next month at 11:30'     => 'Renew my domain names',
+        'in 2 hours'              => 'Take the cake out of the oven',
+        'in 3 days'               => 'Go to the market',
+        'every week on saturday'  => 'Clean the house',
+        'every month on the 15th' => 'Change bedsheets',
+        'every year in may'       => 'Make a dentist appointment',
+        'daily'                   => 'Use meel.me',
     ];
 
     public function run()
     {
-        $this->setUpFaker();
-
         Mail::fake();
 
-        $realNow = now();
-
-        $realNowUnix = $realNow->format('U');
-
-        $this->consoleWrite('Creating EmailSchedules... ');
-
         User::all()->each(function (User $user) {
-            shuffle($this->whens);
+            $this->seedEmailSchedules($user);
 
-            foreach ($this->whens as $when) {
-                Carbon::setTestNow(
-                    $this->getRandomPastDateTime()
-                );
-
-                $user->emailSchedules()->create([
-                    'when' => $when,
-                    'what' => $this->faker->sentence,
-                ]);
-
-                Carbon::setTestNow(null);
-            }
+            $this->runEmailSchedules($user, now());
         });
+    }
 
-        $this->consoleWriteLine('done!');
-
-        $oldestCreatedAt = EmailSchedule::oldest()->first()->created_at;
-
-        Carbon::setTestNow($oldestCreatedAt);
-
-        $this->consoleWriteLine('Simulating <info>'.$totalMinuteDifference = now()->diffInMinutes($realNow).'</info> minutes of cron jobs...');
-
-        while (now()->format('U') < $realNowUnix) {
-            EmailSchedule::shouldBeSentNow()
-                ->each(function (EmailSchedule $schedule) {
-                    $schedule->sendEmail();
-
-                    EmailSent::dispatch($schedule, new Email($schedule));
-                });
-
+    protected function seedEmailSchedules(User $user)
+    {
+        foreach ($this->schedules as $when => $what) {
             Carbon::setTestNow(
-                now()->addMinute()
+                now()->subDays(random_int(1, $this->maximumDaysAgo))->subSeconds(random_int(0, 86400))
             );
 
-            if (($minuteDifference = now()->diffInMinutes($realNow)) % 1000 === 0 && $minuteDifference !== 0) {
-                $this->consoleWriteLine('           '.str_pad($minuteDifference, strlen($totalMinuteDifference), ' '));
-            }
+            $user->emailSchedules()->create([
+                'when' => $when,
+                'what' => $what,
+            ]);
+
+            Carbon::setTestNow(null);
         }
+    }
+
+    protected function runEmailSchedules(User $user, Carbon $realNow)
+    {
+        /** @var EmailSchedule $schedule */
+        $schedule = $user->emailSchedules()->whereNotNull('next_occurrence')->oldest('next_occurrence')->first();
+
+        do {
+            Carbon::setTestNow(
+                Carbon::parse($schedule->next_occurrence, $user->timezone)->setTimezone('Europe/Amsterdam')
+            );
+
+            $user->refresh()->emails_left
+                ? EmailSent::dispatch($schedule, new Email($schedule))
+                : EmailNotSent::dispatch($schedule);
+
+            $schedule = $user->emailSchedules()->whereNotNull('next_occurrence')->oldest('next_occurrence')->first();
+        } while ($realNow->greaterThanOrEqualTo($schedule->next_occurrence));
 
         Carbon::setTestNow(null);
-    }
-
-    protected function getRandomPastDateTime()
-    {
-        $randomDays = $this->faker->numberBetween(1, $this->maximumDaysAgo);
-
-        $randomSeconds = $this->faker->numberBetween(0, 86400); // seconds in 24 hours
-
-        return now()
-            ->subDays($randomDays)
-            ->subSeconds($randomSeconds);
-    }
-
-    protected function consoleWriteLine($string)
-    {
-        $this->command->getOutput()->writeln($string);
-    }
-
-    protected function consoleWrite($string)
-    {
-        $this->command->getOutput()->write($string);
     }
 }
