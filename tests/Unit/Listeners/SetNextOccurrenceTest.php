@@ -7,6 +7,7 @@ use App\Listeners\SetNextOccurrence;
 use App\Mail\Email;
 use App\Models\EmailSchedule;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -66,7 +67,7 @@ class SetNextOccurrenceTest extends TestCase
     /** @test */
     function it_sets_the_next_occurrence_for_non_recurring_schedules_to_null()
     {
-        /** @var EmaiLSchedule $emailSchedule */
+        /** @var EmailSchedule $emailSchedule */
         $emailSchedule = $this->user->emailSchedules()->create([
             'what'            => 'The what text',
             'when'            => 'now',
@@ -81,5 +82,44 @@ class SetNextOccurrenceTest extends TestCase
         );
 
         $this->assertNull($emailSchedule->refresh()->next_occurrence);
+    }
+
+    /** @test */
+    function regression__it_uses_the_users_timezone()
+    {
+        $user = factory(User::class)->create(['timezone' => 'Asia/Shanghai']);
+
+        /** @var EmailSchedule $emailSchedule */
+        $emailSchedule = $user->emailSchedules()->create([
+            'what'            => 'The what text',
+            'when'            => 'every month',
+            'next_occurrence' => 'NONE',
+        ]);
+
+        // Ensure the Observer didn't set the next occurrence
+        $this->assertSame('NONE', $emailSchedule->refresh()->next_occurrence);
+
+        $this->setNextOccurrenceListener->handle(
+            new EmailSent($emailSchedule, $this->emailMock)
+        );
+
+        $this->assertSame(
+            (string) next_occurrence($emailSchedule->when, 'Asia/Shanghai'),
+            $emailSchedule->refresh()->next_occurrence
+        );
+
+        // Set the server time (Europe/Amsterdam) to the time the email schedule should be sent.
+        Carbon::setTestNow(
+            Carbon::parse($emailSchedule->next_occurrence, 'Asia/Shanghai')->setTimezone('Europe/Amsterdam')->addSeconds(15)
+        );
+
+        $this->setNextOccurrenceListener->handle(
+            new EmailSent($emailSchedule, $this->emailMock)
+        );
+
+        $this->assertSame(
+            (string) next_occurrence($emailSchedule->when, 'Asia/Shanghai'),
+            $emailSchedule->refresh()->next_occurrence
+        );
     }
 }

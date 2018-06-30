@@ -13,7 +13,7 @@ class SetNextOccurrence
      */
     public function handle($event)
     {
-        $schedule = new EmailScheduleFormat($event->emailSchedule->when);
+        $schedule = new EmailScheduleFormat($event->emailSchedule->when, $event->emailSchedule->user->timezone);
 
         $event->emailSchedule->update([
             'next_occurrence' => $schedule->isRecurring() ? $schedule->nextOccurrence() : null,
