@@ -113,6 +113,76 @@
             </ul>
         </div>
 
+
+        <h2 class="mt-8">What formats</h2>
+        <p class="sm:ml-4">
+            You can add formats to the what text of your email schedules.
+            The formats are replaced with dynamic values when the emails are sent.
+            The available formats are listed below.
+        </p>
+
+
+        <h4 class="mt-8">%t - Times sent</h4>
+        <div class="sm:ml-4">
+            <p>
+                Adding "%t" to a what text will get replaced with the times an email has been sent (including the current email).
+                The value can be offset by suffixing +(number) or -(number).
+                <br><br>
+                Examples:
+            </p>
+            <ul>
+                <li>Times sent: %t</li>
+                <li>Weeks until launch: %t-5</li>
+                <li>Rebecca's birthday (%t+20 years old)</li>
+            </ul>
+        </div>
+
+
+        <h4 class="mt-8">%a - Days since schedule created</h4>
+        <div class="sm:ml-4">
+            <p>
+                Adding "%a" to a what text will get replaced with the amount of days ago the email schedule was created.
+                The value can be offset by suffixing +(number) or -(number).
+                <br><br>
+                Examples:
+            </p>
+            <ul>
+                <li>Days since email created: %a</li>
+                <li>Days sober: %a+5</li>
+            </ul>
+        </div>
+
+
+        <h4 class="mt-8">%d - Days since email was last sent</h4>
+        <div class="sm:ml-4">
+            <p>
+                Adding "%d" to a what text will get replaced with the amount of days since the email was last sent.
+                The value can be offset by suffixing +(number) or -(number).
+                <br><br>
+                Examples:
+            </p>
+            <ul>
+                <li>Days since previous email: %d</li>
+                <li>Last cleaned my house %d days ago</li>
+            </ul>
+        </div>
+
+
+        <h4 class="mt-8">%f[X] - Current date format</h4>
+        <div class="sm:ml-4">
+            <p>
+                Adding "%f[X]" to a what text will format the current datetime, with X being used as the <a class="underline" href="http://php.net/manual/en/function.date.php" rel="nofollow" target="_blank">php date format</a>.
+                <br><br>
+                Examples, the formatted result is contained in (braces).
+            </p>
+            <ul>
+                <li>Review week %f[W]/52 <i>(Review week 13/52)</i></li>
+                <li>This %f[l] <i>(this Saturday)</i></li>
+                <li>%f[d-m-Y H:i:s] <i>(28-03-2018 12:30:00)</i></li>
+                <li>Days left this year %f[z]/365 <i>(Days left this year 58/365)</i></li>
+            </ul>
+        </div>
+
     </div>
 
 @endsection
