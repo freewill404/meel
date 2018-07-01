@@ -31,6 +31,6 @@ class Kernel extends ConsoleKernel
         // Make sure every date has a SiteStats model.
         $schedule->call(function () {
             SiteStats::today();
-        })->dailyAt('00:05');
+        })->twiceDaily();
     }
 }

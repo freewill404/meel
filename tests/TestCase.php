@@ -11,13 +11,19 @@ use Illuminate\Contracts\Console\Kernel;
 
 abstract class TestCase extends BaseTestCase
 {
+    use MocksTime;
+
+    protected $mailFake = true;
+
     public function setUp()
     {
         parent::setUp();
 
         Carbon::setTestNow('2018-03-28 12:00:15');
 
-        Mail::fake();
+        if ($this->mailFake) {
+            Mail::fake();
+        }
     }
 
     protected function tearDown()
@@ -33,15 +39,6 @@ abstract class TestCase extends BaseTestCase
         }
 
         parent::tearDown();
-    }
-
-    protected function progressTimeInMinutes($minutes = 1)
-    {
-        Carbon::setTestNow(
-            now()->addMinutes($minutes)
-        );
-
-        return $this;
     }
 
     protected function apiLogin($user = null)

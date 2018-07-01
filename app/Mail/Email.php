@@ -20,7 +20,7 @@ class Email extends Mailable
 
     public function build()
     {
-        return $this->subject($this->emailSchedule->what)
+        return $this->subject($this->emailSchedule->formatted_what)
                     ->view('email.email');
     }
 }

@@ -7,11 +7,11 @@ use App\Models\EmailSchedule;
 /**
  * Trigger a "dd()" after it has been called "timesCalled" times.
  *
- * @param $var
+ * @param $vars
  *
  * @param int $timesCalled
  */
-function dd_delay($var, int $timesCalled = 2)
+function dd_delay(int $timesCalled, ...$vars)
 {
     static $calls = [];
 
@@ -20,7 +20,7 @@ function dd_delay($var, int $timesCalled = 2)
     $callCount = $calls[$caller] ?? 1;
 
     if ($callCount === $timesCalled) {
-        dd($var);
+        dd($vars);
     }
 
     $calls[$caller] = $callCount + 1;

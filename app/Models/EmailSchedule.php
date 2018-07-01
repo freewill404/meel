@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Events\EmailNotSent;
 use App\Jobs\SendScheduledEmailJob;
 use App\Meel\EmailScheduleFormat;
+use App\Meel\WhatString;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 
@@ -37,6 +38,11 @@ class EmailSchedule extends Model
         $schedule = new EmailScheduleFormat($this->when);
 
         return $schedule->isRecurring();
+    }
+
+    public function getFormattedWhatAttribute()
+    {
+        return WhatString::format($this);
     }
 
     public function getTimesSentAttribute()

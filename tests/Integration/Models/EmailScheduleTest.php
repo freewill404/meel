@@ -160,6 +160,24 @@ class EmailScheduleTest extends TestCase
             '2018-03-28 18:01:00',
             (string) $histories->first()->sent_at
         );
+
+        $this->assertSame(1, $emailSchedule->refresh()->times_sent);
+    }
+
+    /** @test */
+    function it_formats_the_what_string()
+    {
+        $user = factory(User::class)->create();
+
+        /** @var EmailSchedule $emailSchedule */
+        $emailSchedule = $user->emailSchedules()->create([
+            'what' => 'format: %t',
+            'when' => 'every monday at 12:00',
+        ]);
+
+        $this->assertSame('format: 1', $emailSchedule->formatted_what);
+
+        $this->assertSame('format: %t', $emailSchedule->what);
     }
 
     /** @test */
