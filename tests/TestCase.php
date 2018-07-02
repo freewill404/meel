@@ -3,11 +3,11 @@
 namespace Tests;
 
 use App\Models\User;
-use Carbon\Carbon;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Contracts\Console\Kernel;
+use SjorsO\MocksTime\MocksTime;
 
 abstract class TestCase extends BaseTestCase
 {
@@ -19,7 +19,7 @@ abstract class TestCase extends BaseTestCase
     {
         parent::setUp();
 
-        Carbon::setTestNow('2018-03-28 12:00:15');
+        $this->setTestNow('2018-03-28 12:00:15');
 
         if ($this->mailFake) {
             Mail::fake();

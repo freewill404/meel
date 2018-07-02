@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f50498831573431b840202e01930a897",
+    "content-hash": "a5caf51866b131e10c8ac0a62413cc7c",
     "packages": [
         {
             "name": "defuse/php-encryption",
@@ -5752,6 +5752,54 @@
             "description": "Library that helps with managing the version number of Git-hosted PHP projects",
             "homepage": "https://github.com/sebastianbergmann/version",
             "time": "2016-10-03T07:35:21+00:00"
+        },
+        {
+            "name": "sjorso/mocks-time",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/SjorsO/mocks-time.git",
+                "reference": "b2fe19abc68e4babe1430b92cef3d1ee75f569d8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/SjorsO/mocks-time/zipball/b2fe19abc68e4babe1430b92cef3d1ee75f569d8",
+                "reference": "b2fe19abc68e4babe1430b92cef3d1ee75f569d8",
+                "shasum": ""
+            },
+            "require": {
+                "nesbot/carbon": "^1.0",
+                "php": "^7.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^6.0|^7.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "SjorsO\\MocksTime\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Sjors Ottjes",
+                    "email": "sjorsottjes@gmail.com"
+                }
+            ],
+            "description": "A trait that provides a simple, fluent interface for working with Carbon::setTestNow()",
+            "homepage": "https://github.com/SjorsO/mocks-time",
+            "keywords": [
+                "carbon",
+                "datetime",
+                "setTestNow",
+                "testing",
+                "time"
+            ],
+            "time": "2018-07-02T08:23:47+00:00"
         },
         {
             "name": "symfony/class-loader",
