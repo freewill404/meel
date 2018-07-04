@@ -21,8 +21,12 @@
             <label class="block">
                 Timezone
                 <select name="timezone" class="field">
-                    @foreach($timezones as $timezone)
-                        <option value="{{ $timezone }}" {{ $timezone === $user->timezone ? 'selected' : '' }}>{{ $timezone }}</option>
+                    @foreach($timezones as $region => $list)
+                        <optgroup label="{{ $region }}">
+                            @foreach($list as $timezone => $name)
+                                <option value="{{ $timezone }}" {{ $timezone === $user->timezone ? 'selected' : '' }}>{{ $name }}</option>
+                            @endforeach
+                        </optgroup>
                     @endforeach
                 </select>
             </label>

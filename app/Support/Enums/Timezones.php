@@ -2,6 +2,8 @@
 
 namespace App\Support\Enums;
 
+use DateTimeZone;
+
 class Timezones extends EnumArray
 {
     const VALUES = [
@@ -431,4 +433,34 @@ class Timezones extends EnumArray
         'Pacific/Wallis',
         'UTC',
     ];
+
+    public static function selectValues()
+    {
+        $regions = [
+            'Africa'     => DateTimeZone::AFRICA,
+            'America'    => DateTimeZone::AMERICA,
+            'Antarctica' => DateTimeZone::ANTARCTICA,
+            'Asia'       => DateTimeZone::ASIA,
+            'Atlantic'   => DateTimeZone::ATLANTIC,
+            'Europe'     => DateTimeZone::EUROPE,
+            'Indian'     => DateTimeZone::INDIAN,
+            'Pacific'    => DateTimeZone::PACIFIC,
+        ];
+
+        $timezonesByRegion = [];
+
+        foreach ($regions as $regionName => $mask) {
+            foreach (DateTimeZone::listIdentifiers($mask) as $timezone) {
+                $timezoneName = substr($timezone, strlen($regionName) + 1);
+
+                $timezoneName = str_replace('_', ' ', $timezoneName);
+
+                $timezoneName = str_replace('/', ' / ', $timezoneName);
+
+                $timezonesByRegion[$regionName][$timezone] =  $timezoneName;
+            }
+        }
+
+        return $timezonesByRegion;
+    }
 }

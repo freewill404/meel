@@ -22,7 +22,7 @@ class AccountController extends Controller
     {
         return view('account.settings', [
             'user'      => Auth::user(),
-            'timezones' => Timezones::all(),
+            'timezones' => Timezones::selectValues(),
         ]);
     }
 
