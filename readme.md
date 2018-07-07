@@ -1,5 +1,5 @@
 # Meel.me
-Email yourself.
+ Email yourself - [meel.me](https://meel.me)
 
 ## Install
 
