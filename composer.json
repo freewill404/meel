@@ -1,11 +1,11 @@
 {
-    "name": "sjorso/vlug",
-    "description": "description",
-    "keywords": ["key", "words"],
+    "name": "sjorso/meel",
+    "description": "Email yourself",
+    "keywords": ["meel", "email"],
     "license": "MIT",
     "type": "project",
     "require": {
-        "php": ">=7.1.3",
+        "php": "^7.1.3",
         "doctrine/dbal": "^2.6",
         "fideloper/proxy": "^4.0",
         "laravel/framework": "5.6.*",
