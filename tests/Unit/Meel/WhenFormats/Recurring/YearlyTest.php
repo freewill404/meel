@@ -27,9 +27,9 @@ class YearlyTest extends RecurringWhenFormatTestCase
 
         $this->assertNextDate('2019-04-02', 'yearly on the second of April');
 
-        $this->assertNextDate('2019-04-01', 'yearly in April');
+        $this->assertNextDate('2018-09-01', 'yearly in Sept');
 
-        $this->assertNextDate('2018-08-01', 'yearly in August');
+        $this->assertNextDate('2018-08-01', 'yearly in Aug');
 
         $this->assertNextDate('2019-01-20', 'yearly on the 20th');
     }
