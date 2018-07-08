@@ -14,6 +14,8 @@ class RelativeYearsTest extends RelativeWhenFormatTestCase
         'in 2 years',
         '2 year from now',
         '2 years and 1 month from now',
+        'in a decade',
+        'a decade from now',
     ];
 
     protected $shouldNotMatch = [

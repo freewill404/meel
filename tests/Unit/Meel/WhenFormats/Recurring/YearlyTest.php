@@ -12,6 +12,7 @@ class YearlyTest extends RecurringWhenFormatTestCase
     protected $shouldMatch = [
         'yearly',
         'yearly on the 28th of March',
+        'every 2 years',
     ];
 
     protected $shouldNotMatch = [
@@ -65,5 +66,39 @@ class YearlyTest extends RecurringWhenFormatTestCase
         $this->assertNextDate('2019-03-14', 'yearly on the 14th of March', $exactlyNow);
 
         $this->assertNextDate('2018-03-14', 'yearly on the 14th of March', $afterNow);
+    }
+
+    /** @test */
+    function it_can_have_a_yearly_interval()
+    {
+        $this->setTestNow('2018-05-01 12:00:15');
+
+        [$beforeNow, $exactlyNow, $afterNow] = $this->getTimeStrings();
+
+        $this->assertNextDate('2020-05-01', 'every 2 years in May', $afterNow);
+
+        $this->setTestNowDate('2020-05-01');
+
+        $this->assertNextDate('2022-05-01', 'every 2 years in May', $afterNow);
+    }
+
+    /** @test */
+    function it_understand_large_values()
+    {
+        $this->setTestNow('2018-05-01 12:00:15');
+
+        $this->assertNextDate('2028-01-01', 'every decade');
+
+        $this->assertNextDate('2118-01-01', 'every century');
+
+        $this->assertNextDate('3018-01-01', 'every millennium');
+    }
+
+    /** @test */
+    function it_has_the_correct_interval_description()
+    {
+        $this->assertIntervalDescription('yearly', 'yearly');
+
+        $this->assertIntervalDescription('every 2 years', 'every 2 years');
     }
 }

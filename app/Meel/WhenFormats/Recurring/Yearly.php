@@ -10,13 +10,23 @@ class Yearly extends RecurringWhenFormat
 {
     protected $intervalDescription = 'yearly';
 
+    protected $yearInterval = 1;
+
     protected $dateOfTheMonth = 1;
 
     protected $monthOfTheYear = 'january';
 
     public function __construct(string $string)
     {
-        $this->usableMatch = strpos($string, 'yearly') !== false;
+        if (preg_match('/every (\d+) years?/', $string, $matches)) {
+            $this->yearInterval = (int) $matches[1];
+
+            $this->usableMatch = $this->yearInterval > 0;
+
+            if ($this->yearInterval > 1) {
+                $this->intervalDescription = 'every '.$this->yearInterval.' years';
+            }
+        }
 
         if (preg_match('/(january|february|march|april|may|june|july|august|september|october|november|december)/', $string, $matches)) {
             $this->monthOfTheYear = $matches[1];
@@ -33,21 +43,25 @@ class Yearly extends RecurringWhenFormat
 
     public function getNextDate(SecondlessTimeString $setTime, $timezone = null): DateString
     {
-        $setTimeIsLaterThanNow = $setTime->laterThanNow($timezone);
+        $carbon = Carbon::parse('this year '.$this->monthOfTheYear);
 
-        $thisYear = Carbon::parse('this year '.$this->monthOfTheYear)->lastOfMonth();
-
-        if ($thisYear->day >= $this->dateOfTheMonth) {
-            $thisYear->day($this->dateOfTheMonth);
+        if ($this->yearInterval > 1) {
+            $carbon->addYears($this->yearInterval);
         }
 
-        $thisYearDateString = new DateString($thisYear);
+        $carbon->lastOfMonth();
+
+        if ($carbon->day >= $this->dateOfTheMonth) {
+            $carbon->day($this->dateOfTheMonth);
+        }
+
+        $thisYearDateString = new DateString($carbon);
 
         if ($thisYearDateString->isAfterToday($timezone)) {
             return $thisYearDateString;
         }
 
-        if ($thisYearDateString->isToday($timezone) && $setTimeIsLaterThanNow) {
+        if ($thisYearDateString->isToday($timezone) && $setTime->laterThanNow($timezone)) {
             return $thisYearDateString;
         }
 

@@ -55,7 +55,8 @@ class WhenStringTest extends TestCase
     /** @test */
     function it_changes_yearly_text()
     {
-        $this->assertPreparedInput('yearly', 'every year');
+        $this->assertPreparedInput('every 1 year', 'yearly');
+        $this->assertPreparedInput('every 1 year', 'every year');
     }
 
     /** @test */
