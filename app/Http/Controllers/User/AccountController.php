@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
-use App\Support\Enums\Timezones;
+use App\Support\Enums\Timezone;
 use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
@@ -22,7 +22,7 @@ class AccountController extends Controller
     {
         return view('account.settings', [
             'user'      => Auth::user(),
-            'timezones' => Timezones::selectValues(),
+            'timezones' => Timezone::selectValues(),
         ]);
     }
 
@@ -36,7 +36,7 @@ class AccountController extends Controller
     public function updateTimezone(Request $request)
     {
         $values = $request->validate([
-            'timezone' => Timezones::required(),
+            'timezone' => Timezone::required(),
         ]);
 
         $request->user()->update($values);

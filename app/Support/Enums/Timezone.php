@@ -4,7 +4,7 @@ namespace App\Support\Enums;
 
 use DateTimeZone;
 
-class Timezones extends EnumArray
+class Timezone extends EnumArray
 {
     const VALUES = [
         'Africa/Abidjan',

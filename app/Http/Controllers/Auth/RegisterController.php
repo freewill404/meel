@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Rules\UniqueEmail;
 use App\Models\User;
 use App\Http\Controllers\Controller;
-use App\Support\Enums\Timezones;
+use App\Support\Enums\Timezone;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -20,7 +20,7 @@ class RegisterController extends Controller
     public function showRegistrationForm()
     {
         return view('auth.register', [
-            'timezones' => Timezones::selectValues(),
+            'timezones' => Timezone::selectValues(),
         ]);
     }
 
@@ -28,7 +28,7 @@ class RegisterController extends Controller
     {
         $request->validate([
             'email'    => ['required', 'string', 'email', 'max:255', new UniqueEmail],
-            'timezone' => Timezones::required(),
+            'timezone' => Timezone::required(),
             'password' => 'required|string|min:6|confirmed',
         ]);
 

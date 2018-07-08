@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Support\Enums;
 
-use App\Support\Enums\Timezones;
+use App\Support\Enums\Timezone;
 use Tests\TestCase;
 
 class TimezonesTest extends TestCase
@@ -10,7 +10,7 @@ class TimezonesTest extends TestCase
     /** @test */
     function all_timezones_are_valid()
     {
-        $values = Timezones::selectValues();
+        $values = Timezone::selectValues();
 
         collect($values)
             ->values()
@@ -25,7 +25,7 @@ class TimezonesTest extends TestCase
                 now($timezone); // invalid timezones will throw an exception.
             })
             ->filter(function ($timezone) {
-                return ! Timezones::has($timezone);
+                return ! Timezone::has($timezone);
             })
             ->tap(function ($timezones) {
                $this->assertCount(0, $timezones);
