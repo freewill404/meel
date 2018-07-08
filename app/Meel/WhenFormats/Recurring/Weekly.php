@@ -4,7 +4,6 @@ namespace App\Meel\WhenFormats\Recurring;
 
 use App\Support\DateTime\DateString;
 use App\Support\DateTime\SecondlessTimeString;
-use App\Support\Enums\Days;
 use Carbon\Carbon;
 
 class Weekly extends RecurringWhenFormat
@@ -27,7 +26,7 @@ class Weekly extends RecurringWhenFormat
             }
         }
 
-        if (preg_match('/'.Days::regex().'/', $string, $matches)) {
+        if (preg_match('/(monday|tuesday|wednesday|thursday|friday|saturday|sunday)/', $string, $matches)) {
             $this->day = $matches[1];
         }
     }

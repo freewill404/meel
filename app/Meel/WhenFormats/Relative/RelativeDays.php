@@ -2,7 +2,6 @@
 
 namespace App\Meel\WhenFormats\Relative;
 
-use App\Support\Enums\Days;
 use Carbon\Carbon;
 use LogicException;
 
@@ -33,7 +32,7 @@ class RelativeDays extends RelativeWhenFormat
             return (int) $matches[1];
         }
 
-        if (preg_match('/(?:next |this |on |^)'.Days::regex().'/', $string, $matches)) {
+        if (preg_match('/(?:^|next |this |on )(monday|tuesday|wednesday|thursday|friday|saturday|sunday)/', $string, $matches)) {
             return $this->daysUntilNext($matches[1], $timezone);
         }
 
@@ -42,14 +41,14 @@ class RelativeDays extends RelativeWhenFormat
 
     protected function daysUntilNext(string $day, $timezone): int
     {
-        $dayInt = Days::toInt($day);
+        $day = ucfirst($day);
 
         $carbon = now($timezone);
 
         for ($i = 1; $i <= 7; $i++) {
             $carbon->addDays(1);
 
-            if ($carbon->dayOfWeek === $dayInt) {
+            if ($carbon->format('l') === $day) {
                 return $i;
             }
         }
