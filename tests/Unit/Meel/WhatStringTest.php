@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit;
+namespace Tests\Unit\Meel;
 
 use App\Meel\WhatString;
 use App\Models\User;
