@@ -14,6 +14,10 @@ class YearlyTest extends RecurringWhenFormatTestCase
         'yearly on the 28th of March',
     ];
 
+    protected $shouldNotMatch = [
+        'every 0 years',
+    ];
+
     /** @test */
     function it_uses_a_default_date_if_no_date_is_specified()
     {

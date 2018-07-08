@@ -14,6 +14,10 @@ class DailyTest extends RecurringWhenFormatTestCase
         'daily bla bla bla 18',
     ];
 
+    protected $shouldNotMatch = [
+        'every 0 days',
+    ];
+
     /** @test */
     function it_can_get_the_next_date_on_the_same_day()
     {

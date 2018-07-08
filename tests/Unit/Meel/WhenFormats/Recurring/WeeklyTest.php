@@ -16,6 +16,10 @@ class WeeklyTest extends RecurringWhenFormatTestCase
         'every 2 weeks on thursday',
     ];
 
+    protected $shouldNotMatch = [
+        'every 0 weeks',
+    ];
+
     /** @test */
     function it_can_get_the_next_date_on_the_same_day()
     {

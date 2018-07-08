@@ -17,9 +17,9 @@ class Weekly extends RecurringWhenFormat
     public function __construct(string $string)
     {
         if (preg_match('/every (\d+) weeks?/', $string, $matches)) {
-            $this->usableMatch = true;
-
             $this->weekInterval = (int) $matches[1];
+
+            $this->usableMatch = $this->weekInterval > 0;
 
             if ($this->weekInterval > 1) {
                 $this->intervalDescription = 'every '.$this->weekInterval.' weeks';
