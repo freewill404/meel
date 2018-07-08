@@ -12,6 +12,7 @@ class DailyTest extends RecurringWhenFormatTestCase
         'daily',
         'daily at 18:00',
         'daily bla bla bla 18',
+        'every 2 days',
     ];
 
     protected $shouldNotMatch = [
@@ -28,5 +29,17 @@ class DailyTest extends RecurringWhenFormatTestCase
         $this->assertNextDate('2018-03-29', 'daily', $exactlyNow);
 
         $this->assertNextDate('2018-03-28', 'daily', $afterNow);
+    }
+
+    /** @test */
+    function it_can_be_daily_with_an_interval()
+    {
+        $this->setTestNowDate('2018-03-15');
+
+        $this->assertNextDate('2018-03-17', 'every 2 days');
+
+        $this->setTestNowDate('2018-03-17');
+
+        $this->assertNextDate('2018-03-19', 'every 2 days');
     }
 }

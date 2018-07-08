@@ -38,7 +38,6 @@ class WhenString
         'feb'  => 'february',
         'mar'  => 'march',
         'apr'  => 'april',
-        // may
         'jun'  => 'june',
         'jul'  => 'july',
         'aug'  => 'august',
@@ -48,7 +47,9 @@ class WhenString
         'nov'  => 'november',
         'dec'  => 'december',
 
-        'every day'   => 'daily',
+        'daily'     => 'every 1 day',
+        'every day' => 'every 1 day',
+
         'every year'  => 'yearly',
 
         'bimonthly'   => 'every 2 month',
