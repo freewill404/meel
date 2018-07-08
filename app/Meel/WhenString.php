@@ -24,7 +24,6 @@ class WhenString
         'sixty'   => '60',
 
         'every day'   => 'daily',
-        'every week'  => 'weekly',
         'every year'  => 'yearly',
 
         'bimonthly'   => 'every 2 month',
@@ -33,13 +32,19 @@ class WhenString
         'every month' => 'every 1 month',
         'monthly'     => 'every 1 month',
 
-        'every monday'    => 'weekly on monday',
-        'every tuesday'   => 'weekly on tuesday',
-        'every wednesday' => 'weekly on wednesday',
-        'every thursday'  => 'weekly on thursday',
-        'every friday'    => 'weekly on friday',
-        'every saturday'  => 'weekly on saturday',
-        'every sunday'    => 'weekly on sunday',
+        'every week' => 'every 1 week',
+        'biweekly'   => 'every 2 week',
+        'bi weekly'  => 'every 2 week',
+        'bi-weekly'  => 'every 2 week',
+        'weekly'     => 'every 1 week',
+
+        'every monday'    => 'every 1 week on monday',
+        'every tuesday'   => 'every 1 week on tuesday',
+        'every wednesday' => 'every 1 week on wednesday',
+        'every thursday'  => 'every 1 week on thursday',
+        'every friday'    => 'every 1 week on friday',
+        'every saturday'  => 'every 1 week on saturday',
+        'every sunday'    => 'every 1 week on sunday',
 
         'first'  => '1st',
         'second' => '2nd',

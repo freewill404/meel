@@ -34,6 +34,8 @@ class EmailScheduleFormatTest extends TestCase
         $this->assertRecurringSchedule('every monday at 11', '2018-04-02 11:00:00');
 
         $this->assertRecurringSchedule('every saturday at 11', '2018-03-31 11:00:00');
+
+        $this->assertRecurringSchedule('every two weeks on saturday at 11', '2018-04-07 11:00:00');
     }
 
     /** @test */

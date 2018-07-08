@@ -11,13 +11,21 @@ class Weekly extends RecurringWhenFormat
 {
     protected $intervalDescription = 'weekly';
 
+    protected $weekInterval = 1;
+
     protected $day;
 
     public function __construct(string $string)
     {
-        $this->usableMatch = strpos($string, 'weekly') !== false;
+        if (preg_match('/every (\d+) weeks?/', $string, $matches)) {
+            $this->usableMatch = true;
 
-        $this->day = Days::MONDAY;
+            $this->weekInterval = (int) $matches[1];
+
+            if ($this->weekInterval > 1) {
+                $this->intervalDescription = 'every '.$this->weekInterval.' weeks';
+            }
+        }
 
         if (preg_match('/'.Days::regex().'/', $string, $matches)) {
             $this->day = $matches[1];
@@ -29,8 +37,21 @@ class Weekly extends RecurringWhenFormat
         $setTimeIsLaterThanNow = $setTime->laterThanNow($timezone);
 
         $weeklyOnDay = new DateString(
-            Carbon::parse('this week '.$this->day, $timezone)
+            $carbon = Carbon::parse('this week '.$this->day, $timezone)
         );
+
+        // Weekly schedules  with an interval essentially work like this:
+        //     "in 2 weeks on wednesday === in 2 wednesdays from now".
+        //
+        // If the schedule is for a wednesday, and today is tuesday,
+        // the next wednesday (tomorrow) counts as the first week.
+        if ($this->weekInterval > 1) {
+            $carbon->addWeeks(
+                $this->weekInterval - ($weeklyOnDay->isAfterToday($timezone) ? 1 : 0)
+            );
+        }
+
+        $weeklyOnDay = new DateString($carbon);
 
         if ($weeklyOnDay->isAfterToday($timezone)) {
             return $weeklyOnDay;

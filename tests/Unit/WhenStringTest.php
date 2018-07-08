@@ -53,22 +53,40 @@ class WhenStringTest extends TestCase
     }
 
     /** @test */
-    function it_changes_recurring_text_to_single_words()
+    function it_changes_yearly_text()
     {
-        $this->assertPreparedInput('weekly', 'every week');
         $this->assertPreparedInput('yearly', 'every year');
+    }
 
+    /** @test */
+    function it_changes_monthly_text()
+    {
         $this->assertPreparedInput('every 1 month', 'every month');
         $this->assertPreparedInput('every 1 month', 'monthly');
         $this->assertPreparedInput('every 3 months', 'every 3 months');
 
-        $this->assertPreparedInput('weekly on monday',    'every monday');
-        $this->assertPreparedInput('weekly on tuesday',   'every tuesday');
-        $this->assertPreparedInput('weekly on wednesday', 'every wednesday');
-        $this->assertPreparedInput('weekly on thursday',  'every thursday');
-        $this->assertPreparedInput('weekly on friday',    'every friday');
-        $this->assertPreparedInput('weekly on saturday',  'every saturday');
-        $this->assertPreparedInput('weekly on sunday',    'every sunday');
+        $this->assertPreparedInput('every 2 month', 'bimonthly');
+        $this->assertPreparedInput('every 2 month', 'bi monthly');
+        $this->assertPreparedInput('every 2 month', 'bi-monthly');
+    }
+
+    /** @test */
+    function it_changes_weekly_text()
+    {
+        $this->assertPreparedInput('every 1 week', 'weekly');
+        $this->assertPreparedInput('every 1 week', 'every week');
+
+        $this->assertPreparedInput('every 2 week', 'biweekly');
+        $this->assertPreparedInput('every 2 week', 'bi weekly');
+        $this->assertPreparedInput('every 2 week', 'bi-weekly');
+
+        $this->assertPreparedInput('every 1 week on monday',    'every monday');
+        $this->assertPreparedInput('every 1 week on tuesday',   'every tuesday');
+        $this->assertPreparedInput('every 1 week on wednesday', 'every wednesday');
+        $this->assertPreparedInput('every 1 week on thursday',  'every thursday');
+        $this->assertPreparedInput('every 1 week on friday',    'every friday');
+        $this->assertPreparedInput('every 1 week on saturday',  'every saturday');
+        $this->assertPreparedInput('every 1 week on sunday',    'every sunday');
     }
 
     private function assertPreparedInput($expected, $input)
@@ -78,7 +96,7 @@ class WhenStringTest extends TestCase
         $this->assertSame(
             $expected,
             $actual = $whenString->getPreparedString(),
-            "WhenString input '{$input}' was prepared as '{$actual}', should be '{$expected}'"
+            "WhenString input '{$input}' was prepared as '{$actual}', expected '{$expected}'"
         );
     }
 }

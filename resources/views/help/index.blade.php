@@ -39,6 +39,7 @@
                 <li>Every third Saturday of the month</li>
                 <li>Every last Saturday of the month</li>
                 <li>Every 3 months</li>
+                <li>Every 4 weeks on Saturday</li>
                 <li>Yearly</li>
             </ul>
             <p class="mt-4">
