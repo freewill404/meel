@@ -23,6 +23,15 @@ class WhenString
         'thirty'  => '30',
         'sixty'   => '60',
 
+        'mon'  => 'monday',
+        'tue'  => 'tuesday',
+        'tues' => 'tuesday',
+        'wed'  => 'wednesday',
+        'thu'  => 'thursday',
+        'fri'  => 'friday',
+        'sat'  => 'saturday',
+        'sun'  => 'sunday',
+
         'every day'   => 'daily',
         'every year'  => 'yearly',
 
