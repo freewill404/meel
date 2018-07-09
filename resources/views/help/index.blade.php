@@ -175,7 +175,7 @@
             <p>
                 Adding "%f[X]" to a what text will format the current datetime, with X being used as the <a class="underline" href="http://php.net/manual/en/function.date.php" rel="nofollow" target="_blank">php date format</a>.
                 <br><br>
-                Examples, the formatted result is contained in (braces).
+                Examples, the formatted result is contained in (parentheses).
             </p>
             <ul>
                 <li>Review week %f[W]/52 <i>(Review week 13/52)</i></li>
