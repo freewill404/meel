@@ -36,6 +36,7 @@
                 <li>Daily</li>
                 <li>Weekly</li>
                 <li>Monthly</li>
+                <li>Every Monday, Thursday and Sunday</li>
                 <li>Every third Saturday of the month</li>
                 <li>Every last Saturday of the month</li>
                 <li>Every 3 months</li>

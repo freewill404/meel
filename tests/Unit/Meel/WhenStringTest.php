@@ -35,6 +35,20 @@ class WhenStringTest extends TestCase
     }
 
     /** @test */
+    function it_replaces_commas()
+    {
+        $this->assertPreparedInput('the d and e and f', 'the d, e and f');
+
+        $this->assertPreparedInput('the d and e and f', 'the d,e,f');
+
+        $this->assertPreparedInput('the d and e and f and', 'the d,e,f,');
+
+        $this->assertPreparedInput('the d and and b', 'the d,,b');
+
+        $this->assertPreparedInput('every monday and tuesday and thursday and friday', 'every mon, tues, thurs,fri');
+    }
+
+    /** @test */
     function it_changes_written_numbers_to_actual_numbers()
     {
         $this->assertPreparedInput('in 1 hour', 'in one hour');
@@ -80,14 +94,6 @@ class WhenStringTest extends TestCase
         $this->assertPreparedInput('every 2 week', 'biweekly');
         $this->assertPreparedInput('every 2 week', 'bi weekly');
         $this->assertPreparedInput('every 2 week', 'bi-weekly');
-
-        $this->assertPreparedInput('every 1 week on monday',    'every monday');
-        $this->assertPreparedInput('every 1 week on tuesday',   'every tuesday');
-        $this->assertPreparedInput('every 1 week on wednesday', 'every wednesday');
-        $this->assertPreparedInput('every 1 week on thursday',  'every thursday');
-        $this->assertPreparedInput('every 1 week on friday',    'every friday');
-        $this->assertPreparedInput('every 1 week on saturday',  'every saturday');
-        $this->assertPreparedInput('every 1 week on sunday',    'every sunday');
     }
 
     /** @test */

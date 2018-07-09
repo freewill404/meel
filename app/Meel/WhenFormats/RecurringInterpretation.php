@@ -15,6 +15,7 @@ class RecurringInterpretation
         Recurring\Monthly::class,
         Recurring\Weekly::class,
         Recurring\Daily::class,
+        Recurring\GivenDays::class,
     ];
 
     protected $matchedFormat = null;

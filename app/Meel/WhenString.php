@@ -79,19 +79,11 @@ class WhenString
         'every month' => 'every 1 month',
         'monthly'     => 'every 1 month',
 
-        'every week' => 'every 1 week',
         'biweekly'   => 'every 2 week',
         'bi weekly'  => 'every 2 week',
         'bi-weekly'  => 'every 2 week',
+        'every week' => 'every 1 week',
         'weekly'     => 'every 1 week',
-
-        'every monday'    => 'every 1 week on monday',
-        'every tuesday'   => 'every 1 week on tuesday',
-        'every wednesday' => 'every 1 week on wednesday',
-        'every thursday'  => 'every 1 week on thursday',
-        'every friday'    => 'every 1 week on friday',
-        'every saturday'  => 'every 1 week on saturday',
-        'every sunday'    => 'every 1 week on sunday',
 
         'first'  => '1st',
         'second' => '2nd',
@@ -101,6 +93,10 @@ class WhenString
 
     public function __construct(string $string)
     {
+        $string = str_replace(',', ' and ', $string);
+
+        $string = preg_replace('/  +/', ' ', $string);
+
         $string = trim($string);
 
         $string = strtolower($string);
