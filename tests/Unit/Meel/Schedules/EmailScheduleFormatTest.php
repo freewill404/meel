@@ -8,93 +8,87 @@ use Tests\TestCase;
 
 class EmailScheduleFormatTest extends TestCase
 {
+    protected $singleOccurrenceSchedules = [
+        'in 1 minute'       => '2018-03-28 12:01:00',
+        'now'               => '2018-03-28 12:00:00',
+        'at 18'             => '2018-03-28 18:00:00',
+        'tomorrow at 17'    => '2018-03-29 17:00:00',
+        'next wednesday'    => '2018-04-04 08:00:00',
+        'next sat'          => '2018-03-31 08:00:00',
+        'this sat at 22:00' => '2018-03-31 22:00:00',
+        'saturday at 22:00' => '2018-03-31 22:00:00',
+        'sat at 22:00'      => '2018-03-31 22:00:00',
+        'sat'               => '2018-03-31 08:00:00',
+    ];
+
+    protected $recurringSchedules = [
+
+        '2018-03-28 12:00:15' => [
+            'every 2 weeks on sat at 11' => ['2018-04-07 11:00:00', '2018-04-21 11:00:00'],
+            'every saturday at 11'       => ['2018-03-31 11:00:00', '2018-04-07 11:00:00'],
+            'every month'                => ['2018-04-01 08:00:00', '2018-05-01 08:00:00'],
+            'every 2 months on the 25th' => ['2018-05-25 08:00:00', '2018-07-25 08:00:00'],
+            'yearly'                     => ['2019-01-01 08:00:00', '2020-01-01 08:00:00'],
+            'yearly in may'              => ['2018-05-01 08:00:00', '2019-05-01 08:00:00'],
+            'daily'                      => ['2018-03-29 08:00:00', '2018-03-30 08:00:00'],
+            'daily at 16:20'             => ['2018-03-28 16:20:00', '2018-03-29 16:20:00'],
+
+            'every 3rd sat of the month at 7:00' => ['2018-04-21 07:00:00'],
+
+            'every monday and tuesday at 11' => [
+                '2018-04-02 11:00:00',
+                '2018-04-03 11:00:00',
+                '2018-04-09 11:00:00',
+            ],
+        ],
+
+        '2018-05-19 14:00:15' => [
+            'every third saturday of the month' => ['2018-06-16 08:00:00', '2018-07-21 08:00:00'],
+        ],
+
+    ];
+
+    protected $noMatch = [
+        'next',
+        'next durrday',
+        'at 7', // "at 7" is in the past (now: 2018-03-28 12:00:00)
+    ];
+
     /** @test */
     function it_determines_the_next_occurrence_for_non_recurring_schedules()
     {
-        $this->assertSingleOccurrenceSchedule('in 1 minute', '2018-03-28 12:01:00');
-
-        $this->assertSingleOccurrenceSchedule('now', '2018-03-28 12:00:00');
-
-        $this->assertSingleOccurrenceSchedule('at 18', '2018-03-28 18:00:00');
-
-        $this->assertSingleOccurrenceSchedule('tomorrow at 17', '2018-03-29 17:00:00');
-
-        $this->assertSingleOccurrenceSchedule('next wednesday', '2018-04-04 08:00:00');
-        $this->assertSingleOccurrenceSchedule('next sat',       '2018-03-31 08:00:00');
-
-        $this->assertSingleOccurrenceSchedule('this saturday at 22:00', '2018-03-31 22:00:00');
-        $this->assertSingleOccurrenceSchedule('saturday at 22:00',      '2018-03-31 22:00:00');
-        $this->assertSingleOccurrenceSchedule('sat at 22:00',           '2018-03-31 22:00:00');
-        $this->assertSingleOccurrenceSchedule('sat',                    '2018-03-31 08:00:00');
+        foreach ($this->singleOccurrenceSchedules as $when => $expectedNextOccurrence) {
+            $this->assertSingleOccurrenceSchedule($when, $expectedNextOccurrence);
+        }
     }
 
     /** @test */
-    function it_determines_the_next_occurrence_for_weekly_recurring_schedules()
+    function it_determines_the_next_occurrence_for_recurring_schedules()
     {
-        $this->assertRecurringSchedule('every week on saturday at 11', '2018-03-31 11:00:00');
+        foreach ($this->recurringSchedules as $dateTime => $recurringSchedules) {
+            foreach ($recurringSchedules as $when => $occurrences) {
+                $this->setTestNow($dateTime);
 
-        $this->assertRecurringSchedule('every two weeks on saturday at 11', '2018-04-07 11:00:00');
-    }
+                foreach ($occurrences as $expectedOccurrence) {
+                    $this->assertRecurringSchedule($when, $expectedOccurrence);
 
-    /** @test */
-    function it_determines_the_next_occurrence_for_given_days_recurring_schedules()
-    {
-        $this->assertRecurringSchedule('every saturday at 11', '2018-03-31 11:00:00');
-
-        $this->assertRecurringSchedule('every monday and tuesday at 11', '2018-04-02 11:00:00');
-        $this->setTestNowDate('2018-04-02');
-        $this->assertRecurringSchedule('every monday and tuesday at 11', '2018-04-03 11:00:00');
-        $this->setTestNowDate('2018-04-03');
-        $this->assertRecurringSchedule('every monday and tuesday at 11', '2018-04-09 11:00:00');
-    }
-
-    /** @test */
-    function it_determines_the_next_occurrence_for_monthly_recurring_schedules()
-    {
-        $this->assertRecurringSchedule('every month', '2018-04-01 08:00:00');
-
-        $this->assertRecurringSchedule('every 2 months on the 25th', '2018-05-25 08:00:00');
-
-        $this->assertRecurringSchedule('every third saturday of the month at 7:00', '2018-04-21 07:00:00');
-
-        Carbon::setTestNow('2018-05-19 14:00:15');
-        $this->assertRecurringSchedule('every third saturday of the month', '2018-06-16 08:00:00');
-    }
-
-    /** @test */
-    function it_determines_the_next_occurrence_for_yearly_recurring_schedules()
-    {
-        $this->assertRecurringSchedule('yearly', '2019-01-01 08:00:00');
-
-        $this->assertRecurringSchedule('yearly in may', '2018-05-01 08:00:00');
-    }
-
-    /** @test */
-    function it_determines_the_next_occurrence_for_daily_recurring_schedules()
-    {
-        $this->assertRecurringSchedule('daily', '2018-03-29 08:00:00');
-
-        $this->assertRecurringSchedule('daily at 16:20', '2018-03-28 16:20:00');
+                    $this->setTestNow($expectedOccurrence)->progressTimeInSeconds(15);
+                }
+            }
+        }
     }
 
     /** @test */
     function it_does_not_match_things()
     {
-        $this->assertNotUsable('next');
-        $this->assertNotUsable('next durrday');
+        foreach ($this->noMatch as $when) {
+            $scheduleFormat = new EmailScheduleFormat($when);
 
-        // "at 7" is in the past (now: 2018-03-28 12:00:00)
-        $this->assertNotUsable('at 7');
-    }
-
-    private function assertNotUsable(string $writtenInput)
-    {
-        $scheduleFormat = new EmailScheduleFormat($writtenInput);
-
-        $this->assertFalse(
-            $scheduleFormat->isUsableInterpretation(),
-            '"'.$writtenInput.'" should not be a usable interpretation'
-        );
+            $this->assertFalse(
+                $scheduleFormat->isUsableInterpretation(),
+                '"'.$when.'" should not be a usable interpretation'
+            );
+        }
     }
 
     private function assertSingleOccurrenceSchedule(string $writtenInput, string $expectedNextOccurrence)
