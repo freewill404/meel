@@ -4,7 +4,7 @@ namespace App\Listeners;
 
 use App\Events\EmailNotSent;
 use App\Events\EmailSent;
-use App\Meel\EmailScheduleFormat;
+use App\Meel\Schedules\EmailScheduleFormat;
 
 class SetNextOccurrence
 {

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Meel\EmailScheduleFormat;
+use App\Meel\Schedules\EmailScheduleFormat;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 

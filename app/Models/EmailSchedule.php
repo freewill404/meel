@@ -4,8 +4,8 @@ namespace App\Models;
 
 use App\Events\EmailNotSent;
 use App\Jobs\SendScheduledEmailJob;
-use App\Meel\EmailScheduleFormat;
-use App\Meel\WhatString;
+use App\Meel\Schedules\EmailScheduleFormat;
+use App\Meel\Schedules\WhatString;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 

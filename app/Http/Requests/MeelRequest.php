@@ -3,7 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Http\Rules\UsableWhen;
-use App\Meel\EmailScheduleFormat;
+use App\Meel\Schedules\EmailScheduleFormat;
 
 class MeelRequest extends BaseRequest
 {

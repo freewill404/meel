@@ -1,7 +1,7 @@
 <?php
 
 use App\Support\DateTime\SecondlessDateTimeString;
-use App\Meel\EmailScheduleFormat;
+use App\Meel\Schedules\EmailScheduleFormat;
 use App\Models\EmailSchedule;
 
 /**

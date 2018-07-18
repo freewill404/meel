@@ -2,7 +2,7 @@
 
 namespace App\Http\Rules;
 
-use App\Meel\EmailScheduleFormat;
+use App\Meel\Schedules\EmailScheduleFormat;
 use Illuminate\Contracts\Validation\Rule;
 
 class UsableWhen implements Rule
