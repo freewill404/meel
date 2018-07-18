@@ -28,14 +28,14 @@ class WhatStringTest extends TestCase
     {
         $user = factory(User::class)->create();
 
-        $emailSchedule = $user->emailSchedules()->create([
+        $schedule = $user->schedules()->create([
             'what' => 'https://example.com/aa%fest https://example.com/aa%dest %t https://example.com/%fest',
             'when' => 'in 1 hour',
         ]);
 
         $this->assertSame(
             'https://example.com/aa%fest https://example.com/aa%dest 1 https://example.com/%fest',
-            WhatString::format($emailSchedule)
+            WhatString::format($schedule)
         );
     }
 
@@ -44,14 +44,14 @@ class WhatStringTest extends TestCase
     {
         $user = factory(User::class)->create();
 
-        $emailSchedule = $user->emailSchedules()->create([
+        $schedule = $user->schedules()->create([
             'what' => 'http://example.com/aa%25fest',
             'when' => 'in 1 hour',
         ]);
 
         $this->assertSame(
             'http://example.com/aa%25fest',
-            WhatString::format($emailSchedule)
+            WhatString::format($schedule)
         );
     }
 
@@ -63,30 +63,30 @@ class WhatStringTest extends TestCase
             'timezone' => $timezone,
         ]);
 
-        $emailSchedule = $user->emailSchedules()->create([
+        $schedule = $user->schedules()->create([
             'what' => $what,
             'when' => 'in 1 hour',
         ]);
 
         $this->progressTimeInHours(1);
 
-        $emailSchedule->emailScheduleHistories()->create([
+        $schedule->scheduleHistories()->create([
             'sent_at' => secondless_now($user->timezone),
         ]);
 
         $this->progressTimeInHours(1);
 
-        $emailSchedule->emailScheduleHistories()->create([
+        $schedule->scheduleHistories()->create([
             'sent_at' => secondless_now($user->timezone),
         ]);
 
         $this->progressTimeInHours(1);
 
-        $emailSchedule->refresh();
+        $schedule->refresh();
 
         $this->assertSame(
             $expected,
-            WhatString::format($emailSchedule)
+            WhatString::format($schedule)
         );
     }
 }

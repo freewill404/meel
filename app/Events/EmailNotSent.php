@@ -2,14 +2,14 @@
 
 namespace App\Events;
 
-use App\Models\EmailSchedule;
+use App\Models\Schedule;
 
 class EmailNotSent extends BaseEvent
 {
-    public $emailSchedule;
+    public $schedule;
 
-    public function __construct(EmailSchedule $emailSchedule)
+    public function __construct(Schedule $schedule)
     {
-        $this->emailSchedule = $emailSchedule;
+        $this->schedule = $schedule;
     }
 }

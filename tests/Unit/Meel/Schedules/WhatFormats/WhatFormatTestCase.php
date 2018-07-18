@@ -13,10 +13,10 @@ abstract class WhatFormatTestCase extends TestCase
 
     protected $whatFormat;
 
-    protected function assertFormattedWhen($expected, $rawWhen, $emailSchedule)
+    protected function assertFormattedWhen($expected, $rawWhen, $schedule)
     {
         /** @var WhatFormat $whatFormat */
-        $whatFormat = new $this->whatFormat($emailSchedule);
+        $whatFormat = new $this->whatFormat($schedule);
 
         $this->assertSame(
             $expected,
@@ -24,9 +24,9 @@ abstract class WhatFormatTestCase extends TestCase
         );
     }
 
-    protected function assertNoFormatApplied($rawWhen, $emailSchedule)
+    protected function assertNoFormatApplied($rawWhen, $schedule)
     {
-        $this->assertFormattedWhen($rawWhen, $rawWhen, $emailSchedule);
+        $this->assertFormattedWhen($rawWhen, $rawWhen, $schedule);
     }
 
     protected function createUserAndSchedule($timezone = 'Europe/Amsterdam')
@@ -35,11 +35,11 @@ abstract class WhatFormatTestCase extends TestCase
             'timezone' => $timezone,
         ]);
 
-        $emailSchedule = $user->emailSchedules()->create([
+        $schedule = $user->schedules()->create([
             'what' => 'no what',
             'when' => 'in 1 hour',
         ]);
 
-        return [$user, $emailSchedule];
+        return [$user, $schedule];
     }
 }

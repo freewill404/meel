@@ -92,12 +92,12 @@ class DecrementUserEmailsLeftTest extends TestCase
             'paid_emails_left' => $paidEmails,
         ]);
 
-        $emailSchedule = $user->emailSchedules()->create([
+        $schedule = $user->schedules()->create([
             'what' => 'The what text',
             'when' => 'every month',
         ]);
 
-        return [$user, $emailSchedule];
+        return [$user, $schedule];
     }
 
     private function handleEvent($schedule)

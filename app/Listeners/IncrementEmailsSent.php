@@ -11,6 +11,6 @@ class IncrementEmailsSent
     {
         SiteStats::incrementEmailsSent();
 
-        $event->emailSchedule->user->increment('emails_sent');
+        $event->schedule->user->increment('emails_sent');
     }
 }

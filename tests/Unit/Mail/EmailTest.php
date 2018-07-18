@@ -18,12 +18,12 @@ class WhatStringTest extends TestCase
     {
         $user = factory(User::class)->create();
 
-        $emailSchedule = $user->emailSchedules()->create([
+        $schedule = $user->schedules()->create([
             'what' => 'times sent: %t',
             'when' => 'in 1 minute',
         ]);
 
-        $email = new Email($emailSchedule);
+        $email = new Email($schedule);
 
         $view = $email->render();
 

@@ -6,7 +6,7 @@ use App\Events\EmailNotSent;
 use App\Events\EmailSent;
 use App\Events\UserAlmostOutOfEmails;
 use App\Events\UserOutOfEmails;
-use App\Listeners\CreateEmailScheduleHistory;
+use App\Listeners\CreateScheduleHistory;
 use App\Listeners\IncrementEmailsNotSent;
 use App\Listeners\IncrementEmailsSent;
 use App\Listeners\IncrementUsersRegistered;
@@ -28,7 +28,7 @@ class EventServiceProvider extends ServiceProvider
 
         EmailSent::class => [
             SetNextOccurrence::class,
-            CreateEmailScheduleHistory::class,
+            CreateScheduleHistory::class,
             IncrementEmailsSent::class,
             DecrementUserEmailsLeft::class,
         ],

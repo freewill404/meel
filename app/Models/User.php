@@ -25,9 +25,9 @@ class User extends Authenticatable
         'schedules_created' => 'integer',
     ];
 
-    public function emailSchedules()
+    public function schedules()
     {
-        return $this->hasMany(EmailSchedule::class)->orderBy('next_occurrence');
+        return $this->hasMany(Schedule::class)->orderBy('next_occurrence');
     }
 
     public function getDefaultWhenAttribute()

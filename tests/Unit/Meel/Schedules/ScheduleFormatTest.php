@@ -2,11 +2,11 @@
 
 namespace Tests\Unit\Meel\Schedules;
 
-use App\Meel\Schedules\EmailScheduleFormat;
+use App\Meel\Schedules\ScheduleFormat;
 use Illuminate\Support\Carbon;
 use Tests\TestCase;
 
-class EmailScheduleFormatTest extends TestCase
+class ScheduleFormatTest extends TestCase
 {
     protected $singleOccurrenceSchedules = [
         'in 1 minute'       => '2018-03-28 12:01:00',
@@ -82,7 +82,7 @@ class EmailScheduleFormatTest extends TestCase
     function it_does_not_match_things()
     {
         foreach ($this->noMatch as $when) {
-            $scheduleFormat = new EmailScheduleFormat($when);
+            $scheduleFormat = new ScheduleFormat($when);
 
             $this->assertFalse(
                 $scheduleFormat->isUsableInterpretation(),
@@ -93,7 +93,7 @@ class EmailScheduleFormatTest extends TestCase
 
     private function assertSingleOccurrenceSchedule(string $writtenInput, string $expectedNextOccurrence)
     {
-        $scheduleFormat = new EmailScheduleFormat($writtenInput);
+        $scheduleFormat = new ScheduleFormat($writtenInput);
 
         $this->assertTrue(
             $scheduleFormat->isUsableInterpretation(),
@@ -119,7 +119,7 @@ class EmailScheduleFormatTest extends TestCase
 
     private function assertRecurringSchedule(string $writtenInput, string $expectedNextOccurrence)
     {
-        $scheduleFormat = new EmailScheduleFormat($writtenInput);
+        $scheduleFormat = new ScheduleFormat($writtenInput);
 
         $this->assertTrue(
             $scheduleFormat->isUsableInterpretation(),

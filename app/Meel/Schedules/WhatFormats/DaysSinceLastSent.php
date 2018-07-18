@@ -23,8 +23,8 @@ class DaysSinceLastSent extends WhatFormat
         // 2018-03-28 18:00:00 - 2018-03-29 23:59:59 = 1 day difference
         $now = now($this->timezone)->setTimeFromTimeString('23:59:59');
 
-        $lastSent = $this->emailSchedule->last_sent_at
-            ? Carbon::parse($this->emailSchedule->last_sent_at, $this->timezone)
+        $lastSent = $this->schedule->last_sent_at
+            ? Carbon::parse($this->schedule->last_sent_at, $this->timezone)
             : null;
 
         $daysSinceLastSent = $lastSent

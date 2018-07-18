@@ -2,12 +2,12 @@
 
 namespace Tests\Unit\Controllers\Api;
 
-use App\Models\EmailSchedule;
+use App\Models\Schedule;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-class EmailScheduleControllerTest extends TestCase
+class ScheduleControllerTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -61,7 +61,7 @@ class EmailScheduleControllerTest extends TestCase
             ->deleteSchedule($schedule)
             ->assertStatus(200);
 
-        $this->assertSame(0, EmailSchedule::count());
+        $this->assertSame(0, Schedule::count());
     }
 
     /** @test */
@@ -74,28 +74,28 @@ class EmailScheduleControllerTest extends TestCase
             ->deleteSchedule($schedule2)
             ->assertStatus(403);
 
-        $this->assertSame(2, EmailSchedule::count());
+        $this->assertSame(2, Schedule::count());
     }
 
     private function createUserAndSchedule()
     {
         $user = factory(User::class)->create();
 
-        $emailSchedule = $user->emailSchedules()->create([
+        $schedule = $user->schedules()->create([
             'what' => 'the what text',
             'when' => 'tomorrow',
         ]);
 
-        return [$user, $emailSchedule];
+        return [$user, $schedule];
     }
 
-    private function updateSchedule($emailSchedule, $what)
+    private function updateSchedule($schedule, $what)
     {
-        return $this->json('PUT', route('api.emailSchedule.put', $emailSchedule), ['what' => $what]);
+        return $this->json('PUT', route('api.schedule.put', $schedule), ['what' => $what]);
     }
 
     private function deleteSchedule($schedule)
     {
-        return $this->json('DELETE', route('api.emailSchedule.delete', $schedule));
+        return $this->json('DELETE', route('api.schedule.delete', $schedule));
     }
 }

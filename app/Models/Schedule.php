@@ -4,12 +4,12 @@ namespace App\Models;
 
 use App\Events\EmailNotSent;
 use App\Jobs\SendScheduledEmailJob;
-use App\Meel\Schedules\EmailScheduleFormat;
+use App\Meel\Schedules\ScheduleFormat;
 use App\Meel\Schedules\WhatString;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 
-class EmailSchedule extends Model
+class Schedule extends Model
 {
     protected $guarded = [];
 
@@ -18,7 +18,7 @@ class EmailSchedule extends Model
     ];
 
     protected $with = [
-        'emailScheduleHistories',
+        'scheduleHistories',
     ];
 
     public function user()
@@ -35,7 +35,7 @@ class EmailSchedule extends Model
 
     public function getIsRecurringAttribute()
     {
-        $schedule = new EmailScheduleFormat($this->when);
+        $schedule = new ScheduleFormat($this->when);
 
         return $schedule->isRecurring();
     }
@@ -47,36 +47,36 @@ class EmailSchedule extends Model
 
     public function getTimesSentAttribute()
     {
-        return $this->emailScheduleHistories->count();
+        return $this->scheduleHistories->count();
     }
 
     public function getLastSentAtAttribute()
     {
-        $history = $this->emailScheduleHistories->first();
+        $history = $this->scheduleHistories->first();
 
         return $history ? $history->sent_at : null;
     }
 
-    public function emailScheduleHistories()
+    public function scheduleHistories()
     {
-        return $this->hasMany(EmailScheduleHistory::class)->orderByDesc('sent_at');
+        return $this->hasMany(ScheduleHistory::class)->orderByDesc('sent_at');
     }
 
     public static function shouldBeSentNow(): Collection
     {
-        $emailSchedules = collect();
+        $schedules = collect();
 
         foreach (User::getIdsByTimezone() as $timezone => $userIds) {
             $timezoneNow = secondless_now($timezone);
 
-            $emailSchedules = EmailSchedule::query()
+            $schedules = Schedule::query()
                 ->whereIn('user_id', $userIds)
                 ->where('next_occurrence', '<=', $timezoneNow)
                 ->get()
-                ->merge($emailSchedules);
+                ->merge($schedules);
         }
 
-        return $emailSchedules->sortBy(function ($item) {
+        return $schedules->sortBy(function ($item) {
             return $item->id;
         })->values();
     }

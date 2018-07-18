@@ -10,7 +10,7 @@ use App\Meel\Schedules\WhenFormats\RecurringInterpretation;
 use App\Meel\Schedules\WhenFormats\RelativeToNowInterpretation;
 use App\Meel\Schedules\WhenFormats\TimeInterpretation;
 
-class EmailScheduleFormat
+class ScheduleFormat
 {
     protected $dateInterpretation;
 

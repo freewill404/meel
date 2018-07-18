@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Controllers;
 
-use App\Models\EmailSchedule;
+use App\Models\Schedule;
 use App\Models\SiteStats;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -23,7 +23,7 @@ class HomeControllerTest extends TestCase
             ->assertStatus(302)
             ->assertRedirect(route('user.meel.ok'));
 
-        $this->assertSame('now', EmailSchedule::find(1)->when);
+        $this->assertSame('now', Schedule::find(1)->when);
     }
 
     /** @test */

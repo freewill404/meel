@@ -2,7 +2,7 @@
 
 namespace App\Mail;
 
-use App\Models\EmailSchedule;
+use App\Models\Schedule;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
@@ -11,16 +11,16 @@ class Email extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $emailSchedule;
+    public $schedule;
 
-    public function __construct(EmailSchedule $emailSchedule)
+    public function __construct(Schedule $schedule)
     {
-        $this->emailSchedule = $emailSchedule;
+        $this->schedule = $schedule;
     }
 
     public function build()
     {
-        return $this->subject($this->emailSchedule->formatted_what)
+        return $this->subject($this->schedule->formatted_what)
                     ->view('email.email');
     }
 }

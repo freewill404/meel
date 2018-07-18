@@ -11,6 +11,6 @@ class IncrementEmailsNotSent
     {
         SiteStats::incrementEmailsNotSent();
 
-        $event->emailSchedule->user->increment('emails_not_sent');
+        $event->schedule->user->increment('emails_not_sent');
     }
 }

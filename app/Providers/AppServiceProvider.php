@@ -2,8 +2,8 @@
 
 namespace App\Providers;
 
-use App\Listeners\Observers\EmailScheduleObserver;
-use App\Models\EmailSchedule;
+use App\Listeners\Observers\ScheduleObserver;
+use App\Models\Schedule;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Passport\Passport;
 
@@ -11,7 +11,7 @@ class AppServiceProvider extends ServiceProvider
 {
     public function boot()
     {
-        EmailSchedule::observe(EmailScheduleObserver::class);
+        Schedule::observe(ScheduleObserver::class);
     }
 
     public function register()

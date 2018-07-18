@@ -3,7 +3,7 @@
 namespace App\Meel\Schedules;
 
 use App\Meel\Schedules\WhatFormats\WhatFormat;
-use App\Models\EmailSchedule;
+use App\Models\Schedule;
 
 class WhatString
 {
@@ -16,15 +16,15 @@ class WhatString
         WhatFormats\TimesSent::class,
     ];
 
-    public function __construct(EmailSchedule $emailSchedule)
+    public function __construct(Schedule $schedule)
     {
         // Encode urls to prevent urls with percentage signs
         // having a WhatFormat applied to them.
-        $string = $this->encodeUrls($emailSchedule->what);
+        $string = $this->encodeUrls($schedule->what);
 
         foreach ($this->formats as $format) {
             /** @var WhatFormat $whatFormat */
-            $whatFormat = new $format($emailSchedule);
+            $whatFormat = new $format($schedule);
 
             $string = $whatFormat->applyFormat($string);
         }
@@ -51,9 +51,9 @@ class WhatString
         return $this->formattedString;
     }
 
-    public static function format(EmailSchedule $emailSchedule): string
+    public static function format(Schedule $schedule): string
     {
-        $whatString = new static($emailSchedule);
+        $whatString = new static($schedule);
 
         return $whatString->getFormattedString();
     }

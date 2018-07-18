@@ -2,14 +2,14 @@
 
 namespace App\Jobs;
 
-use App\Models\EmailSchedule;
+use App\Models\Schedule;
 
 class QueueDueEmailsJob extends BaseJob
 {
     public function handle()
     {
-        EmailSchedule::shouldBeSentNow()
-            ->each(function (EmailSchedule $schedule) {
+        Schedule::shouldBeSentNow()
+            ->each(function (Schedule $schedule) {
                 $schedule->sendEmail();
             });
     }

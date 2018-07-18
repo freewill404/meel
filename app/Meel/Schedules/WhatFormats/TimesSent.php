@@ -16,7 +16,7 @@ class TimesSent extends WhatFormat
         // format is applied before the email is sent.
         $offset = 1 + ($matches[1] ?? 0);
 
-        $timesSent = $this->emailSchedule->times_sent + $offset;
+        $timesSent = $this->schedule->times_sent + $offset;
 
         return preg_replace($regex, $timesSent, $string);
     }

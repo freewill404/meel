@@ -4,11 +4,11 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateEmailSchedulesTable extends Migration
+class CreateSchedulesTable extends Migration
 {
     public function up()
     {
-        Schema::create('email_schedules', function (Blueprint $table) {
+        Schema::create('schedules', function (Blueprint $table) {
             $table->increments('id');
 
             $table->unsignedInteger('user_id');
@@ -24,6 +24,6 @@ class CreateEmailSchedulesTable extends Migration
 
     public function down()
     {
-        Schema::dropIfExists('email_schedules');
+        Schema::dropIfExists('schedules');
     }
 }

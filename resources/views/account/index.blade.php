@@ -15,14 +15,14 @@
         </div>
 
         <div class="sm:pl-4">
-            @forelse($emailSchedules->where('next_occurrence', '!=', null) as $emailSchedule)
-                <email-schedule email-schedule-id="{{ $emailSchedule->id }}"
-                                :is-recurring="{{ json_encode($emailSchedule->is_recurring) }}"
-                                :times-sent="{{ $emailSchedule->times_sent }}"
-                                when="{{ $emailSchedule->when }}"
-                                initial-what="{{ $emailSchedule->what }}"
-                                next-occurrence="{{ $emailSchedule->next_occurrence }}"
-                                last-sent-at="{{ $emailSchedule->last_sent_at }}"
+            @forelse($schedules->where('next_occurrence', '!=', null) as $schedule)
+                <email-schedule schedule-id="{{ $schedule->id }}"
+                                :is-recurring="{{ json_encode($schedule->is_recurring) }}"
+                                :times-sent="{{ $schedule->times_sent }}"
+                                when="{{ $schedule->when }}"
+                                initial-what="{{ $schedule->what }}"
+                                next-occurrence="{{ $schedule->next_occurrence }}"
+                                last-sent-at="{{ $schedule->last_sent_at }}"
                 ></email-schedule>
             @empty
                 <p>
@@ -35,14 +35,14 @@
         <h2 class="mt-8 mb-4">Ended</h2>
 
         <div class="sm:pl-4">
-            @forelse($emailSchedules->where('next_occurrence', null)->reverse() as $emailSchedule)
-                <email-schedule email-schedule-id="{{ $emailSchedule->id }}"
-                                :is-recurring="{{ json_encode($emailSchedule->is_recurring) }}"
-                                :times-sent="{{ $emailSchedule->times_sent }}"
-                                when="{{ $emailSchedule->when }}"
-                                initial-what="{{ $emailSchedule->what }}"
-                                next-occurrence="{{ $emailSchedule->next_occurrence }}"
-                                last-sent-at="{{ $emailSchedule->last_sent_at }}"
+            @forelse($schedules->where('next_occurrence', null)->reverse() as $schedule)
+                <email-schedule schedule-id="{{ $schedule->id }}"
+                                :is-recurring="{{ json_encode($schedule->is_recurring) }}"
+                                :times-sent="{{ $schedule->times_sent }}"
+                                when="{{ $schedule->when }}"
+                                initial-what="{{ $schedule->what }}"
+                                next-occurrence="{{ $schedule->next_occurrence }}"
+                                last-sent-at="{{ $schedule->last_sent_at }}"
                 ></email-schedule>
             @empty
                 <p>

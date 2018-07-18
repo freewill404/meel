@@ -4,7 +4,7 @@ namespace App\Listeners;
 
 use App\Events\EmailNotSent;
 use App\Events\EmailSent;
-use App\Meel\Schedules\EmailScheduleFormat;
+use App\Meel\Schedules\ScheduleFormat;
 
 class SetNextOccurrence
 {
@@ -13,9 +13,9 @@ class SetNextOccurrence
      */
     public function handle($event)
     {
-        $schedule = new EmailScheduleFormat($event->emailSchedule->when, $event->emailSchedule->user->timezone);
+        $schedule = new ScheduleFormat($event->schedule->when, $event->schedule->user->timezone);
 
-        $event->emailSchedule->update([
+        $event->schedule->update([
             'next_occurrence' => $schedule->isRecurring() ? $schedule->nextOccurrence() : null,
         ]);
     }

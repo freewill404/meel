@@ -3,7 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Http\Rules\UsableWhen;
-use App\Meel\Schedules\EmailScheduleFormat;
+use App\Meel\Schedules\ScheduleFormat;
 
 class MeelRequest extends BaseRequest
 {
@@ -17,6 +17,6 @@ class MeelRequest extends BaseRequest
 
     public function getScheduleFormat()
     {
-        return new EmailScheduleFormat($this->get('when'));
+        return new ScheduleFormat($this->get('when'));
     }
 }

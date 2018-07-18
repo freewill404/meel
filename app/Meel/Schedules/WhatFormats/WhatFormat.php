@@ -2,21 +2,21 @@
 
 namespace App\Meel\Schedules\WhatFormats;
 
-use App\Models\EmailSchedule;
+use App\Models\Schedule;
 
 abstract class WhatFormat
 {
-    protected $emailSchedule;
+    protected $schedule;
 
     protected $user;
 
     protected $timezone;
 
-    public function __construct(EmailSchedule $emailSchedule)
+    public function __construct(Schedule $schedule)
     {
-        $this->emailSchedule = $emailSchedule;
+        $this->schedule = $schedule;
 
-        $this->user = $emailSchedule->user;
+        $this->user = $schedule->user;
 
         $this->timezone = $this->user->timezone;
     }

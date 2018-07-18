@@ -3,17 +3,17 @@
 namespace App\Events;
 
 use App\Mail\Email;
-use App\Models\EmailSchedule;
+use App\Models\Schedule;
 
 class EmailSent extends BaseEvent
 {
-    public $emailSchedule;
+    public $schedule;
 
     public $email;
 
-    public function __construct(EmailSchedule $emailSchedule, Email $email)
+    public function __construct(Schedule $schedule, Email $email)
     {
-        $this->emailSchedule = $emailSchedule;
+        $this->schedule = $schedule;
 
         $this->email = $email;
     }

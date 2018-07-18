@@ -4,7 +4,7 @@ namespace Tests\Unit\Jobs;
 
 use App\Jobs\QueueDueEmailsJob;
 use App\Jobs\SendScheduledEmailJob;
-use App\Models\EmailSchedule;
+use App\Models\Schedule;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
@@ -22,11 +22,11 @@ class QueueDueEmailsJobTest extends TestCase
         $amsterdamUserOne = factory(User::class)->create(['timezone' => 'Europe/Amsterdam']);
         $amsterdamUserTwo = factory(User::class)->create(['timezone' => 'Europe/Amsterdam']);
 
-        $a1 = $amsterdamUserOne->emailSchedules()->create(['what' => 'a1', 'when' => 'in 1 minute']);
-        $a2 = $amsterdamUserOne->emailSchedules()->create(['what' => 'a2', 'when' => 'in 1 hour']);
+        $a1 = $amsterdamUserOne->schedules()->create(['what' => 'a1', 'when' => 'in 1 minute']);
+        $a2 = $amsterdamUserOne->schedules()->create(['what' => 'a2', 'when' => 'in 1 hour']);
 
-        $b1 = $amsterdamUserTwo->emailSchedules()->create(['what' => 'b1', 'when' => 'in 1 minute']);
-        $b2 = $amsterdamUserTwo->emailSchedules()->create(['what' => 'b2', 'when' => 'in 1 hour']);
+        $b1 = $amsterdamUserTwo->schedules()->create(['what' => 'b1', 'when' => 'in 1 minute']);
+        $b2 = $amsterdamUserTwo->schedules()->create(['what' => 'b2', 'when' => 'in 1 hour']);
 
         QueueDueEmailsJob::dispatchNow();
 
@@ -70,7 +70,7 @@ class QueueDueEmailsJobTest extends TestCase
 
         $user = factory(User::class)->create();
 
-        $schedule = $user->emailSchedules()->create(['what' => 'text', 'when' => 'in 1 minute']);
+        $schedule = $user->schedules()->create(['what' => 'text', 'when' => 'in 1 minute']);
 
         QueueDueEmailsJob::dispatchNow();
 
@@ -86,10 +86,10 @@ class QueueDueEmailsJobTest extends TestCase
             ->assertJobQueued($schedule);
     }
 
-    private function assertJobQueued(EmailSchedule $emailSchedule)
+    private function assertJobQueued(Schedule $schedule)
     {
-        Queue::assertPushed(SendScheduledEmailJob::class, function (SendScheduledEmailJob $job) use ($emailSchedule) {
-            return $job->emailSchedule->id === $emailSchedule->id;
+        Queue::assertPushed(SendScheduledEmailJob::class, function (SendScheduledEmailJob $job) use ($schedule) {
+            return $job->schedule->id === $schedule->id;
         });
 
         return $this;

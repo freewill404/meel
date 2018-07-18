@@ -3,7 +3,7 @@
 namespace Tests\Unit\Meel\Schedules\WhatFormats;
 
 use App\Meel\Schedules\WhatFormats\DaysSinceLastSent;
-use App\Models\EmailSchedule;
+use App\Models\Schedule;
 
 class DaysSinceLastSentTest extends WhatFormatTestCase
 {
@@ -32,10 +32,10 @@ class DaysSinceLastSentTest extends WhatFormatTestCase
     /** @test */
     function it_adds_the_days_since_a_schedule_was_last_sent()
     {
-        /** @var EmailSchedule $schedule */
+        /** @var Schedule $schedule */
         [$user, $schedule] = $this->createUserAndSchedule();
 
-        $schedule->emailScheduleHistories()->create([
+        $schedule->scheduleHistories()->create([
             'sent_at' => secondless_now($user->timezone),
         ]);
 
@@ -49,7 +49,7 @@ class DaysSinceLastSentTest extends WhatFormatTestCase
 
         $this->assertFormattedWhen('7', '%d', $schedule);
 
-        $schedule->emailScheduleHistories()->create([
+        $schedule->scheduleHistories()->create([
             'sent_at' => secondless_now($user->timezone),
         ]);
 
@@ -61,10 +61,10 @@ class DaysSinceLastSentTest extends WhatFormatTestCase
     /** @test */
     function it_can_offset_the_days_ago()
     {
-        /** @var EmailSchedule $schedule */
+        /** @var Schedule $schedule */
         [$user, $schedule] = $this->createUserAndSchedule();
 
-        $schedule->emailScheduleHistories()->create([
+        $schedule->scheduleHistories()->create([
             'sent_at' => secondless_now($user->timezone),
         ]);
 
@@ -82,10 +82,10 @@ class DaysSinceLastSentTest extends WhatFormatTestCase
     /** @test */
     function it_handles_incorrect_formats()
     {
-        /** @var EmailSchedule $schedule */
+        /** @var Schedule $schedule */
         [$user, $schedule] = $this->createUserAndSchedule();
 
-        $schedule->emailScheduleHistories()->create([
+        $schedule->scheduleHistories()->create([
             'sent_at' => secondless_now($user->timezone),
         ]);
 
@@ -101,16 +101,16 @@ class DaysSinceLastSentTest extends WhatFormatTestCase
     /** @test */
     function it_respects_the_users_timezone()
     {
-        /** @var EmailSchedule $chineseSchedule */
-        /** @var EmailSchedule $dutchSchedule */
+        /** @var Schedule $chineseSchedule */
+        /** @var Schedule $dutchSchedule */
         [$chineseUser, $chineseSchedule] = $this->createUserAndSchedule('Asia/Shanghai');
         [$dutchUser,   $dutchSchedule]   = $this->createUserAndSchedule('Europe/Amsterdam');
 
-        $chineseSchedule->emailScheduleHistories()->create([
+        $chineseSchedule->scheduleHistories()->create([
             'sent_at' => secondless_now($chineseUser->timezone),
         ]);
 
-        $dutchSchedule->emailScheduleHistories()->create([
+        $dutchSchedule->scheduleHistories()->create([
             'sent_at' => secondless_now($dutchUser->timezone),
         ]);
 

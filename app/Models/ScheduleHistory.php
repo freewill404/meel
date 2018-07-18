@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class EmailScheduleHistory extends Model
+class ScheduleHistory extends Model
 {
     protected $guarded = [];
 

@@ -42,7 +42,7 @@
     export default {
 
         props: {
-            emailScheduleId: String,
+            scheduleId: String,
             initialWhat: String,
             isRecurring: Boolean,
             lastSentAt: String,
@@ -78,7 +78,7 @@
                     return;
                 }
 
-                axios.put('/api/v1/email-schedule/'+this.emailScheduleId, { 'what': this.what });
+                axios.put('/api/v1/schedule/'+this.scheduleId, { 'what': this.what });
             },
 
             remove: function() {
@@ -90,7 +90,7 @@
 
                 this.isDeleted = true;
 
-                axios.delete('/api/v1/email-schedule/'+this.emailScheduleId);
+                axios.delete('/api/v1/schedule/'+this.scheduleId);
             },
         },
 

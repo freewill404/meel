@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Meel\Schedules\EmailScheduleFormat;
+use App\Meel\Schedules\ScheduleFormat;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -21,18 +21,18 @@ class HumanInterpretation extends Controller
             return ['valid' => true, 'humanInterpretation' => ''];
         }
 
-        $emailSchedule = new EmailScheduleFormat($writtenInput, $request->user()->timezone);
+        $schedule = new ScheduleFormat($writtenInput, $request->user()->timezone);
 
-        if (! $emailSchedule->isUsableInterpretation()) {
+        if (! $schedule->isUsableInterpretation()) {
             return ['valid' => false, 'humanInterpretation' => ''];
         }
 
-        $nextOccurrenceString = $emailSchedule->nextOccurrence();
+        $nextOccurrenceString = $schedule->nextOccurrence();
 
         $dayOfTheWeek = Carbon::parse($nextOccurrenceString)->format('l');
 
-        $humanInterpretation = $emailSchedule->isRecurring()
-            ? 'Recurring '.$emailSchedule->getIntervalDescription().', first occurrence at '
+        $humanInterpretation = $schedule->isRecurring()
+            ? 'Recurring '.$schedule->getIntervalDescription().', first occurrence at '
             : 'Once, at ';
 
         return [

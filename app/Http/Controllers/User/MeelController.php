@@ -9,7 +9,7 @@ class MeelController extends Controller
 {
     public function post(MeelRequest $request)
     {
-        $request->user()->emailSchedules()->create([
+        $request->user()->schedules()->create([
             'what' => $request->get('what'),
             'when' => $request->get('when') ?? $request->user()->default_when,
         ]);

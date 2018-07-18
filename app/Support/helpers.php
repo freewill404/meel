@@ -1,8 +1,8 @@
 <?php
 
 use App\Support\DateTime\SecondlessDateTimeString;
-use App\Meel\Schedules\EmailScheduleFormat;
-use App\Models\EmailSchedule;
+use App\Meel\Schedules\ScheduleFormat;
+use App\Models\Schedule;
 
 /**
  * Trigger a "dd()" after it has been called "timesCalled" times.
@@ -28,13 +28,13 @@ function dd_delay(int $timesCalled, ...$vars)
 
 function next_occurrence($when, $timezone = null): SecondlessDateTimeString
 {
-    if ($when instanceof EmailSchedule) {
+    if ($when instanceof Schedule) {
         $timezone = $when->user->timezone;
 
         $when = $when->when;
     }
 
-    $schedule = new EmailScheduleFormat($when, $timezone);
+    $schedule = new ScheduleFormat($when, $timezone);
 
     $nextOccurrence = $schedule->nextOccurrence();
 

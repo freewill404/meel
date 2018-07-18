@@ -5,7 +5,7 @@ namespace Tests\Unit\Listeners;
 use App\Events\EmailSent;
 use App\Listeners\SetNextOccurrence;
 use App\Mail\Email;
-use App\Models\EmailSchedule;
+use App\Models\Schedule;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -30,7 +30,7 @@ class SetNextOccurrenceTest extends TestCase
         $this->withoutEvents();
 
         // Disable observers
-        EmailSchedule::flushEventListeners();
+        Schedule::flushEventListeners();
 
         $this->setNextOccurrenceListener = new SetNextOccurrence();
 
@@ -44,44 +44,44 @@ class SetNextOccurrenceTest extends TestCase
     /** @test */
     function it_sets_the_next_occurrence_for_recurring_schedules()
     {
-        /** @var EmailSchedule $emailSchedule */
-        $emailSchedule = $this->user->emailSchedules()->create([
+        /** @var Schedule $schedule */
+        $schedule = $this->user->schedules()->create([
             'what'            => 'The what text',
             'when'            => 'every month',
             'next_occurrence' => 'NONE',
         ]);
 
         // Ensure the Observer didn't set the next occurrence
-        $this->assertSame('NONE', $emailSchedule->refresh()->next_occurrence);
+        $this->assertSame('NONE', $schedule->refresh()->next_occurrence);
 
         $this->setNextOccurrenceListener->handle(
-            new EmailSent($emailSchedule, $this->emailMock)
+            new EmailSent($schedule, $this->emailMock)
         );
 
         $this->assertSame(
-            (string) next_occurrence($emailSchedule->when),
-            $emailSchedule->refresh()->next_occurrence
+            (string) next_occurrence($schedule->when),
+            $schedule->refresh()->next_occurrence
         );
     }
 
     /** @test */
     function it_sets_the_next_occurrence_for_non_recurring_schedules_to_null()
     {
-        /** @var EmailSchedule $emailSchedule */
-        $emailSchedule = $this->user->emailSchedules()->create([
+        /** @var Schedule $schedule */
+        $schedule = $this->user->schedules()->create([
             'what'            => 'The what text',
             'when'            => 'now',
             'next_occurrence' => 'NONE',
         ]);
 
         // Ensure the Observer didn't set the next occurrence
-        $this->assertSame('NONE', $emailSchedule->refresh()->next_occurrence);
+        $this->assertSame('NONE', $schedule->refresh()->next_occurrence);
 
         $this->setNextOccurrenceListener->handle(
-            new EmailSent($emailSchedule, $this->emailMock)
+            new EmailSent($schedule, $this->emailMock)
         );
 
-        $this->assertNull($emailSchedule->refresh()->next_occurrence);
+        $this->assertNull($schedule->refresh()->next_occurrence);
     }
 
     /** @test */
@@ -89,37 +89,37 @@ class SetNextOccurrenceTest extends TestCase
     {
         $user = factory(User::class)->create(['timezone' => 'Asia/Shanghai']);
 
-        /** @var EmailSchedule $emailSchedule */
-        $emailSchedule = $user->emailSchedules()->create([
+        /** @var Schedule $schedule */
+        $schedule = $user->schedules()->create([
             'what'            => 'The what text',
             'when'            => 'every month',
             'next_occurrence' => 'NONE',
         ]);
 
         // Ensure the Observer didn't set the next occurrence
-        $this->assertSame('NONE', $emailSchedule->refresh()->next_occurrence);
+        $this->assertSame('NONE', $schedule->refresh()->next_occurrence);
 
         $this->setNextOccurrenceListener->handle(
-            new EmailSent($emailSchedule, $this->emailMock)
+            new EmailSent($schedule, $this->emailMock)
         );
 
         $this->assertSame(
-            (string) next_occurrence($emailSchedule->when, 'Asia/Shanghai'),
-            $emailSchedule->refresh()->next_occurrence
+            (string) next_occurrence($schedule->when, 'Asia/Shanghai'),
+            $schedule->refresh()->next_occurrence
         );
 
         // Set the server time (Europe/Amsterdam) to the time the email schedule should be sent.
         Carbon::setTestNow(
-            Carbon::parse($emailSchedule->next_occurrence, 'Asia/Shanghai')->setTimezone('Europe/Amsterdam')->addSeconds(15)
+            Carbon::parse($schedule->next_occurrence, 'Asia/Shanghai')->setTimezone('Europe/Amsterdam')->addSeconds(15)
         );
 
         $this->setNextOccurrenceListener->handle(
-            new EmailSent($emailSchedule, $this->emailMock)
+            new EmailSent($schedule, $this->emailMock)
         );
 
         $this->assertSame(
-            (string) next_occurrence($emailSchedule->when, 'Asia/Shanghai'),
-            $emailSchedule->refresh()->next_occurrence
+            (string) next_occurrence($schedule->when, 'Asia/Shanghai'),
+            $schedule->refresh()->next_occurrence
         );
     }
 }

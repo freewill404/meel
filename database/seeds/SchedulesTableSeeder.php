@@ -3,12 +3,12 @@
 use App\Events\EmailNotSent;
 use App\Events\EmailSent;
 use App\Mail\Email;
-use App\Models\EmailSchedule;
+use App\Models\Schedule;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 
-class EmailScheduleTableSeeder extends Seeder
+class SchedulesTableSeeder extends Seeder
 {
     protected $maximumDaysAgo = 60;
 
@@ -30,20 +30,20 @@ class EmailScheduleTableSeeder extends Seeder
         Mail::fake();
 
         User::all()->each(function (User $user) {
-            $this->seedEmailSchedules($user);
+            $this->seedSchedules($user);
 
-            $this->runEmailSchedules($user, now());
+            $this->runSchedules($user, now());
         });
     }
 
-    protected function seedEmailSchedules(User $user)
+    protected function seedSchedules(User $user)
     {
         foreach ($this->schedules as $when => $what) {
             Carbon::setTestNow(
                 now()->subDays(random_int(1, $this->maximumDaysAgo))->subSeconds(random_int(0, 86400))
             );
 
-            $user->emailSchedules()->create([
+            $user->schedules()->create([
                 'when' => $when,
                 'what' => $what,
             ]);
@@ -52,10 +52,10 @@ class EmailScheduleTableSeeder extends Seeder
         }
     }
 
-    protected function runEmailSchedules(User $user, Carbon $realNow)
+    protected function runSchedules(User $user, Carbon $realNow)
     {
-        /** @var EmailSchedule $schedule */
-        $schedule = $user->emailSchedules()->whereNotNull('next_occurrence')->oldest('next_occurrence')->first();
+        /** @var Schedule $schedule */
+        $schedule = $user->schedules()->whereNotNull('next_occurrence')->oldest('next_occurrence')->first();
 
         do {
             Carbon::setTestNow(
@@ -66,7 +66,7 @@ class EmailScheduleTableSeeder extends Seeder
                 ? EmailSent::dispatch($schedule, new Email($schedule))
                 : EmailNotSent::dispatch($schedule);
 
-            $schedule = $user->emailSchedules()->whereNotNull('next_occurrence')->oldest('next_occurrence')->first();
+            $schedule = $user->schedules()->whereNotNull('next_occurrence')->oldest('next_occurrence')->first();
         } while ($realNow->greaterThanOrEqualTo($schedule->next_occurrence));
 
         Carbon::setTestNow(null);

@@ -8,7 +8,7 @@ use App\Jobs\SendScheduledEmailJob;
 use App\Mail\AlmostOutOfEmailsEmail;
 use App\Mail\Email;
 use App\Mail\OutOfEmailsEmail;
-use App\Models\EmailSchedule;
+use App\Models\Schedule;
 use App\Models\SiteStats;
 use App\Models\User;
 use Carbon\Carbon;
@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Notification;
 use Tests\TestCase;
 
-class EmailScheduleTest extends TestCase
+class ScheduleTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -28,12 +28,12 @@ class EmailScheduleTest extends TestCase
 
         $user = factory(User::class)->create();
 
-        $emailSchedule = $user->emailSchedules()->create([
+        $schedule = $user->schedules()->create([
             'what' => 'The what text',
             'when' => 'in 1 minute',
         ]);
 
-        $emailSchedule->sendEmail();
+        $schedule->sendEmail();
 
         Mail::assertSent(Email::class, function (Email $mail) use ($user) {
             return count($mail->to) === 1 && $mail->hasTo($user);
@@ -47,7 +47,7 @@ class EmailScheduleTest extends TestCase
 
         $user = factory(User::class)->create();
 
-        $user->emailSchedules()->create([
+        $user->schedules()->create([
             'what' => 'WHAT?',
             'when' => 'now',
         ]);
@@ -61,7 +61,7 @@ class EmailScheduleTest extends TestCase
             'paid_emails_left' => 10,
         ]);
 
-        $user->emailSchedules()->create([
+        $user->schedules()->create([
             'what' => 'The what text',
             'when' => 'now',
         ]);
@@ -79,7 +79,7 @@ class EmailScheduleTest extends TestCase
             'paid_emails_left' => 1,
         ]);
 
-        $user->emailSchedules()->create([
+        $user->schedules()->create([
             'what' => 'The what text',
             'when' => 'now',
         ]);
@@ -100,8 +100,8 @@ class EmailScheduleTest extends TestCase
             'paid_emails_left' => 0,
         ]);
 
-        /** @var EmailSchedule $schedule */
-        $user->emailSchedules()->create([
+        /** @var Schedule $schedule */
+        $user->schedules()->create([
             'what' => 'The what text',
             'when' => 'now',
         ]);
@@ -116,7 +116,7 @@ class EmailScheduleTest extends TestCase
 
         $this->assertSame(0, $firstUser->emails_sent);
 
-        $firstUser->emailSchedules()->create([
+        $firstUser->schedules()->create([
             'what' => 'The what text',
             'when' => 'now',
         ]);
@@ -127,7 +127,7 @@ class EmailScheduleTest extends TestCase
 
         $secondUser = factory(User::class)->create();
 
-        $secondUser->emailSchedules()->create([
+        $secondUser->schedules()->create([
             'what' => 'The what text',
             'when' => 'now',
         ]);
@@ -142,17 +142,17 @@ class EmailScheduleTest extends TestCase
     {
         $user = factory(User::class)->create(['timezone' => 'Asia/Shanghai']);
 
-        /** @var EmailSchedule $emailSchedule */
-        $emailSchedule = $user->emailSchedules()->create([
+        /** @var Schedule $schedule */
+        $schedule = $user->schedules()->create([
             'what' => 'The what text',
             'when' => 'in 1 minute',
         ]);
 
         $this->progressTimeInMinutes(1);
 
-        $emailSchedule->sendEmail();
+        $schedule->sendEmail();
 
-        $histories = $emailSchedule->emailScheduleHistories;
+        $histories = $schedule->scheduleHistories;
 
         $this->assertCount(1, $histories);
 
@@ -161,7 +161,7 @@ class EmailScheduleTest extends TestCase
             (string) $histories->first()->sent_at
         );
 
-        $this->assertSame(1, $emailSchedule->refresh()->times_sent);
+        $this->assertSame(1, $schedule->refresh()->times_sent);
     }
 
     /** @test */
@@ -169,15 +169,15 @@ class EmailScheduleTest extends TestCase
     {
         $user = factory(User::class)->create();
 
-        /** @var EmailSchedule $emailSchedule */
-        $emailSchedule = $user->emailSchedules()->create([
+        /** @var Schedule $schedule */
+        $schedule = $user->schedules()->create([
             'what' => 'format: %t',
             'when' => 'every monday at 12:00',
         ]);
 
-        $this->assertSame('format: 1', $emailSchedule->formatted_what);
+        $this->assertSame('format: 1', $schedule->formatted_what);
 
-        $this->assertSame('format: %t', $emailSchedule->what);
+        $this->assertSame('format: %t', $schedule->what);
     }
 
     /** @test */
@@ -185,19 +185,19 @@ class EmailScheduleTest extends TestCase
     {
         $user = factory(User::class)->create();
 
-        /** @var EmailSchedule $emailSchedule */
-        $emailSchedule = $user->emailSchedules()->create([
+        /** @var Schedule $schedule */
+        $schedule = $user->schedules()->create([
             'what' => 'The what text',
             'when' => 'every monday at 12:00',
         ]);
 
-        $this->assertSame('2018-04-02 12:00:00', EmailSchedule::find(1)->next_occurrence);
+        $this->assertSame('2018-04-02 12:00:00', Schedule::find(1)->next_occurrence);
 
         Carbon::setTestNow('2018-04-02 12:00:15');
 
-        $emailSchedule->sendEmail();
+        $schedule->sendEmail();
 
-        $this->assertSame('2018-04-09 12:00:00', EmailSchedule::find(1)->next_occurrence);
+        $this->assertSame('2018-04-09 12:00:00', Schedule::find(1)->next_occurrence);
     }
 
     /** @test */
@@ -213,26 +213,26 @@ class EmailScheduleTest extends TestCase
 
         $this->assertSame(0, $user->emails_left);
 
-        /** @var EmailSchedule $emailSchedule */
-        $emailSchedule = $user->emailSchedules()->create([
+        /** @var Schedule $schedule */
+        $schedule = $user->schedules()->create([
             'what' => 'The what text',
             'when' => 'every month at 12:00',
         ]);
 
-        $this->assertSame('2018-04-01 12:00:00', EmailSchedule::find(1)->next_occurrence);
+        $this->assertSame('2018-04-01 12:00:00', Schedule::find(1)->next_occurrence);
 
         $this->assertSame(0, SiteStats::today()->emails_sent);
         $this->assertSame(0, SiteStats::today()->emails_not_sent);
 
         Carbon::setTestNow('2018-04-15 12:00:15');
 
-        $emailSchedule->sendEmail();
+        $schedule->sendEmail();
 
         // The user has no emails left, so the email is not sent.
         Notification::assertNothingSent();
 
         // The next occurrence is set after not sending the email.
-        $this->assertSame('2018-05-01 12:00:00', EmailSchedule::find(1)->next_occurrence);
+        $this->assertSame('2018-05-01 12:00:00', Schedule::find(1)->next_occurrence);
 
         $this->assertSame(0, SiteStats::today()->emails_sent);
         $this->assertSame(1, SiteStats::today()->emails_not_sent);
@@ -247,17 +247,17 @@ class EmailScheduleTest extends TestCase
         $chinaUser     = factory(User::class)->create(['timezone' => 'Asia/Shanghai']);
         $londonUser    = factory(User::class)->create(['timezone' => 'Europe/London']);
 
-        $chinaUser->emailSchedules()->create([    'what' => 'c1', 'when' => 'in 1 minute']);
-        $londonUser->emailSchedules()->create([   'what' => 'l1', 'when' => 'in 1 minute']);
-        $amsterdamUser->emailSchedules()->create(['what' => 'a1', 'when' => 'in 1 minute']);
+        $chinaUser->schedules()->create([    'what' => 'c1', 'when' => 'in 1 minute']);
+        $londonUser->schedules()->create([   'what' => 'l1', 'when' => 'in 1 minute']);
+        $amsterdamUser->schedules()->create(['what' => 'a1', 'when' => 'in 1 minute']);
 
-        $chinaUser->emailSchedules()->create([    'what' => 'c2', 'when' => 'in 1 hour']);
-        $londonUser->emailSchedules()->create([   'what' => 'l2', 'when' => 'in 1 hour']);
-        $amsterdamUser->emailSchedules()->create(['what' => 'a2', 'when' => 'in 6 hours']);
+        $chinaUser->schedules()->create([    'what' => 'c2', 'when' => 'in 1 hour']);
+        $londonUser->schedules()->create([   'what' => 'l2', 'when' => 'in 1 hour']);
+        $amsterdamUser->schedules()->create(['what' => 'a2', 'when' => 'in 6 hours']);
 
         $this->progressTimeInMinutes(1);
 
-        $schedules = EmailSchedule::shouldBeSentNow()->map(function (EmailSchedule $schedule) {
+        $schedules = Schedule::shouldBeSentNow()->map(function (Schedule $schedule) {
             return ['what' => $schedule->what, 'next_occurrence' => $schedule->next_occurrence];
         })->all();
 

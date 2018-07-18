@@ -2,7 +2,7 @@
 
 namespace App\Http\Rules;
 
-use App\Meel\Schedules\EmailScheduleFormat;
+use App\Meel\Schedules\ScheduleFormat;
 use Illuminate\Contracts\Validation\Rule;
 
 class UsableWhen implements Rule
@@ -14,7 +14,7 @@ class UsableWhen implements Rule
             return true;
         }
 
-        $scheduleFormat = new EmailScheduleFormat($value);
+        $scheduleFormat = new ScheduleFormat($value);
 
         return $scheduleFormat->isUsableInterpretation();
     }

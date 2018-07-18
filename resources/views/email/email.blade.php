@@ -1,4 +1,4 @@
-What: {{ $emailSchedule->formatted_what }}
+What: {{ $schedule->formatted_what }}
 <br>
 <br>
-When: {{ $emailSchedule->when }}
+When: {{ $schedule->when }}
