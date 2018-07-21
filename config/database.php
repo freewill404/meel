@@ -21,19 +21,12 @@ return [
             'engine' => null,
         ],
 
-
-        'testing' => [
-            'driver'   => 'sqlite',
-            'database' => ':memory:',
-            'prefix'   => '',
+        'sqlite' => [
+            'driver' => 'sqlite',
+            'database' => env('DB_DATABASE', database_path('database.sqlite')),
+            'prefix' => '',
         ],
 
-
-//        'sqlite' => [
-//            'driver' => 'sqlite',
-//            'database' => env('DB_DATABASE', database_path('database.sqlite')),
-//            'prefix' => '',
-//        ],
 //
 //        'pgsql' => [
 //            'driver' => 'pgsql',
