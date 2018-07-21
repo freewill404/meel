@@ -12,11 +12,7 @@ class DecrementUserEmailsLeft
     {
         $user = $event->schedule->user;
 
-        $emailsLeftField = $user->free_emails_left
-            ? 'free_emails_left'
-            : 'paid_emails_left';
-
-        $user->decrement($emailsLeftField);
+        $user->decrement('emails_left');
 
         if ($user->emails_left === 9) {
             UserAlmostOutOfEmails::dispatch($user);

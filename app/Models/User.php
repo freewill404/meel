@@ -18,8 +18,7 @@ class User extends Authenticatable
 
     protected $casts = [
         'email_confirmed'   => 'bool',
-        'free_emails_left'  => 'integer',
-        'paid_emails_left'  => 'integer',
+        'emails_left'       => 'integer',
         'emails_sent'       => 'integer',
         'emails_not_sent'   => 'integer',
         'schedules_created' => 'integer',
@@ -33,11 +32,6 @@ class User extends Authenticatable
     public function getDefaultWhenAttribute()
     {
         return 'now';
-    }
-
-    public function getEmailsLeftAttribute()
-    {
-        return $this->free_emails_left + $this->paid_emails_left;
     }
 
     public static function getIdsByTimezone(): array

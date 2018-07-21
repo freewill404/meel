@@ -15,7 +15,6 @@ $factory->define(App\Models\User::class, function (Faker $faker) {
         'emails_sent'         => 0,
         'emails_not_sent'     => 0,
         'schedules_created'   => 0,
-        'free_emails_left'    => 100,
-        'paid_emails_left'    => 0,
+        'emails_left'         => 100,
     ];
 });

@@ -17,29 +17,15 @@ class DecrementUserEmailsLeftTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    function it_decrements_free_emails_before_paid_emails()
+    function it_decrements_emails_left()
     {
-        [$user, $schedule] = $this->createUserAndSchedule(2, 5);
+        [$user, $schedule] = $this->createUserAndSchedule(100);
 
-        $this->assertSame(7, $user->emails_left);
-
-        $this->handleEvent($schedule);
-
-        $user->refresh();
-        $this->assertSame(1, $user->free_emails_left);
-        $this->assertSame(5, $user->paid_emails_left);
+        $this->assertSame(100, $user->emails_left);
 
         $this->handleEvent($schedule);
 
-        $user->refresh();
-        $this->assertSame(0, $user->free_emails_left);
-        $this->assertSame(5, $user->paid_emails_left);
-
-        $this->handleEvent($schedule);
-
-        $user->refresh();
-        $this->assertSame(0, $user->free_emails_left);
-        $this->assertSame(4, $user->paid_emails_left);
+        $this->assertSame(99, $user->refresh()->emails_left);
     }
 
     /** @test */
@@ -47,7 +33,7 @@ class DecrementUserEmailsLeftTest extends TestCase
     {
         $this->expectsEvents(UserAlmostOutOfEmails::class);
 
-        [$user, $schedule] = $this->createUserAndSchedule(0, 10);
+        [$user, $schedule] = $this->createUserAndSchedule(10);
 
         $this->handleEvent($schedule);
 
@@ -59,7 +45,7 @@ class DecrementUserEmailsLeftTest extends TestCase
     {
         $this->expectsEvents(UserOutOfEmails::class);
 
-        [$user, $schedule] = $this->createUserAndSchedule(0, 1);
+        [$user, $schedule] = $this->createUserAndSchedule(1);
 
         $this->handleEvent($schedule);
 
@@ -71,25 +57,23 @@ class DecrementUserEmailsLeftTest extends TestCase
     {
         Event::fake();
 
-        [$user, $schedule] = $this->createUserAndSchedule(0, 9);
+        [$user, $schedule] = $this->createUserAndSchedule(9);
 
         for ($i = 0; $i < 8; $i++) {
             $this->handleEvent($schedule);
         }
 
         $user->refresh();
-        $this->assertSame(0, $user->free_emails_left);
-        $this->assertSame(1, $user->paid_emails_left);
+        $this->assertSame(1, $user->emails_left);
 
         Event::assertNotDispatched(UserAlmostOutOfEmails::class);
         Event::assertNotDispatched(UserOutOfEmails::class);
     }
 
-    private function createUserAndSchedule(int $freeEmails, int $paidEmails)
+    private function createUserAndSchedule(int $emailsLeft)
     {
         $user = factory(User::class)->create([
-            'free_emails_left' => $freeEmails,
-            'paid_emails_left' => $paidEmails,
+            'emails_left' => $emailsLeft,
         ]);
 
         $schedule = $user->schedules()->create([

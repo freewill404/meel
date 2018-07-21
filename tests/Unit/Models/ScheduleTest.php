@@ -57,8 +57,7 @@ class ScheduleTest extends TestCase
     function it_notifies_users_when_they_are_almost_out_of_emails()
     {
         $user = factory(User::class)->create([
-            'free_emails_left' => 0,
-            'paid_emails_left' => 10,
+            'emails_left' => 10,
         ]);
 
         $user->schedules()->create([
@@ -75,8 +74,7 @@ class ScheduleTest extends TestCase
     function it_notifies_users_when_they_are_out_of_emails()
     {
         $user = factory(User::class)->create([
-            'free_emails_left' => 0,
-            'paid_emails_left' => 1,
+            'emails_left' => 1,
         ]);
 
         $user->schedules()->create([
@@ -96,8 +94,7 @@ class ScheduleTest extends TestCase
 
         /** @var User $user */
         $user = factory(User::class)->create([
-            'free_emails_left' => 0,
-            'paid_emails_left' => 0,
+            'emails_left' => 0,
         ]);
 
         /** @var Schedule $schedule */
@@ -206,9 +203,8 @@ class ScheduleTest extends TestCase
         Notification::fake();
 
         $user = factory(User::class)->create([
-            'emails_not_sent'  => 0,
-            'free_emails_left' => 0,
-            'paid_emails_left' => 0,
+            'emails_not_sent' => 0,
+            'emails_left'     => 0,
         ]);
 
         $this->assertSame(0, $user->emails_left);
