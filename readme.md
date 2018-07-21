@@ -2,7 +2,7 @@
 Email yourself - [meel.me](https://meel.me)
 
 ## Laravel
-[Compare with current laravel/laravel version](https://github.com/laravel/laravel/compare/c6d7d83ba3c81b31d663ae2917be4c81cc905b8b...master)
+[Compare with current laravel/laravel version](https://github.com/laravel/laravel/compare/5da2d13b04ede450120affdd46c0cbe3a2fe54ef...master)
 
 ## Install
 ```bash
