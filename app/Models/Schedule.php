@@ -26,6 +26,11 @@ class Schedule extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function scheduleHistories()
+    {
+        return $this->hasMany(ScheduleHistory::class)->orderByDesc('sent_at');
+    }
+
     public function sendEmail()
     {
         $this->user->emails_left
@@ -55,11 +60,6 @@ class Schedule extends Model
         $history = $this->scheduleHistories->first();
 
         return $history ? $history->sent_at : null;
-    }
-
-    public function scheduleHistories()
-    {
-        return $this->hasMany(ScheduleHistory::class)->orderByDesc('sent_at');
     }
 
     public static function shouldBeSentNow(): Collection

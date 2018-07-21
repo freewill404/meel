@@ -12,11 +12,15 @@ abstract class TestCase extends BaseTestCase
 {
     use MocksTime;
 
+    protected $testFilePath;
+
     protected $mailFake = true;
 
     public function setUp()
     {
         parent::setUp();
+
+        $this->testFilePath = base_path('tests/Files/');
 
         $this->setTestNow('2018-03-28 12:00:15');
 
