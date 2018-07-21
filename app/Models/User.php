@@ -29,6 +29,11 @@ class User extends Authenticatable
         return $this->hasMany(Schedule::class)->orderBy('next_occurrence');
     }
 
+    public function feeds()
+    {
+        return $this->hasMany(Feed::class);
+    }
+
     public function getDefaultWhenAttribute()
     {
         return 'now';

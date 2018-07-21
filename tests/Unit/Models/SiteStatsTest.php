@@ -31,7 +31,10 @@ class SiteStatsTest extends TestCase
     {
         $this->assertSame(0, SiteStats::count());
 
-        $siteStats = SiteStats::today();
+        // This is the way the cron calls this method.
+        $siteStats = call_user_func([SiteStats::class, 'today']);
+
+        $this->assertSame(1, SiteStats::count());
 
         $this->assertSame(0, $siteStats->users_registered);
         $this->assertSame(0, $siteStats->schedules_created);

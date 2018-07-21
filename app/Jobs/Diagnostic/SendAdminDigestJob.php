@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Jobs;
+namespace App\Jobs\Diagnostic;
 
+use App\Jobs\BaseJob;
 use App\Models\SiteStats;
 use App\Models\User;
 use App\Support\Enums\UserRole;

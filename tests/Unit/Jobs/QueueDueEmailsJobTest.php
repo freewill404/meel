@@ -14,11 +14,16 @@ class QueueDueEmailsJobTest extends TestCase
 {
     use RefreshDatabase;
 
+    public function setUp()
+    {
+        parent::setUp();
+
+        Queue::fake();
+    }
+
     /** @test */
     function it_queues_due_emails()
     {
-        Queue::fake();
-
         $amsterdamUserOne = factory(User::class)->create(['timezone' => 'Europe/Amsterdam']);
         $amsterdamUserTwo = factory(User::class)->create(['timezone' => 'Europe/Amsterdam']);
 
@@ -28,7 +33,7 @@ class QueueDueEmailsJobTest extends TestCase
         $b1 = $amsterdamUserTwo->schedules()->create(['what' => 'b1', 'when' => 'in 1 minute']);
         $b2 = $amsterdamUserTwo->schedules()->create(['what' => 'b2', 'when' => 'in 1 hour']);
 
-        QueueDueEmailsJob::dispatchNow();
+        (new QueueDueEmailsJob)->handle();
 
         Queue::assertNothingPushed();
 
@@ -37,7 +42,7 @@ class QueueDueEmailsJobTest extends TestCase
         $this->assertSame('2018-03-28 12:01:00', (string) secondless_now());
         $this->assertSame('2018-03-28 12:01:00', (string) $a1->next_occurrence);
 
-        QueueDueEmailsJob::dispatchNow();
+        (new QueueDueEmailsJob)->handle();
 
         $this->assertJobsPushed(2)
             ->assertJobQueued($a1)
@@ -49,14 +54,14 @@ class QueueDueEmailsJobTest extends TestCase
 
         $this->progressTimeInMinutes(29);
 
-        QueueDueEmailsJob::dispatchNow();
+        (new QueueDueEmailsJob)->handle();
 
         // Nothing else should be pushed
         $this->assertJobsPushed(2);
 
         $this->progressTimeInMinutes(30);
 
-        QueueDueEmailsJob::dispatchNow();
+        (new QueueDueEmailsJob)->handle();
 
         $this->assertJobsPushed(4)
             ->assertJobQueued($a2)
@@ -66,13 +71,11 @@ class QueueDueEmailsJobTest extends TestCase
     /** @test */
     function it_queues_schedules_that_should_have_already_occurred()
     {
-        Queue::fake();
-
         $user = factory(User::class)->create();
 
         $schedule = $user->schedules()->create(['what' => 'text', 'when' => 'in 1 minute']);
 
-        QueueDueEmailsJob::dispatchNow();
+        (new QueueDueEmailsJob)->handle();
 
         // The schedule now has a "next_occurrence" in the past.
         $this->progressTimeInMinutes(5);
@@ -80,7 +83,7 @@ class QueueDueEmailsJobTest extends TestCase
         $this->assertSame('2018-03-28 12:05:00', (string) secondless_now());
         $this->assertSame('2018-03-28 12:01:00', (string) $schedule->next_occurrence);
 
-        QueueDueEmailsJob::dispatchNow();
+        (new QueueDueEmailsJob)->handle();
 
         $this->assertJobsPushed(1)
             ->assertJobQueued($schedule);
