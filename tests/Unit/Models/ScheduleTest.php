@@ -110,7 +110,6 @@ class ScheduleTest extends TestCase
         $firstUser = factory(User::class)->create();
 
         $this->assertSame(0, SiteStats::today()->emails_sent);
-
         $this->assertSame(0, $firstUser->emails_sent);
 
         $firstUser->schedules()->create([
@@ -119,7 +118,6 @@ class ScheduleTest extends TestCase
         ]);
 
         $this->assertSame(1, SiteStats::today()->emails_sent);
-
         $this->assertSame(1, $firstUser->refresh()->emails_sent);
 
         $secondUser = factory(User::class)->create();
@@ -130,12 +128,12 @@ class ScheduleTest extends TestCase
         ]);
 
         $this->assertSame(2, SiteStats::today()->emails_sent);
-
         $this->assertSame(1, $firstUser->refresh()->emails_sent);
+        $this->assertSame(1, $secondUser->refresh()->emails_sent);
     }
 
     /** @test */
-    function it_creates_history_records_for_sent_emails()
+    function it_keeps_track_of_when_the_last_email_was_sent()
     {
         $user = factory(User::class)->create(['timezone' => 'Asia/Shanghai']);
 
@@ -149,16 +147,18 @@ class ScheduleTest extends TestCase
 
         $schedule->sendEmail();
 
-        $histories = $schedule->scheduleHistories;
+        $this->assertSame('2018-03-28 12:01:00', (string) $schedule->refresh()->last_sent_at);
 
-        $this->assertCount(1, $histories);
+        $schedule = $user->schedules()->create([
+            'what' => 'The what text',
+            'when' => 'in 1 day',
+        ]);
 
-        $this->assertSame(
-            '2018-03-28 18:01:00',
-            (string) $histories->first()->sent_at
-        );
+        $this->progressTimeInDays(1);
 
-        $this->assertSame(1, $schedule->refresh()->times_sent);
+        $schedule->sendEmail();
+
+        $this->assertSame('2018-03-29 12:01:00', (string) $schedule->refresh()->last_sent_at);
     }
 
     /** @test */
@@ -225,7 +225,7 @@ class ScheduleTest extends TestCase
         $schedule->sendEmail();
 
         // The user has no emails left, so the email is not sent.
-        Notification::assertNothingSent();
+        Mail::assertNothingSent();
 
         // The next occurrence is set after not sending the email.
         $this->assertSame('2018-05-01 12:00:00', Schedule::find(1)->next_occurrence);

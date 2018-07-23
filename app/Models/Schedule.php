@@ -14,21 +14,14 @@ class Schedule extends Model
     protected $guarded = [];
 
     protected $casts = [
-        'user_id' => 'integer',
-    ];
-
-    protected $with = [
-        'scheduleHistories',
+        'user_id'      => 'integer',
+        'times_sent'   => 'integer',
+        'last_sent_at' => 'datetime',
     ];
 
     public function user()
     {
         return $this->belongsTo(User::class);
-    }
-
-    public function scheduleHistories()
-    {
-        return $this->hasMany(ScheduleHistory::class)->orderByDesc('sent_at');
     }
 
     public function sendEmail()
@@ -48,18 +41,6 @@ class Schedule extends Model
     public function getFormattedWhatAttribute()
     {
         return WhatString::format($this);
-    }
-
-    public function getTimesSentAttribute()
-    {
-        return $this->scheduleHistories->count();
-    }
-
-    public function getLastSentAtAttribute()
-    {
-        $history = $this->scheduleHistories->first();
-
-        return $history ? $history->sent_at : null;
     }
 
     public static function shouldBeSentNow(): Collection

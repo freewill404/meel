@@ -3,6 +3,7 @@
 namespace Tests\Unit\Meel\Schedules;
 
 use App\Meel\Schedules\WhatString;
+use App\Models\Schedule;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -14,13 +15,22 @@ class WhatStringTest extends TestCase
     /** @test */
     function it_applies_what_formats()
     {
-        $this->assertWhatFormat('Do the dishes', 'Do the dishes');
+        $user = factory(User::class)->create();
 
-        $this->assertWhatFormat('times sent: 3 (13)', 'times sent: %t (%f[W])');
+        $schedule = $user->schedules()->create([
+            'what'         => 'NONE',
+            'when'         => 'in 1 hour',
+            'times_sent'   => 2,
+            'last_sent_at' => '2018-03-28 11:00:00', // an hour ago
+        ]);
 
-        $this->assertWhatFormat('times sent: 3 (3)', 'times sent: %t (%f[%\t])');
+        $this->assertWhatFormat('Do the dishes', 'Do the dishes', $schedule);
 
-        $this->assertWhatFormat('4 - 2 - 3 - 2018', '%t+1 - %d+2 - %a+3 - %f[Y]');
+        $this->assertWhatFormat('times sent: 3 (13)', 'times sent: %t (%f[W])', $schedule);
+
+        $this->assertWhatFormat('times sent: 3 (3)', 'times sent: %t (%f[%\t])', $schedule);
+
+        $this->assertWhatFormat('4 - 2 - 3 - 2018', '%t+1 - %d+2 - %a+3 - %f[Y]', $schedule);
     }
 
     /** @test */
@@ -55,34 +65,9 @@ class WhatStringTest extends TestCase
         );
     }
 
-    private function assertWhatFormat($expected, $what, $timezone = 'Europe/Amsterdam')
+    private function assertWhatFormat($expected, $what, Schedule $schedule)
     {
-        $this->rewindTimeInHours(3);
-
-        $user = factory(User::class)->create([
-            'timezone' => $timezone,
-        ]);
-
-        $schedule = $user->schedules()->create([
-            'what' => $what,
-            'when' => 'in 1 hour',
-        ]);
-
-        $this->progressTimeInHours(1);
-
-        $schedule->scheduleHistories()->create([
-            'sent_at' => secondless_now($user->timezone),
-        ]);
-
-        $this->progressTimeInHours(1);
-
-        $schedule->scheduleHistories()->create([
-            'sent_at' => secondless_now($user->timezone),
-        ]);
-
-        $this->progressTimeInHours(1);
-
-        $schedule->refresh();
+        $schedule->update(['what' => $what]);
 
         $this->assertSame(
             $expected,

@@ -35,9 +35,7 @@ class DaysSinceLastSentTest extends WhatFormatTestCase
         /** @var Schedule $schedule */
         [$user, $schedule] = $this->createUserAndSchedule();
 
-        $schedule->scheduleHistories()->create([
-            'sent_at' => secondless_now($user->timezone),
-        ]);
+        $schedule->update(['last_sent_at' => secondless_now()]);
 
         $this->assertFormattedWhen('0', '%d', $schedule);
 
@@ -49,9 +47,7 @@ class DaysSinceLastSentTest extends WhatFormatTestCase
 
         $this->assertFormattedWhen('7', '%d', $schedule);
 
-        $schedule->scheduleHistories()->create([
-            'sent_at' => secondless_now($user->timezone),
-        ]);
+        $schedule->update(['last_sent_at' => secondless_now()]);
 
         $schedule->refresh();
 
@@ -64,9 +60,7 @@ class DaysSinceLastSentTest extends WhatFormatTestCase
         /** @var Schedule $schedule */
         [$user, $schedule] = $this->createUserAndSchedule();
 
-        $schedule->scheduleHistories()->create([
-            'sent_at' => secondless_now($user->timezone),
-        ]);
+        $schedule->update(['last_sent_at' => secondless_now()]);
 
         $this->progressTimeInDays(1);
 
@@ -85,9 +79,7 @@ class DaysSinceLastSentTest extends WhatFormatTestCase
         /** @var Schedule $schedule */
         [$user, $schedule] = $this->createUserAndSchedule();
 
-        $schedule->scheduleHistories()->create([
-            'sent_at' => secondless_now($user->timezone),
-        ]);
+        $schedule->update(['last_sent_at' => secondless_now()]);
 
         $this->assertFormattedWhen('days ago: 1e2', 'days ago: %d+1e2', $schedule);
 
@@ -106,20 +98,15 @@ class DaysSinceLastSentTest extends WhatFormatTestCase
         [$chineseUser, $chineseSchedule] = $this->createUserAndSchedule('Asia/Shanghai');
         [$dutchUser,   $dutchSchedule]   = $this->createUserAndSchedule('Europe/Amsterdam');
 
-        $chineseSchedule->scheduleHistories()->create([
-            'sent_at' => secondless_now($chineseUser->timezone),
-        ]);
-
-        $dutchSchedule->scheduleHistories()->create([
-            'sent_at' => secondless_now($dutchUser->timezone),
-        ]);
-
-        $chineseSchedule->refresh();
-        $dutchSchedule->refresh();
+        // Both emails were sent at "2018-03-28 12:00:00" server time,
+        // which is "2018-03-28 18:00:00" in Chinese time.
+        $chineseSchedule->update(['last_sent_at' => secondless_now()]);
+        $dutchSchedule->update(['last_sent_at' => secondless_now()]);
 
         $this->assertFormattedWhen('0', '%d', $dutchSchedule);
         $this->assertFormattedWhen('0', '%d', $chineseSchedule);
 
+        // It is now tomorrow in China, but not in Europe.
         $this->progressTimeInHours(6);
 
         $this->assertSame(28, now('Europe/Amsterdam')->day);

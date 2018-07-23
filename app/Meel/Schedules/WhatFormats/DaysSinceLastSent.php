@@ -24,7 +24,7 @@ class DaysSinceLastSent extends WhatFormat
         $now = now($this->timezone)->setTimeFromTimeString('23:59:59');
 
         $lastSent = $this->schedule->last_sent_at
-            ? Carbon::parse($this->schedule->last_sent_at, $this->timezone)
+            ? Carbon::parse($this->schedule->last_sent_at)->setTimezone($this->timezone)
             : null;
 
         $daysSinceLastSent = $lastSent

@@ -22,7 +22,7 @@
                                 when="{{ $schedule->when }}"
                                 initial-what="{{ $schedule->what }}"
                                 next-occurrence="{{ $schedule->next_occurrence }}"
-                                last-sent-at="{{ $schedule->last_sent_at }}"
+                                last-sent-at="{{ $schedule->last_sent_at ? $schedule->last_sent_at->setTimezone($user->timezone) : null }}"
                 ></email-schedule>
             @empty
                 <p>
@@ -42,7 +42,7 @@
                                 when="{{ $schedule->when }}"
                                 initial-what="{{ $schedule->what }}"
                                 next-occurrence="{{ $schedule->next_occurrence }}"
-                                last-sent-at="{{ $schedule->last_sent_at }}"
+                                last-sent-at="{{ $schedule->last_sent_at ? $schedule->last_sent_at->setTimezone($user->timezone) : null }}"
                 ></email-schedule>
             @empty
                 <p>
