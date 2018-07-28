@@ -60,9 +60,7 @@ class SchedulesTableSeeder extends Seeder
         do {
             Carbon::setTestNow($schedule->next_occurrence);
 
-            $user->refresh()->emails_left
-                ? ScheduledEmailSent::dispatch($schedule, new Email($schedule))
-                : ScheduledEmailNotSent::dispatch($schedule);
+            $schedule->sendEmail();
 
             $schedule = $user->schedules()->whereNotNull('next_occurrence')->oldest('next_occurrence')->first();
         } while ($realNow->greaterThanOrEqualTo($schedule->next_occurrence));
