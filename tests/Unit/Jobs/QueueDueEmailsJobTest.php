@@ -3,23 +3,16 @@
 namespace Tests\Unit\Jobs;
 
 use App\Jobs\QueueDueEmailsJob;
-use App\Jobs\SendScheduledEmailJob;
+use App\Mail\Email;
 use App\Models\Schedule;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Queue;
+use Illuminate\Support\Facades\Mail;
 use Tests\TestCase;
 
 class QueueDueEmailsJobTest extends TestCase
 {
     use RefreshDatabase;
-
-    public function setUp()
-    {
-        parent::setUp();
-
-        Queue::fake();
-    }
 
     /** @test */
     function it_queues_due_emails()
@@ -35,7 +28,7 @@ class QueueDueEmailsJobTest extends TestCase
 
         (new QueueDueEmailsJob)->handle();
 
-        Queue::assertNothingPushed();
+        Mail::assertNothingQueued();
 
         $this->progressTimeInMinutes(1);
 
@@ -44,9 +37,10 @@ class QueueDueEmailsJobTest extends TestCase
 
         (new QueueDueEmailsJob)->handle();
 
-        $this->assertJobsPushed(2)
-            ->assertJobQueued($a1)
-            ->assertJobQueued($b1);
+        Mail::assertQueued(Email::class, 2);
+
+        $this->assertEmailQueued($a1)
+            ->assertEmailQueued($b1);
 
         // Next occurrence is set to null when they are sent.
         $a1->update(['next_occurrence' => null]);
@@ -57,15 +51,16 @@ class QueueDueEmailsJobTest extends TestCase
         (new QueueDueEmailsJob)->handle();
 
         // Nothing else should be pushed
-        $this->assertJobsPushed(2);
+        Mail::assertQueued(Email::class, 2);
 
         $this->progressTimeInMinutes(30);
 
         (new QueueDueEmailsJob)->handle();
 
-        $this->assertJobsPushed(4)
-            ->assertJobQueued($a2)
-            ->assertJobQueued($b2);
+        Mail::assertQueued(Email::class, 4);
+
+        $this->assertEmailQueued($a2)
+            ->assertEmailQueued($b2);
     }
 
     /** @test */
@@ -85,22 +80,16 @@ class QueueDueEmailsJobTest extends TestCase
 
         (new QueueDueEmailsJob)->handle();
 
-        $this->assertJobsPushed(1)
-            ->assertJobQueued($schedule);
+        Mail::assertQueued(Email::class, 1);
+
+        $this->assertEmailQueued($schedule);
     }
 
-    private function assertJobQueued(Schedule $schedule)
+    private function assertEmailQueued(Schedule $schedule)
     {
-        Queue::assertPushed(SendScheduledEmailJob::class, function (SendScheduledEmailJob $job) use ($schedule) {
-            return $job->schedule->id === $schedule->id;
+        Mail::assertQueued(Email::class, function (Email $email) use ($schedule) {
+            return $email->schedule->id === $schedule->id;
         });
-
-        return $this;
-    }
-
-    private function assertJobsPushed(int $count)
-    {
-        Queue::assertPushed(SendScheduledEmailJob::class, $count);
 
         return $this;
     }

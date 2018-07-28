@@ -20,6 +20,11 @@ class FeedItems
         }
     }
 
+    public function items()
+    {
+        return $this->items;
+    }
+
     /**
      * @param $sinceDateTime
      *
@@ -35,8 +40,17 @@ class FeedItems
             ->all();
     }
 
-    public function items()
+    /**
+     * This method is used for making snapshot assertions.
+     *
+     * @return string
+     */
+    public function toJson()
     {
-        return $this->items;
+        $array = array_map(function (FeedItem $item) {
+            return $item->toArray();
+        }, $this->items);
+
+        return json_encode($array);
     }
 }

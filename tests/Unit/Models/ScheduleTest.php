@@ -3,11 +3,9 @@
 namespace Tests\Unit\Models;
 
 use App\Events\EmailNotSent;
-use App\Events\EmailSent;
-use App\Jobs\SendScheduledEmailJob;
-use App\Mail\AlmostOutOfEmailsEmail;
+use App\Events\ScheduledEmailNotSent;
+use App\Events\ScheduledEmailSent;
 use App\Mail\Email;
-use App\Mail\OutOfEmailsEmail;
 use App\Models\Schedule;
 use App\Models\SiteStats;
 use App\Models\User;
@@ -24,7 +22,7 @@ class ScheduleTest extends TestCase
     /** @test */
     function it_sends_emails()
     {
-        $this->expectsEvents(EmailSent::class);
+        $this->expectsEvents(ScheduledEmailSent::class);
 
         $user = factory(User::class)->create();
 
@@ -35,7 +33,9 @@ class ScheduleTest extends TestCase
 
         $schedule->sendEmail();
 
-        Mail::assertSent(Email::class, function (Email $mail) use ($user) {
+        Mail::assertQueued(Email::class, 1);
+
+        Mail::assertQueued(Email::class, function (Email $mail) use ($user) {
             return count($mail->to) === 1 && $mail->hasTo($user);
         });
     }
@@ -43,46 +43,16 @@ class ScheduleTest extends TestCase
     /** @test */
     function now_emails_are_sent_immediately()
     {
-        $this->expectsJobs(SendScheduledEmailJob::class);
-
         $user = factory(User::class)->create();
 
         $user->schedules()->create([
             'what' => 'WHAT?',
             'when' => 'now',
         ]);
-    }
 
-    /** @test */
-    function it_notifies_users_when_they_are_almost_out_of_emails()
-    {
-        $user = factory(User::class)->create([
-            'emails_left' => 10,
-        ]);
+        Mail::assertQueued(Email::class, 1);
 
-        $user->schedules()->create([
-            'what' => 'The what text',
-            'when' => 'now',
-        ]);
-
-        Mail::assertSent(AlmostOutOfEmailsEmail::class, function (AlmostOutOfEmailsEmail $mail) use ($user) {
-            return count($mail->to) === 1 && $mail->hasTo($user);
-        });
-    }
-
-    /** @test */
-    function it_notifies_users_when_they_are_out_of_emails()
-    {
-        $user = factory(User::class)->create([
-            'emails_left' => 1,
-        ]);
-
-        $user->schedules()->create([
-            'what' => 'The what text',
-            'when' => 'now',
-        ]);
-
-        Mail::assertSent(OutOfEmailsEmail::class, function (OutOfEmailsEmail $mail) use ($user) {
+        Mail::assertQueued(Email::class, function (Email $mail) use ($user) {
             return count($mail->to) === 1 && $mail->hasTo($user);
         });
     }
@@ -90,7 +60,10 @@ class ScheduleTest extends TestCase
     /** @test */
     function users_with_no_emails_left_can_not_send_emails()
     {
-        $this->expectsEvents(EmailNotSent::class);
+        $this->expectsEvents([
+            EmailNotSent::class,
+            ScheduledEmailNotSent::class,
+        ]);
 
         /** @var User $user */
         $user = factory(User::class)->create([
@@ -178,6 +151,23 @@ class ScheduleTest extends TestCase
     }
 
     /** @test */
+    function it_sets_the_next_occurrence_in_server_time_when_creating()
+    {
+        $user = factory(User::class)->create(['timezone' => 'Asia/Shanghai']);
+
+        /** @var Schedule $schedule */
+        $schedule = $user->schedules()->create([
+            'what' => 'The what text',
+            'when' => 'every day at 12:00',
+        ]);
+
+        $this->assertSame(
+            '2018-03-29 06:00:00', // 06:00 server time is 12:00 China time
+            (string) $schedule->next_occurrence
+        );
+    }
+
+    /** @test */
     function it_sets_the_next_occurrence_for_emails_after_sending()
     {
         $user = factory(User::class)->create();
@@ -188,13 +178,19 @@ class ScheduleTest extends TestCase
             'when' => 'every monday at 12:00',
         ]);
 
-        $this->assertSame('2018-04-02 12:00:00', Schedule::find(1)->next_occurrence);
+        $this->assertSame(
+            '2018-04-02 12:00:00',
+            (string) $schedule->refresh()->next_occurrence
+        );
 
         Carbon::setTestNow('2018-04-02 12:00:15');
 
         $schedule->sendEmail();
 
-        $this->assertSame('2018-04-09 12:00:00', Schedule::find(1)->next_occurrence);
+        $this->assertSame(
+            '2018-04-09 12:00:00',
+            (string) $schedule->refresh()->next_occurrence
+        );
     }
 
     /** @test */
@@ -215,7 +211,10 @@ class ScheduleTest extends TestCase
             'when' => 'every month at 12:00',
         ]);
 
-        $this->assertSame('2018-04-01 12:00:00', Schedule::find(1)->next_occurrence);
+        $this->assertSame(
+            '2018-04-01 12:00:00',
+            (string) $schedule->refresh()->next_occurrence
+        );
 
         $this->assertSame(0, SiteStats::today()->emails_sent);
         $this->assertSame(0, SiteStats::today()->emails_not_sent);
@@ -228,7 +227,10 @@ class ScheduleTest extends TestCase
         Mail::assertNothingSent();
 
         // The next occurrence is set after not sending the email.
-        $this->assertSame('2018-05-01 12:00:00', Schedule::find(1)->next_occurrence);
+        $this->assertSame(
+            '2018-05-01 12:00:00',
+            (string) $schedule->refresh()->next_occurrence
+        );
 
         $this->assertSame(0, SiteStats::today()->emails_sent);
         $this->assertSame(1, SiteStats::today()->emails_not_sent);
@@ -237,30 +239,29 @@ class ScheduleTest extends TestCase
     }
 
     /** @test */
-    function it_gets_all_schedules_that_should_be_sent_right_now_respecting_timezones()
+    function it_gets_all_schedules_that_should_be_sent_right_now()
     {
         $amsterdamUser = factory(User::class)->create(['timezone' => 'Europe/Amsterdam']);
         $chinaUser     = factory(User::class)->create(['timezone' => 'Asia/Shanghai']);
         $londonUser    = factory(User::class)->create(['timezone' => 'Europe/London']);
 
-        $chinaUser->schedules()->create([    'what' => 'c1', 'when' => 'in 1 minute']);
-        $londonUser->schedules()->create([   'what' => 'l1', 'when' => 'in 1 minute']);
-        $amsterdamUser->schedules()->create(['what' => 'a1', 'when' => 'in 1 minute']);
-
-        $chinaUser->schedules()->create([    'what' => 'c2', 'when' => 'in 1 hour']);
-        $londonUser->schedules()->create([   'what' => 'l2', 'when' => 'in 1 hour']);
-        $amsterdamUser->schedules()->create(['what' => 'a2', 'when' => 'in 6 hours']);
+        $chinaUser->schedules()->create([    'what' => 'c1', 'when' => 'at 18:01']);
+        $londonUser->schedules()->create([   'what' => 'l1', 'when' => 'at 11:01']);
+        $amsterdamUser->schedules()->create(['what' => 'a1', 'when' => 'at 12:01']);
 
         $this->progressTimeInMinutes(1);
 
-        $schedules = Schedule::shouldBeSentNow()->map(function (Schedule $schedule) {
-            return ['what' => $schedule->what, 'next_occurrence' => $schedule->next_occurrence];
-        })->all();
+        $schedules = Schedule::shouldBeSentNow()
+            ->get()
+            ->map(function (Schedule $schedule) {
+                return ['what' => $schedule->what, 'next_occurrence' => (string) $schedule->next_occurrence];
+            })
+            ->all();
 
         $this->assertSame([
-            0 => ['what' => 'c1', 'next_occurrence' => '2018-03-28 18:01:00'],
-            1 => ['what' => 'l1', 'next_occurrence' => '2018-03-28 11:01:00'],
-            2 => ['what' => 'a1', 'next_occurrence' => '2018-03-28 12:01:00']
+            0 => ['what' => 'c1', 'next_occurrence' => '2018-03-28 12:01:00'],
+            1 => ['what' => 'l1', 'next_occurrence' => '2018-03-28 12:01:00'],
+            2 => ['what' => 'a1', 'next_occurrence' => '2018-03-28 12:01:00'],
         ], $schedules);
     }
 }

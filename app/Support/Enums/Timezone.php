@@ -3,6 +3,7 @@
 namespace App\Support\Enums;
 
 use DateTimeZone;
+use SjorsO\Enum\EnumArray;
 
 class Timezone extends EnumArray
 {

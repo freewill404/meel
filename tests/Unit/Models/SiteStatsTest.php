@@ -40,5 +40,8 @@ class SiteStatsTest extends TestCase
         $this->assertSame(0, $siteStats->schedules_created);
         $this->assertSame(0, $siteStats->emails_sent);
         $this->assertSame(0, $siteStats->emails_not_sent);
+        $this->assertSame(0, $siteStats->feeds_created);
+        $this->assertSame(0, $siteStats->feed_polls);
+        $this->assertSame(0, $siteStats->feed_emails_sent);
     }
 }

@@ -12,13 +12,16 @@ class CreateFeedsTable extends Migration
             $table->increments('id');
 
             $table->unsignedInteger('user_id');
+            $table->string('when')->nullable();
             $table->string('url');
+            $table->dateTime('next_poll_at');
             $table->dateTime('last_polled_at');
+            $table->string('last_poll_error')->nullable();
+            $table->boolean('group_new_entries')->default(true);
             $table->unsignedInteger('emails_sent')->default(0);
+            $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-
-            $table->timestamps();
         });
     }
 

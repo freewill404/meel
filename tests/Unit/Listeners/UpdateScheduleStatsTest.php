@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Listeners;
 
-use App\Events\EmailSent;
+use App\Events\ScheduledEmailSent;
 use App\Listeners\SetNextOccurrence;
 use App\Listeners\UpdateScheduleStats;
 use App\Mail\Email;
@@ -56,7 +56,7 @@ class UpdateScheduleStatsTest extends TestCase
         $this->assertSame(0, SiteStats::today()->emails_sent);
 
         $this->listener->handle(
-            new EmailSent($schedule, $this->emailMock)
+            new ScheduledEmailSent($schedule, $this->emailMock)
         );
 
         $this->assertSame(1, SiteStats::today()->emails_sent);

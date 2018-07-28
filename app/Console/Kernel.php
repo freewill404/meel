@@ -2,10 +2,9 @@
 
 namespace App\Console;
 
-use App\Jobs\Feeds\SkipFeedPollsForUsersWithoutEmailsJob;
 use App\Jobs\GenerateSitemapJob;
 use App\Jobs\QueueDueEmailsJob;
-use App\Jobs\Feeds\QueuePollFeedUrlJobsJob;
+use App\Jobs\Feeds\QueueDueFeedsJob;
 use App\Jobs\Diagnostic\SendAdminAlertJob;
 use App\Jobs\Diagnostic\SendAdminDigestJob;
 use App\Models\SiteStats;
@@ -20,8 +19,7 @@ class Kernel extends ConsoleKernel
         $schedule->job(QueueDueEmailsJob::class)->everyMinute();
 
         // Feeds
-        $schedule->job(QueuePollFeedUrlJobsJob::class              )->everyFifteenMinutes();
-        $schedule->job(SkipFeedPollsForUsersWithoutEmailsJob::class)->everyFifteenMinutes();
+        $schedule->job(QueueDueFeedsJob::class)->everyMinute();
 
         // Diagnostic
         $schedule->job(SendAdminDigestJob::class)->monthlyOn(1, '07:00');

@@ -3,14 +3,16 @@
 namespace Tests;
 
 use App\Models\User;
+use App\Support\Facades\Guzzler;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Contracts\Console\Kernel;
 use SjorsO\MocksTime\MocksTime;
+use Spatie\Snapshots\MatchesSnapshots;
 
 abstract class TestCase extends BaseTestCase
 {
-    use MocksTime;
+    use MocksTime, MatchesSnapshots;
 
     protected $testFilePath;
 
@@ -27,6 +29,8 @@ abstract class TestCase extends BaseTestCase
         if ($this->mailFake) {
             Mail::fake();
         }
+
+        Guzzler::fake();
     }
 
     protected function tearDown()
@@ -49,6 +53,20 @@ abstract class TestCase extends BaseTestCase
         $user = $user ?: factory(User::class)->create();
 
         return $this->actingAs($user, 'api');
+    }
+
+    protected function getSnapshotDirectory(): string
+    {
+        return $this->getFileSnapshotDirectory();
+    }
+
+    protected function getFileSnapshotDirectory(): string
+    {
+        $subDirectory = property_exists($this, 'snapshotDirectory')
+            ? DIRECTORY_SEPARATOR.$this->snapshotDirectory
+            : '';
+
+        return $this->testFilePath.'_snapshots_'.$subDirectory;
     }
 
     public function createApplication()

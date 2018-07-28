@@ -1,7 +1,7 @@
 <?php
 
-use App\Events\EmailNotSent;
-use App\Events\EmailSent;
+use App\Events\ScheduledEmailNotSent;
+use App\Events\ScheduledEmailSent;
 use App\Mail\Email;
 use App\Models\Schedule;
 use App\Models\User;
@@ -58,13 +58,11 @@ class SchedulesTableSeeder extends Seeder
         $schedule = $user->schedules()->whereNotNull('next_occurrence')->oldest('next_occurrence')->first();
 
         do {
-            Carbon::setTestNow(
-                Carbon::parse($schedule->next_occurrence, $user->timezone)->setTimezone('Europe/Amsterdam')
-            );
+            Carbon::setTestNow($schedule->next_occurrence);
 
             $user->refresh()->emails_left
-                ? EmailSent::dispatch($schedule, new Email($schedule))
-                : EmailNotSent::dispatch($schedule);
+                ? ScheduledEmailSent::dispatch($schedule, new Email($schedule))
+                : ScheduledEmailNotSent::dispatch($schedule);
 
             $schedule = $user->schedules()->whereNotNull('next_occurrence')->oldest('next_occurrence')->first();
         } while ($realNow->greaterThanOrEqualTo($schedule->next_occurrence));

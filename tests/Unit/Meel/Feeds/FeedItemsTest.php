@@ -19,9 +19,11 @@ class FeedItemsTest extends TestCase
 
         $this->assertCount(4, $items);
 
-        $this->assertSame('The Engine That Does More', $items[2]->title);
-        $this->assertSame('http://liftoff.msfc.nasa.gov/news/2003/news-VASIMR.asp', $items[2]->url);
-        $this->assertTrue($items[2]->publishedAt instanceof Carbon);
+        $this->assertTrue($items[0]->publishedAt instanceof Carbon);
+
+        $this->assertMatchesJsonSnapshot(
+            $feedItems->toJson()
+        );
     }
 
     /** @test */

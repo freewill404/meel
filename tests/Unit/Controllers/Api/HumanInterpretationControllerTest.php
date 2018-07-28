@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Controllers\Api;
 
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -35,6 +36,15 @@ class HumanInterpretationControllerTest extends TestCase
     function basic_non_recurring_interpretation()
     {
         $this->apiLogin()->assertValidHumanInterpretation('Once, at 2018-04-04 16:00:00 (Wednesday)', 'next week at 16:00');
+    }
+
+    /** @test */
+    function it_shows_the_time_in_the_users_timezone()
+    {
+        $user = factory(User::class)->create(['timezone' => 'Asia/Shanghai']);
+
+        $this->apiLogin($user)
+            ->assertValidHumanInterpretation('Once, at 2018-04-04 16:00:00 (Wednesday)', 'next week at 16:00');
     }
 
     private function assertValidHumanInterpretation($expected, $input)

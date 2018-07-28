@@ -2,12 +2,12 @@
 
 namespace App\Listeners;
 
-use App\Events\EmailSent;
+use App\Events\ScheduledEmailSent;
 use App\Models\SiteStats;
 
 class UpdateScheduleStats
 {
-    public function handle(EmailSent $event)
+    public function handle(ScheduledEmailSent $event)
     {
         SiteStats::incrementEmailsSent();
 

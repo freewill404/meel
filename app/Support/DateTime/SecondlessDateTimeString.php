@@ -2,6 +2,8 @@
 
 namespace App\Support\DateTime;
 
+use Carbon\Carbon;
+
 class SecondlessDateTimeString
 {
     protected $dateString;
@@ -26,6 +28,32 @@ class SecondlessDateTimeString
         }
 
         return $this->timeString->earlierThanNow($timezone);
+    }
+
+    public function changeTimezone($fromTimezone, $toTimezone)
+    {
+        $changedDateTime = static::fromCarbon(
+            Carbon::parse((string) $this, $fromTimezone)->setTimezone($toTimezone)
+        );
+
+        $this->dateString = $changedDateTime->getDateString();
+
+        $this->timeString = $changedDateTime->getTimeString();
+
+        return $this;
+    }
+
+    public function addMinutes($minutes)
+    {
+        $changedDateTime = static::fromCarbon(
+            Carbon::parse((string) $this)->addMinutes($minutes)
+        );
+
+        $this->dateString = $changedDateTime->getDateString();
+
+        $this->timeString = $changedDateTime->getTimeString();
+
+        return $this;
     }
 
     public function getTimeString(): SecondlessTimeString

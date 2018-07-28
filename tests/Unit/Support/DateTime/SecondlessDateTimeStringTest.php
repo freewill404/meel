@@ -38,6 +38,26 @@ class SecondlessDateTimeStringTest extends TestCase
         $this->assertDateTimeNotInThePast('2018-03-28', '18:00:16', 'Asia/Shanghai');
     }
 
+    /** @test */
+    function it_can_change_timezone()
+    {
+        $dateTime = new SecondlessDateTimeString('2018-03-28', '12:00:15');
+
+        $dateTime->changeTimezone('Asia/Shanghai', 'Europe/Amsterdam');
+
+        $this->assertSame('2018-03-28 06:00:00', (string) $dateTime);
+    }
+
+    /** @test */
+    function it_can_add_minutes()
+    {
+        $dateTime = new SecondlessDateTimeString('2018-03-28', '12:00:15');
+
+        $dateTime->addMinutes(15);
+
+        $this->assertSame('2018-03-28 12:15:00', (string) $dateTime);
+    }
+
     private function assertDateTimeIsInThePast($date, $time, $timezone = null)
     {
         $dateTime = new SecondlessDateTimeString($date, $time);

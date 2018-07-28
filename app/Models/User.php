@@ -2,8 +2,13 @@
 
 namespace App\Models;
 
+use App\Events\EmailNotSent;
+use App\Events\EmailSent;
+use App\Events\ScheduledEmailNotSent;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Mail\Mailable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Mail;
 use Laravel\Passport\HasApiTokens;
 
 class User extends Authenticatable
@@ -22,11 +27,12 @@ class User extends Authenticatable
         'emails_sent'       => 'integer',
         'emails_not_sent'   => 'integer',
         'schedules_created' => 'integer',
+        'feeds_created'     => 'integer',
     ];
 
     public function schedules()
     {
-        return $this->hasMany(Schedule::class)->orderBy('next_occurrence');
+        return $this->hasMany(Schedule::class);
     }
 
     public function feeds()
@@ -39,15 +45,18 @@ class User extends Authenticatable
         return 'now';
     }
 
-    public static function getIdsByTimezone(): array
+    public function sendEmail(Mailable $email)
     {
-        return static::query()
-            ->select('id', 'timezone')
-            ->get()
-            ->mapToGroups(function ($user) {
-                return [$user->timezone => $user->id];
-            })
-            ->sortKeys()
-            ->toArray();
+        if (! $this->emails_left) {
+            EmailNotSent::dispatch($this, $email);
+
+            return false;
+        }
+
+        Mail::to($this)->queue($email);
+
+        EmailSent::dispatch($this, $email);
+
+        return true;
     }
 }

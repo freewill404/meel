@@ -1,8 +1,6 @@
 <?php
 
 use App\Support\DateTime\SecondlessDateTimeString;
-use App\Meel\Schedules\ScheduleFormat;
-use App\Models\Schedule;
 
 /**
  * Trigger a "dd()" after it has been called "timesCalled" times.
@@ -24,25 +22,6 @@ function dd_delay(int $timesCalled, ...$vars)
     }
 
     $calls[$caller] = $callCount + 1;
-}
-
-function next_occurrence($when, $timezone = null): SecondlessDateTimeString
-{
-    if ($when instanceof Schedule) {
-        $timezone = $when->user->timezone;
-
-        $when = $when->when;
-    }
-
-    $schedule = new ScheduleFormat($when, $timezone);
-
-    $nextOccurrence = $schedule->nextOccurrence();
-
-    if ($nextOccurrence === null) {
-        throw new RuntimeException('Invalid "when": '.$when);
-    }
-
-    return $nextOccurrence;
 }
 
 function secondless_now($timezone = null): SecondlessDateTimeString

@@ -4,15 +4,14 @@ namespace App\Listeners;
 
 use App\Mail\ConfirmAccountEmail;
 use Illuminate\Auth\Events\Registered;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Mail;
 
-class SendConfirmAccountEmail implements ShouldQueue
+class SendConfirmAccountEmail
 {
     public function handle(Registered $event)
     {
-        Mail::to($event->user)->send(
-            new ConfirmAccountEmail($event->user)
-        );
+        $email = new ConfirmAccountEmail($event->user);
+
+        Mail::to($event->user)->queue($email);
     }
 }

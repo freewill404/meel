@@ -2,18 +2,18 @@
 
 namespace App\Events;
 
-use App\Mail\Email;
-use App\Models\Schedule;
+use App\Models\User;
+use Illuminate\Mail\Mailable;
 
 class EmailSent extends BaseEvent
 {
-    public $schedule;
+    public $user;
 
     public $email;
 
-    public function __construct(Schedule $schedule, Email $email)
+    public function __construct(User $user, Mailable $email)
     {
-        $this->schedule = $schedule;
+        $this->user = $user;
 
         $this->email = $email;
     }

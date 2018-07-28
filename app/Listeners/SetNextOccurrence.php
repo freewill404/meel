@@ -2,21 +2,27 @@
 
 namespace App\Listeners;
 
-use App\Events\EmailNotSent;
-use App\Events\EmailSent;
+use App\Events\ScheduledEmailNotSent;
+use App\Events\ScheduledEmailSent;
 use App\Meel\Schedules\ScheduleFormat;
 
 class SetNextOccurrence
 {
     /**
-     * @param $event EmailSent|EmailNotSent
+     * @param $event ScheduledEmailSent|ScheduledEmailNotSent
      */
     public function handle($event)
     {
-        $schedule = new ScheduleFormat($event->schedule->when, $event->schedule->user->timezone);
+        $userTimezone = $event->schedule->user->timezone;
+
+        $schedule = new ScheduleFormat($event->schedule->when, $userTimezone);
+
+        $nextOccurrence = $schedule->isRecurring()
+            ? $schedule->nextOccurrence()->changeTimezone($userTimezone, 'Europe/Amsterdam')
+            : null;
 
         $event->schedule->update([
-            'next_occurrence' => $schedule->isRecurring() ? $schedule->nextOccurrence() : null,
+            'next_occurrence' => $nextOccurrence,
         ]);
     }
 }

@@ -23,7 +23,7 @@ class DecrementUserEmailsLeftTest extends TestCase
 
         $this->assertSame(100, $user->emails_left);
 
-        $this->handleEvent($schedule);
+        $this->handleEvent($user);
 
         $this->assertSame(99, $user->refresh()->emails_left);
     }
@@ -35,7 +35,7 @@ class DecrementUserEmailsLeftTest extends TestCase
 
         [$user, $schedule] = $this->createUserAndSchedule(10);
 
-        $this->handleEvent($schedule);
+        $this->handleEvent($user);
 
         Event::assertNotDispatched(UserOutOfEmails::class);
     }
@@ -47,7 +47,7 @@ class DecrementUserEmailsLeftTest extends TestCase
 
         [$user, $schedule] = $this->createUserAndSchedule(1);
 
-        $this->handleEvent($schedule);
+        $this->handleEvent($user);
 
         Event::assertNotDispatched(UserAlmostOutOfEmails::class);
     }
@@ -60,7 +60,7 @@ class DecrementUserEmailsLeftTest extends TestCase
         [$user, $schedule] = $this->createUserAndSchedule(9);
 
         for ($i = 0; $i < 8; $i++) {
-            $this->handleEvent($schedule);
+            $this->handleEvent($user);
         }
 
         $user->refresh();
@@ -84,7 +84,7 @@ class DecrementUserEmailsLeftTest extends TestCase
         return [$user, $schedule];
     }
 
-    private function handleEvent($schedule)
+    private function handleEvent($user)
     {
         $listener = new DecrementUserEmailsLeft();
 
@@ -93,7 +93,7 @@ class DecrementUserEmailsLeftTest extends TestCase
         };
 
         $listener->handle(
-            new EmailSent($schedule, $email)
+            new EmailSent($user, $email)
         );
     }
 }

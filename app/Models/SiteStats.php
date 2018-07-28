@@ -15,6 +15,9 @@ class SiteStats extends Model
         'schedules_created' => 'integer',
         'emails_sent'       => 'integer',
         'emails_not_sent'   => 'integer',
+        'feeds_created'     => 'integer',
+        'feed_polls'        => 'integer',
+        'feed_emails_sent'  => 'integer',
     ];
 
     public static function today()
@@ -26,6 +29,9 @@ class SiteStats extends Model
             'schedules_created' => 0,
             'emails_sent'       => 0,
             'emails_not_sent'   => 0,
+            'feeds_created'     => 0,
+            'feed_polls'        => 0,
+            'feed_emails_sent'  => 0,
         ]);
     }
 
@@ -47,5 +53,20 @@ class SiteStats extends Model
     public static function incrementEmailsNotSent()
     {
         static::today()->increment('emails_not_sent');
+    }
+
+    public static function incrementFeedsCreated()
+    {
+        static::today()->increment('feeds_created');
+    }
+
+    public static function incrementFeedPolls()
+    {
+        static::today()->increment('feed_polls');
+    }
+
+    public static function incrementFeedEmailsSent()
+    {
+        static::today()->increment('feed_emails_sent');
     }
 }

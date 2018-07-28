@@ -4,8 +4,16 @@ namespace App\Providers;
 
 use App\Events\EmailNotSent;
 use App\Events\EmailSent;
+use App\Events\ScheduledEmailNotSent;
+use App\Events\ScheduledEmailSent;
+use App\Events\Feeds\FeedCreating;
+use App\Events\Feeds\FeedNotPolled;
+use App\Events\Feeds\FeedPolled;
+use App\Events\Feeds\FeedPollFailed;
 use App\Events\UserAlmostOutOfEmails;
 use App\Events\UserOutOfEmails;
+use App\Listeners\Feeds\SendNewFeedEntryEmails;
+use App\Listeners\Feeds\SetNextPollAt;
 use App\Listeners\IncrementEmailsNotSent;
 use App\Listeners\UpdateScheduleStats;
 use App\Listeners\IncrementUsersRegistered;
@@ -26,14 +34,20 @@ class EventServiceProvider extends ServiceProvider
         ],
 
         EmailSent::class => [
-            SetNextOccurrence::class,
-            UpdateScheduleStats::class,
             DecrementUserEmailsLeft::class,
         ],
 
         EmailNotSent::class => [
-            SetNextOccurrence::class,
             IncrementEmailsNotSent::class,
+        ],
+
+        ScheduledEmailSent::class => [
+            SetNextOccurrence::class,
+            UpdateScheduleStats::class,
+        ],
+
+        ScheduledEmailNotSent::class => [
+            SetNextOccurrence::class,
         ],
 
         UserAlmostOutOfEmails::class => [
@@ -43,5 +57,23 @@ class EventServiceProvider extends ServiceProvider
         UserOutOfEmails::class => [
             SendOutOfEmailsEmail::class,
         ],
+
+        FeedCreating::class => [
+            SetNextPollAt::class,
+        ],
+
+        FeedNotPolled::class => [
+            SetNextPollAt::class,
+        ],
+
+        FeedPolled::class => [
+            SendNewFeedEntryEmails::class,
+            SetNextPollAt::class,
+        ],
+
+        FeedPollFailed::class => [
+            SetNextPollAt::class,
+        ],
+
     ];
 }

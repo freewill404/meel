@@ -4,15 +4,14 @@ namespace App\Listeners;
 
 use App\Events\UserAlmostOutOfEmails;
 use App\Mail\AlmostOutOfEmailsEmail;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Mail;
 
-class SendAlmostOutOfEmailsEmail implements ShouldQueue
+class SendAlmostOutOfEmailsEmail
 {
     public function handle(UserAlmostOutOfEmails $event)
     {
-        Mail::to($event->user)->send(
-            new AlmostOutOfEmailsEmail($event->user)
-        );
+        $email = new AlmostOutOfEmailsEmail($event->user);
+
+        Mail::to($event->user)->queue($email);
     }
 }

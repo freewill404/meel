@@ -10,7 +10,7 @@ class DecrementUserEmailsLeft
 {
     public function handle(EmailSent $event)
     {
-        $user = $event->schedule->user;
+        $user = $event->user;
 
         $user->decrement('emails_left');
 

@@ -11,9 +11,7 @@ class FeedItem
 
     public $url;
 
-    /**
-     * @var Carbon
-     */
+    /** @var Carbon $publishedAt */
     public $publishedAt;
 
     public function __construct(EntryInterface $item)
@@ -25,5 +23,14 @@ class FeedItem
         $this->publishedAt = Carbon::instance(
             $item->getDateCreated()
         )->setTimezone('Europe/Amsterdam');
+    }
+
+    public function toArray()
+    {
+        return [
+            'title'       => $this->title,
+            'url'         => $this->url,
+            'publishedAt' => (string) $this->publishedAt,
+        ];
     }
 }

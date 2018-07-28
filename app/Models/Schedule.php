@@ -2,21 +2,22 @@
 
 namespace App\Models;
 
-use App\Events\EmailNotSent;
-use App\Jobs\SendScheduledEmailJob;
+use App\Events\ScheduledEmailNotSent;
+use App\Events\ScheduledEmailSent;
+use App\Mail\Email;
 use App\Meel\Schedules\ScheduleFormat;
 use App\Meel\Schedules\WhatString;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Collection;
 
 class Schedule extends Model
 {
     protected $guarded = [];
 
     protected $casts = [
-        'user_id'      => 'integer',
-        'times_sent'   => 'integer',
-        'last_sent_at' => 'datetime',
+        'user_id'         => 'integer',
+        'times_sent'      => 'integer',
+        'next_occurrence' => 'datetime',
+        'last_sent_at'    => 'datetime',
     ];
 
     public function user()
@@ -26,9 +27,11 @@ class Schedule extends Model
 
     public function sendEmail()
     {
-        $this->user->emails_left
-            ? SendScheduledEmailJob::dispatch($this)
-            : EmailNotSent::dispatch($this);
+        $email = new Email($this);
+
+        $this->user->sendEmail($email)
+            ? ScheduledEmailSent::dispatch($this, $email)
+            : ScheduledEmailNotSent::dispatch($this);
     }
 
     public function getIsRecurringAttribute()
@@ -43,22 +46,8 @@ class Schedule extends Model
         return WhatString::format($this);
     }
 
-    public static function shouldBeSentNow(): Collection
+    public function scopeShouldBeSentNow($query)
     {
-        $schedules = collect();
-
-        foreach (User::getIdsByTimezone() as $timezone => $userIds) {
-            $timezoneNow = secondless_now($timezone);
-
-            $schedules = Schedule::query()
-                ->whereIn('user_id', $userIds)
-                ->where('next_occurrence', '<=', $timezoneNow)
-                ->get()
-                ->merge($schedules);
-        }
-
-        return $schedules->sortBy(function ($item) {
-            return $item->id;
-        })->values();
+        return $query->where('next_occurrence', '<=', secondless_now());
     }
 }

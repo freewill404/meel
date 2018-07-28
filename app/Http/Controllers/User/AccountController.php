@@ -14,7 +14,7 @@ class AccountController extends Controller
     {
         return view('account.index', [
             'user'      => Auth::user(),
-            'schedules' => Auth::user()->schedules,
+            'schedules' => Auth::user()->schedules->sortBy('next_occurrence'),
         ]);
     }
 
