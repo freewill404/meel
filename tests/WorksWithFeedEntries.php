@@ -2,23 +2,23 @@
 
 namespace Tests;
 
-use App\Meel\Feeds\FeedItems;
+use App\Meel\Feeds\FeedEntryCollection;
 
-trait WorksWithFeedItems
+trait WorksWithFeedEntries
 {
     protected function getFeedEntry($index)
     {
-        static $feedItems = null;
+        static $feedEntries = null;
 
-        if (is_null($feedItems )) {
-            $feed = new FeedItems(
+        if (is_null($feedEntries )) {
+            $feedEntryCollection = new FeedEntryCollection(
                 file_get_contents($this->testFilePath.'feeds/001-rss-2.0.txt')
             );
 
-            $feedItems = $feed->items();
+            $feedEntries = $feedEntryCollection->entries();
         }
 
-        return $feedItems[$index];
+        return $feedEntries[$index];
     }
 
     protected function getFeedEntries($count)

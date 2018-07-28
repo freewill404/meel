@@ -11,7 +11,7 @@ class SendNewFeedEntryEmails
 {
     public function handle(FeedPolled $event)
     {
-        $newEntries = $event->feedItems->itemsSince($event->feed->last_polled_at);
+        $newEntries = $event->feedEntries->entriesSince($event->feed->last_polled_at);
 
         // If a User wants new entries grouped, but there is only
         // one new entry, send it as a single entry email.

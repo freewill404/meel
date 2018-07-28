@@ -6,7 +6,7 @@ use App\Events\Feeds\FeedNotPolled;
 use App\Events\Feeds\FeedPolled;
 use App\Events\Feeds\FeedPollFailed;
 use App\Jobs\BaseJob;
-use App\Meel\Feeds\FeedItems;
+use App\Meel\Feeds\FeedEntryCollection;
 use App\Models\Feed;
 use App\Support\Facades\Guzzler;
 use Exception;
@@ -37,11 +37,11 @@ class PollFeedJob extends BaseJob implements ShouldQueue
             /** @var Response $response */
             $response = Guzzler::get($this->feed->url);
 
-            $feedItems = new FeedItems(
+            $feedEntryCollection = new FeedEntryCollection(
                 $response->getBody()->getContents()
             );
 
-            FeedPolled::dispatch($this->feed, $feedItems);
+            FeedPolled::dispatch($this->feed, $feedEntryCollection);
         } catch (RequestException $requestException) {
             $message = $requestException->hasResponse()
                 ? 'meel.feed-http-error-'.$requestException->getResponse()->getStatusCode()

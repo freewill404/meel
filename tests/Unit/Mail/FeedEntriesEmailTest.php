@@ -7,11 +7,11 @@ use App\Models\Feed;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
-use Tests\WorksWithFeedItems;
+use Tests\WorksWithFeedEntries;
 
 class FeedEntriesEmailTest extends TestCase
 {
-    use RefreshDatabase, WorksWithFeedItems;
+    use RefreshDatabase, WorksWithFeedEntries;
 
     protected $mailFake = false;
 

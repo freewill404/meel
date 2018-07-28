@@ -5,7 +5,7 @@ namespace App\Meel\Feeds;
 use Carbon\Carbon;
 use Zend\Feed\Reader\Entry\EntryInterface;
 
-class FeedItem
+class FeedEntry
 {
     public $title;
 
@@ -14,14 +14,14 @@ class FeedItem
     /** @var Carbon $publishedAt */
     public $publishedAt;
 
-    public function __construct(EntryInterface $item)
+    public function __construct(EntryInterface $entry)
     {
-        $this->title = $item->getTitle();
+        $this->title = $entry->getTitle();
 
-        $this->url = $item->getPermalink();
+        $this->url = $entry->getPermalink();
 
         $this->publishedAt = Carbon::instance(
-            $item->getDateCreated()
+            $entry->getDateCreated()
         )->setTimezone('Europe/Amsterdam');
     }
 

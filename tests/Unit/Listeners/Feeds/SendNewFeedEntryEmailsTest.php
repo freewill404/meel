@@ -6,7 +6,7 @@ use App\Events\Feeds\FeedPolled;
 use App\Listeners\Feeds\SendNewFeedEntryEmails;
 use App\Mail\FeedEntriesEmail;
 use App\Mail\FeedEntryEmail;
-use App\Meel\Feeds\FeedItems;
+use App\Meel\Feeds\FeedEntryCollection;
 use App\Models\Feed;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -20,12 +20,12 @@ class SendNewFeedEntryEmailsTest extends TestCase
     /** @test */
     function it_sends_single_feed_entry_emails()
     {
-        $feedItems = $this->getFeedItems(2);
+        $feedEntries = $this->getFeedEntries(2);
 
         [$user, $feed] = $this->createUserAndFeed(false);
 
         (new SendNewFeedEntryEmails)->handle(
-            new FeedPolled($feed, $feedItems)
+            new FeedPolled($feed, $feedEntries)
         );
 
         Mail::assertQueued(FeedEntryEmail::class, 2);
@@ -42,12 +42,12 @@ class SendNewFeedEntryEmailsTest extends TestCase
     /** @test */
     function it_sends_grouped_feed_entry_emails()
     {
-        $feedItems = $this->getFeedItems(2);
+        $feedEntries = $this->getFeedEntries(2);
 
         [$user, $feed] = $this->createUserAndFeed(true);
 
         (new SendNewFeedEntryEmails)->handle(
-            new FeedPolled($feed, $feedItems)
+            new FeedPolled($feed, $feedEntries)
         );
 
         Mail::assertQueued(FeedEntriesEmail::class, 1);
@@ -62,12 +62,12 @@ class SendNewFeedEntryEmailsTest extends TestCase
     /** @test */
     function it_single_entries_are_always_sent_as_a_single_entry_email()
     {
-        $feedItems = $this->getFeedItems(1);
+        $feedEntries = $this->getFeedEntries(1);
 
         [$user, $feed] = $this->createUserAndFeed(true);
 
         (new SendNewFeedEntryEmails)->handle(
-            new FeedPolled($feed, $feedItems)
+            new FeedPolled($feed, $feedEntries)
         );
 
         Mail::assertQueued(FeedEntryEmail::class, function (FeedEntryEmail $email) {
@@ -78,12 +78,12 @@ class SendNewFeedEntryEmailsTest extends TestCase
     /** @test */
     function it_does_nothing_when_there_are_no_new_entries()
     {
-        $feedItems = $this->getFeedItems(0);
+        $feedEntries = $this->getFeedEntries(0);
 
         [$user, $feed] = $this->createUserAndFeed(true);
 
         (new SendNewFeedEntryEmails)->handle(
-            new FeedPolled($feed, $feedItems)
+            new FeedPolled($feed, $feedEntries)
         );
 
         Mail::assertNothingQueued();
@@ -100,7 +100,7 @@ class SendNewFeedEntryEmailsTest extends TestCase
         return [$user, $feed];
     }
 
-    protected function getFeedItems(int $feedEntriesCount)
+    protected function getFeedEntries(int $feedEntriesCount)
     {
         $date = [
             0 => '2003-06-05 12:00:01',
@@ -112,12 +112,12 @@ class SendNewFeedEntryEmailsTest extends TestCase
 
         $this->setTestNow($date);
 
-        $feedItems = new FeedItems(
+        $feedEntries = new FeedEntryCollection(
             file_get_contents($this->testFilePath.'feeds/001-rss-2.0.txt')
         );
 
-        $this->assertCount($feedEntriesCount, $feedItems->itemsSince(now()));
+        $this->assertCount($feedEntriesCount, $feedEntries->entriesSince(now()));
 
-        return $feedItems;
+        return $feedEntries;
     }
 }

@@ -2,7 +2,7 @@
 
 namespace App\Mail;
 
-use App\Meel\Feeds\FeedItem;
+use App\Meel\Feeds\FeedEntry;
 use App\Models\Feed;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
@@ -16,7 +16,7 @@ class FeedEntryEmail extends Mailable
 
     public $feedEntry;
 
-    public function __construct(Feed $feed, FeedItem $feedEntry)
+    public function __construct(Feed $feed, FeedEntry $feedEntry)
     {
         $this->feed = $feed;
 

@@ -60,7 +60,7 @@ class PollFeedJobTest extends TestCase
         Event::assertDispatched(FeedPolled::class, function (FeedPolled $event) {
             if ($event->feed->id === $this->feed->id) {
                 $this->assertMatchesJsonSnapshot(
-                    $event->feedItems->toJson()
+                    $event->feedEntries->toJson()
                 );
 
                 return true;
