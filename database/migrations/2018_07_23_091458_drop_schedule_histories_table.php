@@ -9,16 +9,13 @@ class DropScheduleHistoriesTable extends Migration
 {
     public function up()
     {
-        Schema::table('schedules', function (Blueprint $table) {
-            $table->unsignedInteger('times_sent')->default(0);
-            $table->dateTime('last_sent_at')->nullable();
-        });
-
         Schedule::each(function (Schedule $schedule) {
-            $history = $schedule->scheduleHistories->first();
+            $history = DB::table('schedule_histories')->where('schedule_id', $schedule->id)->orderByDesc('sent_at')->first();
+
+            $count = DB::table('schedule_histories')->where('schedule_id', $schedule->id)->count();
 
             $schedule->update([
-                'times_sent'   => $schedule->scheduleHistories->count(),
+                'times_sent'   => $count,
                 'last_sent_at' => $history ? $history->sent_at : null,
             ]);
         });
