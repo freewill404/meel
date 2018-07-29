@@ -6,16 +6,19 @@ use App\Meel\Feeds\FeedEntryCollection;
 
 trait WorksWithFeedEntries
 {
+    protected function getFeedEntryCollection()
+    {
+        return new FeedEntryCollection(
+            file_get_contents($this->testFilePath.'feeds/001-rss-2.0.txt')
+        );
+    }
+
     protected function getFeedEntry($index)
     {
         static $feedEntries = null;
 
-        if (is_null($feedEntries )) {
-            $feedEntryCollection = new FeedEntryCollection(
-                file_get_contents($this->testFilePath.'feeds/001-rss-2.0.txt')
-            );
-
-            $feedEntries = $feedEntryCollection->entries();
+        if (is_null($feedEntries)) {
+            $feedEntries = $this->getFeedEntryCollection()->entries();
         }
 
         return $feedEntries[$index];

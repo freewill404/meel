@@ -2,8 +2,8 @@
 
 namespace Tests\Unit\Listeners;
 
+use App\Events\ScheduledEmailNotSent;
 use App\Events\ScheduledEmailSent;
-use App\Listeners\SetNextOccurrence;
 use App\Listeners\UpdateScheduleStats;
 use App\Mail\Email;
 use App\Models\Schedule;
@@ -16,9 +16,6 @@ class UpdateScheduleStatsTest extends TestCase
 {
     use RefreshDatabase;
 
-    /** @var SetNextOccurrence */
-    protected $listener;
-
     protected $emailMock;
 
     /** @var User */
@@ -28,12 +25,9 @@ class UpdateScheduleStatsTest extends TestCase
     {
         parent::setUp();
 
-        $this->withoutEvents();
-
-        // Disable observers
+        // Disable observers and event
         Schedule::flushEventListeners();
-
-        $this->listener = new UpdateScheduleStats();
+        $this->withoutEvents();
 
         $this->user = factory(User::class)->create();
 
@@ -43,7 +37,7 @@ class UpdateScheduleStatsTest extends TestCase
     }
 
     /** @test */
-    function it_updates_schedule_stats_after_an_email_is_sent()
+    function it_updates_schedule_stats_after_a_scheduled_email_is_sent()
     {
         /** @var Schedule $schedule */
         $schedule = $this->user->schedules()->create([
@@ -53,18 +47,48 @@ class UpdateScheduleStatsTest extends TestCase
             'times_sent'      => 0,
         ]);
 
-        $this->assertSame(0, SiteStats::today()->emails_sent);
+        $this->assertSame(0, SiteStats::today()->scheduled_emails_sent);
+        $this->assertSame(0, $this->user->scheduled_emails_sent);
 
-        $this->listener->handle(
+        (new UpdateScheduleStats)->handle(
             new ScheduledEmailSent($schedule, $this->emailMock)
         );
 
-        $this->assertSame(1, SiteStats::today()->emails_sent);
+        $this->assertSame(1, SiteStats::today()->scheduled_emails_sent);
+        $this->assertSame(1, $this->user->refresh()->scheduled_emails_sent);
 
         $schedule->refresh();
 
         $this->assertSame('2018-03-28 12:00:00', (string) $schedule->last_sent_at);
 
         $this->assertSame(1, $schedule->times_sent);
+    }
+
+    /** @test */
+    function it_updates_schedule_stats_after_a_scheduled_email_is_not_sent()
+    {
+        /** @var Schedule $schedule */
+        $schedule = $this->user->schedules()->create([
+            'what'            => 'The what text',
+            'when'            => 'every month',
+            'last_sent_at'    => null,
+            'times_sent'      => 0,
+        ]);
+
+        $this->assertSame(0, SiteStats::today()->scheduled_emails_not_sent);
+        $this->assertSame(0, $this->user->scheduled_emails_not_sent);
+
+        (new UpdateScheduleStats)->handle(
+            new ScheduledEmailNotSent($schedule)
+        );
+
+        $this->assertSame(1, SiteStats::today()->scheduled_emails_not_sent);
+        $this->assertSame(1, $this->user->refresh()->scheduled_emails_not_sent);
+
+        $schedule->refresh();
+
+        $this->assertNull($schedule->last_sent_at);
+
+        $this->assertSame(0, $schedule->times_sent);
     }
 }

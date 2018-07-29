@@ -5,14 +5,14 @@ namespace Tests\Unit\Listeners;
 use App\Events\EmailSent;
 use App\Events\UserAlmostOutOfEmails;
 use App\Events\UserOutOfEmails;
-use App\Listeners\DecrementUserEmailsLeft;
-use App\Mail\Email;
+use App\Listeners\UpdateEmailStats;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Mail\Mailable;
 use Illuminate\Support\Facades\Event;
 use Tests\TestCase;
 
-class DecrementUserEmailsLeftTest extends TestCase
+class UpdateEmailStatsTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -23,7 +23,9 @@ class DecrementUserEmailsLeftTest extends TestCase
 
         $this->assertSame(100, $user->emails_left);
 
-        $this->handleEvent($user);
+        (new UpdateEmailStats)->handle(
+            new EmailSent($user, new Mailable)
+        );
 
         $this->assertSame(99, $user->refresh()->emails_left);
     }
@@ -35,7 +37,9 @@ class DecrementUserEmailsLeftTest extends TestCase
 
         [$user, $schedule] = $this->createUserAndSchedule(10);
 
-        $this->handleEvent($user);
+        (new UpdateEmailStats)->handle(
+            new EmailSent($user, new Mailable)
+        );
 
         Event::assertNotDispatched(UserOutOfEmails::class);
     }
@@ -47,7 +51,9 @@ class DecrementUserEmailsLeftTest extends TestCase
 
         [$user, $schedule] = $this->createUserAndSchedule(1);
 
-        $this->handleEvent($user);
+        (new UpdateEmailStats)->handle(
+            new EmailSent($user, new Mailable)
+        );
 
         Event::assertNotDispatched(UserAlmostOutOfEmails::class);
     }
@@ -60,7 +66,9 @@ class DecrementUserEmailsLeftTest extends TestCase
         [$user, $schedule] = $this->createUserAndSchedule(9);
 
         for ($i = 0; $i < 8; $i++) {
-            $this->handleEvent($user);
+            (new UpdateEmailStats)->handle(
+                new EmailSent($user, new Mailable)
+            );
         }
 
         $user->refresh();
@@ -82,18 +90,5 @@ class DecrementUserEmailsLeftTest extends TestCase
         ]);
 
         return [$user, $schedule];
-    }
-
-    private function handleEvent($user)
-    {
-        $listener = new DecrementUserEmailsLeft();
-
-        $email = new class extends Email {
-            public function __construct() {}
-        };
-
-        $listener->handle(
-            new EmailSent($user, $email)
-        );
     }
 }

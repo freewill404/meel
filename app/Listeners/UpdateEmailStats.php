@@ -2,13 +2,24 @@
 
 namespace App\Listeners;
 
+use App\Events\EmailNotSent;
 use App\Events\EmailSent;
 use App\Events\UserAlmostOutOfEmails;
 use App\Events\UserOutOfEmails;
 
-class DecrementUserEmailsLeft
+class UpdateEmailStats
 {
-    public function handle(EmailSent $event)
+    /**
+     * @param $event EmailSent|EmailNotSent
+     */
+    public function handle($event)
+    {
+        $event instanceof EmailSent
+            ? $this->sent($event)
+            : $this->notSent($event);
+    }
+
+    protected function sent(EmailSent $event)
     {
         $user = $event->user;
 
@@ -19,5 +30,10 @@ class DecrementUserEmailsLeft
         } elseif ($user->emails_left === 0) {
             UserOutOfEmails::dispatch($user);
         }
+    }
+
+    protected function notSent(EmailNotSent $event)
+    {
+        //
     }
 }

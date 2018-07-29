@@ -1,8 +1,5 @@
 <?php
 
-use App\Events\ScheduledEmailNotSent;
-use App\Events\ScheduledEmailSent;
-use App\Mail\Email;
 use App\Models\Schedule;
 use App\Models\User;
 use Carbon\Carbon;

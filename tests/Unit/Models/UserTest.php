@@ -101,5 +101,29 @@ class UserTest extends TestCase
         });
     }
 
+    /** @test */
+    function it_computes_emails_sent()
+    {
+        $user = factory(User::class)->create([
+            'scheduled_emails_sent' => 2,
+            'feed_emails_sent'      => 3,
+        ]);
+
+        $this->assertSame(5, $user->emails_sent);
+        $this->assertSame(0, $user->emails_not_sent);
+    }
+
+    /** @test */
+    function it_computes_emails_not_sent()
+    {
+        $user = factory(User::class)->create([
+            'scheduled_emails_not_sent' => 2,
+            'feed_emails_not_sent'      => 3,
+        ]);
+
+        $this->assertSame(0, $user->emails_sent);
+        $this->assertSame(5, $user->emails_not_sent);
+    }
+
 
 }

@@ -4,6 +4,8 @@ namespace App\Providers;
 
 use App\Events\EmailNotSent;
 use App\Events\EmailSent;
+use App\Events\Feeds\FeedEmailNotSent;
+use App\Events\Feeds\FeedEmailSent;
 use App\Events\ScheduledEmailNotSent;
 use App\Events\ScheduledEmailSent;
 use App\Events\Feeds\FeedCreating;
@@ -14,14 +16,15 @@ use App\Events\UserAlmostOutOfEmails;
 use App\Events\UserOutOfEmails;
 use App\Listeners\Feeds\SendNewFeedEntryEmails;
 use App\Listeners\Feeds\SetNextPollAt;
-use App\Listeners\IncrementEmailsNotSent;
+use App\Listeners\Feeds\UpdateFeedPollStats;
+use App\Listeners\Feeds\UpdateFeedStats;
+use App\Listeners\UpdateEmailStats;
 use App\Listeners\UpdateScheduleStats;
 use App\Listeners\IncrementUsersRegistered;
 use App\Listeners\SendAlmostOutOfEmailsEmail;
 use App\Listeners\SendConfirmAccountEmail;
 use App\Listeners\SendOutOfEmailsEmail;
 use App\Listeners\SetNextOccurrence;
-use App\Listeners\DecrementUserEmailsLeft;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
@@ -34,11 +37,11 @@ class EventServiceProvider extends ServiceProvider
         ],
 
         EmailSent::class => [
-            DecrementUserEmailsLeft::class,
+            UpdateEmailStats::class,
         ],
 
         EmailNotSent::class => [
-            IncrementEmailsNotSent::class,
+            UpdateEmailStats::class,
         ],
 
         ScheduledEmailSent::class => [
@@ -48,6 +51,7 @@ class EventServiceProvider extends ServiceProvider
 
         ScheduledEmailNotSent::class => [
             SetNextOccurrence::class,
+            UpdateScheduleStats::class,
         ],
 
         UserAlmostOutOfEmails::class => [
@@ -67,12 +71,22 @@ class EventServiceProvider extends ServiceProvider
         ],
 
         FeedPolled::class => [
+            UpdateFeedPollStats::class,
             SendNewFeedEntryEmails::class,
             SetNextPollAt::class,
         ],
 
         FeedPollFailed::class => [
+            UpdateFeedPollStats::class,
             SetNextPollAt::class,
+        ],
+
+        FeedEmailSent::class => [
+            UpdateFeedStats::class,
+        ],
+
+        FeedEmailNotSent::class => [
+            UpdateFeedStats::class,
         ],
 
     ];

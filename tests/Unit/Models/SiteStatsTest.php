@@ -37,11 +37,38 @@ class SiteStatsTest extends TestCase
         $this->assertSame(1, SiteStats::count());
 
         $this->assertSame(0, $siteStats->users_registered);
-        $this->assertSame(0, $siteStats->schedules_created);
-        $this->assertSame(0, $siteStats->emails_sent);
-        $this->assertSame(0, $siteStats->emails_not_sent);
+        $this->assertSame(0, $siteStats->email_schedules_created);
+        $this->assertSame(0, $siteStats->scheduled_emails_sent);
+        $this->assertSame(0, $siteStats->scheduled_emails_not_sent);
         $this->assertSame(0, $siteStats->feeds_created);
-        $this->assertSame(0, $siteStats->feed_polls);
         $this->assertSame(0, $siteStats->feed_emails_sent);
+        $this->assertSame(0, $siteStats->feed_emails_not_sent);
+        $this->assertSame(0, $siteStats->feed_polls);
+    }
+
+    /** @test */
+    function it_computes_emails_sent()
+    {
+        $siteStats = SiteStats::create([
+            'date' => '2018-07-29',
+            'scheduled_emails_sent' => 2,
+            'feed_emails_sent'      => 3,
+        ]);
+
+        $this->assertSame(5, $siteStats->emails_sent);
+        $this->assertSame(0, $siteStats->emails_not_sent);
+    }
+
+    /** @test */
+    function it_computes_emails_not_sent()
+    {
+        $siteStats = SiteStats::create([
+            'date' => '2018-07-29',
+            'scheduled_emails_not_sent' => 2,
+            'feed_emails_not_sent'      => 3,
+        ]);
+
+        $this->assertSame(0, $siteStats->emails_sent);
+        $this->assertSame(5, $siteStats->emails_not_sent);
     }
 }

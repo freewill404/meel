@@ -78,20 +78,20 @@ class ScheduleTest extends TestCase
     }
 
     /** @test */
-    function it_keeps_track_of_emails_sent()
+    function it_keeps_track_of_scheduled_emails_sent()
     {
         $firstUser = factory(User::class)->create();
 
-        $this->assertSame(0, SiteStats::today()->emails_sent);
-        $this->assertSame(0, $firstUser->emails_sent);
+        $this->assertSame(0, SiteStats::today()->scheduled_emails_sent);
+        $this->assertSame(0, $firstUser->scheduled_emails_sent);
 
         $firstUser->schedules()->create([
             'what' => 'The what text',
             'when' => 'now',
         ]);
 
-        $this->assertSame(1, SiteStats::today()->emails_sent);
-        $this->assertSame(1, $firstUser->refresh()->emails_sent);
+        $this->assertSame(1, SiteStats::today()->scheduled_emails_sent);
+        $this->assertSame(1, $firstUser->refresh()->scheduled_emails_sent);
 
         $secondUser = factory(User::class)->create();
 
@@ -100,9 +100,9 @@ class ScheduleTest extends TestCase
             'when' => 'now',
         ]);
 
-        $this->assertSame(2, SiteStats::today()->emails_sent);
-        $this->assertSame(1, $firstUser->refresh()->emails_sent);
-        $this->assertSame(1, $secondUser->refresh()->emails_sent);
+        $this->assertSame(2, SiteStats::today()->scheduled_emails_sent);
+        $this->assertSame(1, $firstUser->refresh()->scheduled_emails_sent);
+        $this->assertSame(1, $secondUser->refresh()->scheduled_emails_sent);
     }
 
     /** @test */
@@ -199,8 +199,8 @@ class ScheduleTest extends TestCase
         Notification::fake();
 
         $user = factory(User::class)->create([
-            'emails_not_sent' => 0,
-            'emails_left'     => 0,
+            'scheduled_emails_not_sent' => 0,
+            'emails_left'               => 0,
         ]);
 
         $this->assertSame(0, $user->emails_left);
@@ -216,8 +216,8 @@ class ScheduleTest extends TestCase
             (string) $schedule->refresh()->next_occurrence
         );
 
-        $this->assertSame(0, SiteStats::today()->emails_sent);
-        $this->assertSame(0, SiteStats::today()->emails_not_sent);
+        $this->assertSame(0, SiteStats::today()->scheduled_emails_sent);
+        $this->assertSame(0, SiteStats::today()->scheduled_emails_not_sent);
 
         Carbon::setTestNow('2018-04-15 12:00:15');
 
@@ -232,10 +232,10 @@ class ScheduleTest extends TestCase
             (string) $schedule->refresh()->next_occurrence
         );
 
-        $this->assertSame(0, SiteStats::today()->emails_sent);
-        $this->assertSame(1, SiteStats::today()->emails_not_sent);
+        $this->assertSame(0, SiteStats::today()->scheduled_emails_sent);
+        $this->assertSame(1, SiteStats::today()->scheduled_emails_not_sent);
 
-        $this->assertSame(1, $user->refresh()->emails_not_sent);
+        $this->assertSame(1, $user->refresh()->scheduled_emails_not_sent);
     }
 
     /** @test */

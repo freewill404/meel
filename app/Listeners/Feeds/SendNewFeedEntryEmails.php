@@ -2,6 +2,8 @@
 
 namespace App\Listeners\Feeds;
 
+use App\Events\Feeds\FeedEmailNotSent;
+use App\Events\Feeds\FeedEmailSent;
 use App\Events\Feeds\FeedPolled;
 use App\Mail\FeedEntriesEmail;
 use App\Mail\FeedEntryEmail;
@@ -25,6 +27,8 @@ class SendNewFeedEntryEmails
         $email = new FeedEntriesEmail($feed, $newEntries);
 
         $feed->user->sendEmail($email);
+
+        FeedEmailSent::dispatch($feed, $email);
     }
 
     protected function sendSingleEntryEmails(Feed $feed, array $newEntries)
@@ -32,7 +36,10 @@ class SendNewFeedEntryEmails
         foreach ($newEntries as $feedEntry) {
             $email = new FeedEntryEmail($feed, $feedEntry);
 
-            $feed->user->sendEmail($email);
+            // The user can run out of emails while sending multiple emails.
+            $feed->user->sendEmail($email)
+                ? FeedEmailSent::dispatch($feed, $email)
+                : FeedEmailNotSent::dispatch($feed, $email);
         }
     }
 }

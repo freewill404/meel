@@ -2,14 +2,18 @@
 
 namespace Tests\Unit\Listeners\Feeds;
 
+use App\Events\Feeds\FeedEmailNotSent;
+use App\Events\Feeds\FeedEmailSent;
 use App\Events\Feeds\FeedPolled;
 use App\Listeners\Feeds\SendNewFeedEntryEmails;
 use App\Mail\FeedEntriesEmail;
 use App\Mail\FeedEntryEmail;
 use App\Meel\Feeds\FeedEntryCollection;
 use App\Models\Feed;
+use App\Models\SiteStats;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Mail;
 use Tests\TestCase;
 
@@ -24,6 +28,8 @@ class SendNewFeedEntryEmailsTest extends TestCase
 
         [$user, $feed] = $this->createUserAndFeed(false);
 
+        Event::fake();
+
         (new SendNewFeedEntryEmails)->handle(
             new FeedPolled($feed, $feedEntries)
         );
@@ -37,6 +43,8 @@ class SendNewFeedEntryEmailsTest extends TestCase
         Mail::assertQueued(FeedEntryEmail::class, function (FeedEntryEmail $email) {
             return '2003-05-30 13:06:42' === (string) $email->feedEntry->publishedAt;
         });
+
+        Event::assertDispatchedTimes(FeedEmailSent::class, 2);
     }
 
     /** @test */
@@ -45,6 +53,8 @@ class SendNewFeedEntryEmailsTest extends TestCase
         $feedEntries = $this->getFeedEntries(2);
 
         [$user, $feed] = $this->createUserAndFeed(true);
+
+        Event::fake();
 
         (new SendNewFeedEntryEmails)->handle(
             new FeedPolled($feed, $feedEntries)
@@ -57,6 +67,8 @@ class SendNewFeedEntryEmailsTest extends TestCase
                    '2003-06-03 11:39:21' === (string) $email->feedEntries[0]->publishedAt &&
                    '2003-05-30 13:06:42' === (string) $email->feedEntries[1]->publishedAt;
         });
+
+        Event::assertDispatchedTimes(FeedEmailSent::class, 1);
     }
 
     /** @test */
@@ -82,11 +94,41 @@ class SendNewFeedEntryEmailsTest extends TestCase
 
         [$user, $feed] = $this->createUserAndFeed(true);
 
+        Event::fake();
+
         (new SendNewFeedEntryEmails)->handle(
             new FeedPolled($feed, $feedEntries)
         );
 
         Mail::assertNothingQueued();
+
+        Event::assertNotDispatched(FeedEmailSent::class);
+        Event::assertNotDispatched(FeedEmailNotSent::class);
+    }
+
+    /** @test */
+    function the_user_can_run_out_of_emails()
+    {
+        $feedEntries = $this->getFeedEntries(2);
+
+        [$user, $feed] = $this->createUserAndFeed(false, 1);
+
+        (new SendNewFeedEntryEmails)->handle(
+            new FeedPolled($feed, $feedEntries)
+        );
+
+        Mail::assertQueued(FeedEntryEmail::class, 1);
+
+        Mail::assertQueued(FeedEntryEmail::class, function (FeedEntryEmail $email) {
+            return '2003-06-03 11:39:21' === (string) $email->feedEntry->publishedAt;
+        });
+
+        $this->assertSame(1, $feed->refresh()->emails_sent);
+        $this->assertSame(1, $user->refresh()->feed_emails_sent);
+        $this->assertSame(1, $user->refresh()->feed_emails_not_sent);
+
+        $this->assertSame(1, SiteStats::today()->feed_emails_not_sent);
+        $this->assertSame(1, SiteStats::today()->feed_emails_sent);
     }
 
     private function createUserAndFeed(bool $groupNewEntries, int $emailsLeft = 100)

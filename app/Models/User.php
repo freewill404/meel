@@ -4,7 +4,6 @@ namespace App\Models;
 
 use App\Events\EmailNotSent;
 use App\Events\EmailSent;
-use App\Events\ScheduledEmailNotSent;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Notifications\Notifiable;
@@ -22,12 +21,14 @@ class User extends Authenticatable
     ];
 
     protected $casts = [
-        'email_confirmed'   => 'bool',
-        'emails_left'       => 'integer',
-        'emails_sent'       => 'integer',
-        'emails_not_sent'   => 'integer',
-        'schedules_created' => 'integer',
-        'feeds_created'     => 'integer',
+        'email_confirmed'           => 'bool',
+        'emails_left'               => 'integer',
+        'email_schedules_created'   => 'integer',
+        'scheduled_emails_sent'     => 'integer',
+        'scheduled_emails_not_sent' => 'integer',
+        'feeds_created'             => 'integer',
+        'feed_emails_sent'          => 'integer',
+        'feed_emails_not_sent'      => 'integer',
     ];
 
     public function schedules()
@@ -38,6 +39,16 @@ class User extends Authenticatable
     public function feeds()
     {
         return $this->hasMany(Feed::class);
+    }
+
+    public function getEmailsSentAttribute()
+    {
+        return $this->scheduled_emails_sent + $this->feed_emails_sent;
+    }
+
+    public function getEmailsNotSentAttribute()
+    {
+        return $this->scheduled_emails_not_sent + $this->feed_emails_not_sent;
     }
 
     public function getDefaultWhenAttribute()

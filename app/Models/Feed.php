@@ -22,7 +22,6 @@ class Feed extends Model
         'next_poll_at'      => 'datetime',
         'last_polled_at'    => 'datetime',
         'group_new_entries' => 'boolean',
-        'last_poll_failed'  => 'boolean',
     ];
 
     public function user()

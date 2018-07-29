@@ -27,9 +27,9 @@ class ScheduleObserver
 
     public function created(Schedule $schedule)
     {
-        SiteStats::incrementSchedulesCreated();
+        SiteStats::incrementEmailSchedulesCreated();
 
-        $schedule->user->increment('schedules_created');
+        $schedule->user->increment('email_schedules_created');
 
         if (secondless_now() == (string) $schedule->next_occurrence) {
             $schedule->sendEmail();

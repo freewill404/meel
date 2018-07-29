@@ -23,12 +23,20 @@ class SendAdminDigestJob extends BaseJob implements ShouldQueue
             ->get();
 
         $content = implode("\r\n", [
-            'total users:       '.User::count(),
+            'total users: '.User::count(),
+            'users registered this month: '.$siteStats->sum->users_registered,
             '',
-            'users registered:  '.$siteStats->sum->users_registered,
-            'schedules created: '.$siteStats->sum->schedules_created,
-            'emails sent:       '.$siteStats->sum->emails_sent,
-            'emails not sent:   '.$siteStats->sum->emails_not_sent,
+            'email schedules created:   '.$siteStats->sum->email_schedules_created,
+            'scheduled emails sent:     '.$siteStats->sum->scheduled_emails_sent,
+            'scheduled emails not sent: '.$siteStats->sum->scheduled_emails_not_sent,
+            '',
+            'feeds created:        '.$siteStats->sum->feeds_created,
+            'feed polls:           '.$siteStats->sum->feed_polls,
+            'feed emails sent:     '.$siteStats->sum->feed_emails_sent,
+            'feed emails not sent: '.$siteStats->sum->feed_emails_not_sent,
+            '',
+            'total emails sent: '.$siteStats->sum->emails_sent,
+            'total emails sent: '.$siteStats->sum->emails_not_sent,
             '',
             'period start: '.$lastMonthStart,
             'period end  : '.$lastMonthEnd

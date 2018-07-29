@@ -12,9 +12,14 @@ $factory->define(App\Models\User::class, function (Faker $faker) {
         'email_confirm_token' => null,
         'email_confirmed'     => true,
         'role'                => UserRole::USER,
-        'emails_sent'         => 0,
-        'emails_not_sent'     => 0,
-        'schedules_created'   => 0,
         'emails_left'         => 100,
+
+        'email_schedules_created'   => 0,
+        'scheduled_emails_sent'     => 0,
+        'scheduled_emails_not_sent' => 0,
+
+        'feeds_created'        => 0,
+        'feed_emails_sent'     => 0,
+        'feed_emails_not_sent' => 0,
     ];
 });
