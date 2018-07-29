@@ -15,11 +15,16 @@ class CreateUsersTable extends Migration
             $table->boolean('email_confirmed')->default(false);
             $table->string('role')->default(UserRole::USER);
             $table->string('timezone')->default('Europe/Amsterdam');
-            $table->unsignedInteger('free_emails_left')->default(100);
-            $table->unsignedInteger('paid_emails_left')->default(0);
-            $table->unsignedInteger('emails_sent')->default(0);
-            $table->unsignedInteger('emails_not_sent')->default(0);
-            $table->unsignedInteger('schedules_created')->default(0);
+            $table->unsignedInteger('emails_left')->default(100);
+
+            $table->unsignedInteger('email_schedules_created')->default(0);
+            $table->unsignedInteger('scheduled_emails_sent')->default(0);
+            $table->unsignedInteger('scheduled_emails_not_sent')->default(0);
+
+            $table->unsignedInteger('feeds_created')->default(0);
+            $table->unsignedInteger('feed_emails_sent')->default(0);
+            $table->unsignedInteger('feed_emails_not_sent')->default(0);
+
             $table->string('password');
             $table->string('email_confirm_token')->nullable();
             $table->rememberToken();

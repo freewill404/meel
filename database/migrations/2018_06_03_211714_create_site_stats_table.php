@@ -12,10 +12,17 @@ class CreateSiteStatsTable extends Migration
             $table->increments('id');
 
             $table->date('date')->unique();
+
             $table->unsignedInteger('users_registered')->default(0);
-            $table->unsignedInteger('schedules_created')->default(0);
-            $table->unsignedInteger('emails_sent')->default(0);
-            $table->unsignedInteger('emails_not_sent')->default(0);
+
+            $table->unsignedInteger('email_schedules_created')->default(0);
+            $table->unsignedInteger('scheduled_emails_sent')->default(0);
+            $table->unsignedInteger('scheduled_emails_not_sent')->default(0);
+
+            $table->unsignedInteger('feeds_created')->default(0);
+            $table->unsignedInteger('feed_polls')->default(0);
+            $table->unsignedInteger('feed_emails_sent')->default(0);
+            $table->unsignedInteger('feed_emails_not_sent')->default(0);
         });
     }
 

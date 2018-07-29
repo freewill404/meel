@@ -15,6 +15,8 @@ class CreateSchedulesTable extends Migration
             $table->string('what');
             $table->string('when');
             $table->dateTime('next_occurrence')->nullable();
+            $table->dateTime('last_sent_at')->nullable();
+            $table->unsignedInteger('times_sent')->default(0);
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 
