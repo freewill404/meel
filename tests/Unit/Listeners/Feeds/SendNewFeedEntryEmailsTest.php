@@ -155,7 +155,7 @@ class SendNewFeedEntryEmailsTest extends TestCase
         $this->setTestNow($date);
 
         $feedEntries = new FeedEntryCollection(
-            file_get_contents($this->testFilePath.'feeds/001-rss-2.0.txt')
+            file_get_contents($this->testFilePath.'feeds/rss-2.0-001.txt')
         );
 
         $this->assertCount($feedEntriesCount, $feedEntries->entriesSince(now()));

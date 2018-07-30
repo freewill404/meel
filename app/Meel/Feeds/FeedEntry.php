@@ -16,12 +16,12 @@ class FeedEntry
 
     public function __construct(EntryInterface $entry)
     {
-        $this->title = $entry->getTitle();
+        $this->title = str_limit($entry->getTitle(), 100);
 
         $this->url = $entry->getPermalink();
 
         $this->publishedAt = Carbon::instance(
-            $entry->getDateCreated()
+            $entry->getDateCreated() ?? now()
         )->setTimezone('Europe/Amsterdam');
     }
 

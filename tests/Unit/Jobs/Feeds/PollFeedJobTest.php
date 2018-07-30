@@ -51,7 +51,7 @@ class PollFeedJobTest extends TestCase
     /** @test */
     function it_polls_the_feed_url()
     {
-        Guzzler::pushFile($this->testFilePath.'feeds/001-rss-2.0.txt');
+        Guzzler::pushFile($this->testFilePath.'feeds/rss-2.0-001.txt');
 
         PollFeedJob::dispatchNow($this->feed);
 

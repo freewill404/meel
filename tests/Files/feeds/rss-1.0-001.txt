@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://purl.org/rss/1.0/" xmlns:admin="http://webns.net/mvcb/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:slash="http://purl.org/rss/1.0/modules/slash/" xmlns:syn="http://purl.org/rss/1.0/modules/syndication/" xmlns:taxo="http://purl.org/rss/1.0/modules/taxonomy/" xmlns:feedburner="http://rssnamespace.org/feedburner/ext/1.0">
+
+<channel rdf:about="https://slashdot.org/">
+<title>Slashdot</title>
+<link>https://slashdot.org/</link>
+<description>News for nerds, stuff that matters</description>
+<dc:language>en-us</dc:language>
+<dc:rights>Copyright 1997-2016, SlashdotMedia. All Rights Reserved.</dc:rights>
+<dc:date>2018-07-30T06:23:14+00:00</dc:date>
+<dc:publisher>Dice</dc:publisher>
+<dc:creator>help@slashdot.org</dc:creator>
+<dc:subject>Technology</dc:subject>
+<syn:updateBase>1970-01-01T00:00+00:00</syn:updateBase>
+<syn:updateFrequency>1</syn:updateFrequency>
+<syn:updatePeriod>hourly</syn:updatePeriod>
+<items>
+ <rdf:Seq>
+  <rdf:li rdf:resource="https://apple.slashdot.org/story/18/07/29/2019238/the-next-ipad-pros-will-shrink-and-lose-their-headphone-jacks-says-report?utm_source=rss1.0mainlinkanon&amp;utm_medium=feed" />
+  <rdf:li rdf:resource="https://science.slashdot.org/story/18/07/29/1950200/a-new-shape-called-the-scutoid-has-been-discovered-in-our-cells?utm_source=rss1.0mainlinkanon&amp;utm_medium=feed" />
+  <rdf:li rdf:resource="https://apple.slashdot.org/story/18/07/29/1939212/autodesk-drops-support-for-alias-vred-in-macos-mojave-over-opengl-deprecation?utm_source=rss1.0mainlinkanon&amp;utm_medium=feed" />
+  <rdf:li rdf:resource="https://yro.slashdot.org/story/18/07/29/1924235/pentagon-creates-do-not-buy-list-of-russian-chinese-software?utm_source=rss1.0mainlinkanon&amp;utm_medium=feed" />
+  <rdf:li rdf:resource="https://hardware.slashdot.org/story/18/07/29/0728243/magic-leap-offers-a-first-look-at-its-mixed-reality-os?utm_source=rss1.0mainlinkanon&amp;utm_medium=feed" />
+  <rdf:li rdf:resource="https://news.slashdot.org/story/18/07/29/079212/mozilla-is-working-on-a-chrome-like-site-isolation-feature-for-firefox?utm_source=rss1.0mainlinkanon&amp;utm_medium=feed" />
+  <rdf:li rdf:resource="https://hardware.slashdot.org/story/18/07/29/0527245/intels-10nm-cannon-lake-processors-wont-arrive-until-late-2019?utm_source=rss1.0mainlinkanon&amp;utm_medium=feed" />
+  <rdf:li rdf:resource="https://news.slashdot.org/story/18/07/29/069209/the-rogue-tesla-mechanic-resurrecting-salvaged-cars?utm_source=rss1.0mainlinkanon&amp;utm_medium=feed" />
+  <rdf:li rdf:resource="https://hardware.slashdot.org/story/18/07/29/0547233/samsungs-unbreakable-oled-display-gets-certified?utm_source=rss1.0mainlinkanon&amp;utm_medium=feed" />
+  <rdf:li rdf:resource="https://yro.slashdot.org/story/18/07/29/070251/boston-globe-outs-secret-tsa-tracking-program-quiet-skies-at-airports?utm_source=rss1.0mainlinkanon&amp;utm_medium=feed" />
+  <rdf:li rdf:resource="https://news.slashdot.org/story/18/07/29/0515234/shareholder-sues-facebook-after-stock-plunge?utm_source=rss1.0mainlinkanon&amp;utm_medium=feed" />
+  <rdf:li rdf:resource="https://hardware.slashdot.org/story/18/07/29/0021238/slashdot-asks-which-is-better-a-basic-income-or-a-guaranteed-job?utm_source=rss1.0mainlinkanon&amp;utm_medium=feed" />
+  <rdf:li rdf:resource="https://tech.slashdot.org/story/18/07/29/0241239/zuckerberg-sold-more-stock-than-usual-faces-lawsuit-from-angry-investors?utm_source=rss1.0mainlinkanon&amp;utm_medium=feed" />
+  <rdf:li rdf:resource="https://slashdot.org/story/18/07/29/020249/amazon-is-finally-profitable-earns-25-billion-over-the-last-three-months?utm_source=rss1.0mainlinkanon&amp;utm_medium=feed" />
+  <rdf:li rdf:resource="https://news.slashdot.org/story/18/07/28/0111235/are-there-dangers-in-a-cashless-society?utm_source=rss1.0mainlinkanon&amp;utm_medium=feed" />
+ </rdf:Seq>
+</items>
+<image rdf:resource="https://a.fsdn.com/sd/topics/topicslashdot.gif" />
+<textinput rdf:resource="https://slashdot.org/search.pl" />
+<atom10:link xmlns:atom10="http://www.w3.org/2005/Atom" rel="self" type="application/rdf+xml" href="http://rss.slashdot.org/Slashdot/slashdot" /><feedburner:info uri="slashdot/slashdot" /><atom10:link xmlns:atom10="http://www.w3.org/2005/Atom" rel="hub" href="http://pubsubhubbub.appspot.com/" /></channel>
+<image rdf:about="https://a.fsdn.com/sd/topics/topicslashdot.gif">
+<title>Slashdot</title>
+<url>https://a.fsdn.com/sd/topics/topicslashdot.gif</url>
+<link>https://slashdot.org/</link>
+</image>
+<item rdf:about="https://apple.slashdot.org/story/18/07/29/2019238/the-next-ipad-pros-will-shrink-and-lose-their-headphone-jacks-says-report?utm_source=rss1.0mainlinkanon&amp;utm_medium=feed">
+<title>The Next iPad Pros Will Shrink and Lose Their Headphone Jacks, Says Report</title>
+<link>http://rss.slashdot.org/~r/Slashdot/slashdot/~3/vPcz9a2KKOA/the-next-ipad-pros-will-shrink-and-lose-their-headphone-jacks-says-report</link>
+<description>According to supply chain blog Macotakara, the new iPad Pro models that will be introduced later this year will be slimmer, feature Face ID, and have no headphone jacks. 9to5Mac reports the details: First off, the report offers additional details on the 2018 iPad Pro dimensions. The 10.5-inch model is said to come in at 247.5mm (H) x 178.7mm (W) x 6mm (T), compared to the current dimensions of 250.6mm x 174.1mm x 6.1 mm. Meanwhile, the 12.9-inch iPad Pro is said to stack up at 280mm (H) x 215mm (W) x 6.4mm (T), which compares to the current-generation model at 305.7 x 220.6 x 6.9 mm. With these dimensions, it seems that Apple is focused more on reducing the overall footprint of the 12.9-inch model, fitting the same size display into a considerably smaller body. The report goes on to explain that Apple is likely to ditch the headphone jack with this year's iPad Pro models, a move the company first made with the iPhone 7. While Apple includes a Lightning to 3.5mm headphone adapter to ease the blow for iPhone users, it will not do the same for iPad Pro users, according to today's report.
+
+Today's report corroborates that this year's iPad Pro models will feature Face ID, but it notes that there is no support for landscape Face ID as earlier reports had indicated. This presents an interesting problem for the iPad Pro, which is used commonly in landscape mode with accessories such as the Smart Keyboard. Macotakara notes, however, that Apple is moving the Smart Connector on this year's models to "the lower rear side -- close to the Lightning connector." What exactly this means is unclear, but the report explains that "the next iPad Pro Smart Keyboard may be changed to vertical position specifications." This is seemingly implying that the iPad Pro would dock vertically into the Smart Keyboard, but how that would work is vague at the moment.&lt;p&gt;&lt;div class="share_submission" style="position:relative;"&gt;
+&lt;a class="slashpop" href="http://twitter.com/home?status=The+Next+iPad+Pros+Will+Shrink+and+Lose+Their+Headphone+Jacks%2C+Says+Report%3A+http%3A%2F%2Fbit.ly%2F2mRdXCg"&gt;&lt;img src="https://a.fsdn.com/sd/twitter_icon_large.png"&gt;&lt;/a&gt;
+&lt;a class="slashpop" href="http://www.facebook.com/sharer.php?u=https%3A%2F%2Fapple.slashdot.org%2Fstory%2F18%2F07%2F29%2F2019238%2Fthe-next-ipad-pros-will-shrink-and-lose-their-headphone-jacks-says-report%3Futm_source%3Dslashdot%26utm_medium%3Dfacebook"&gt;&lt;img src="https://a.fsdn.com/sd/facebook_icon_large.png"&gt;&lt;/a&gt;
+
+&lt;a class="nobg" href="http://plus.google.com/share?url=https://apple.slashdot.org/story/18/07/29/2019238/the-next-ipad-pros-will-shrink-and-lose-their-headphone-jacks-says-report?utm_source=slashdot&amp;amp;utm_medium=googleplus" onclick="javascript:window.open(this.href,'', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;"&gt;&lt;img src="https://www.gstatic.com/images/icons/gplus-16.png" alt="Share on Google+"/&gt;&lt;/a&gt;
+
+
+
+&lt;/div&gt;&lt;/p&gt;&lt;p&gt;&lt;a href="https://apple.slashdot.org/story/18/07/29/2019238/the-next-ipad-pros-will-shrink-and-lose-their-headphone-jacks-says-report?utm_source=rss1.0moreanon&amp;amp;utm_medium=feed"&gt;Read more of this story&lt;/a&gt; at Slashdot.&lt;/p&gt;&lt;iframe src="https://slashdot.org/slashdot-it.pl?op=discuss&amp;amp;id=12410684&amp;amp;smallembed=1" style="height: 300px; width: 100%; border: none;"&gt;&lt;/iframe&gt;&lt;img src="http://feeds.feedburner.com/~r/Slashdot/slashdot/~4/vPcz9a2KKOA" height="1" width="1" alt=""/&gt;</description>
+<dc:creator>BeauHD</dc:creator>
+<dc:date>2018-07-30T05:15:00+00:00</dc:date>
+<dc:subject>software</dc:subject>
+<slash:department>because-that's-what-we-all-asked-for-right</slash:department>
+<slash:section>apple</slash:section>
+<slash:comments>22</slash:comments>
+<slash:hit_parade>22,21,10,7,1,1,0</slash:hit_parade>
+<feedburner:origLink>https://apple.slashdot.org/story/18/07/29/2019238/the-next-ipad-pros-will-shrink-and-lose-their-headphone-jacks-says-report?utm_source=rss1.0mainlinkanon&amp;utm_medium=feed</feedburner:origLink></item>
+<item rdf:about="https://science.slashdot.org/story/18/07/29/1950200/a-new-shape-called-the-scutoid-has-been-discovered-in-our-cells?utm_source=rss1.0mainlinkanon&amp;utm_medium=feed">
+<title>A New Shape Called the 'Scutoid' Has Been Discovered In Our Cells</title>
+<link>http://rss.slashdot.org/~r/Slashdot/slashdot/~3/Iz5hz3fLszI/a-new-shape-called-the-scutoid-has-been-discovered-in-our-cells</link>
+<description>Scientists have discovered a new shape called the scutoid (SCOO-toid) while studying epithelial cells</description>
+<dc:creator>BeauHD</dc:creator>
+<dc:date>2018-07-30T03:30:00+00:00</dc:date>
+<dc:subject>science</dc:subject>
+<slash:department>hide-and-seek</slash:department>
+<slash:section>science</slash:section>
+<slash:comments>14</slash:comments>
+<slash:hit_parade>14,11,3,3,0,0,0</slash:hit_parade>
+<feedburner:origLink>https://science.slashdot.org/story/18/07/29/1950200/a-new-shape-called-the-scutoid-has-been-discovered-in-our-cells?utm_source=rss1.0mainlinkanon&amp;utm_medium=feed</feedburner:origLink></item>
+<item rdf:about="https://apple.slashdot.org/story/18/07/29/1939212/autodesk-drops-support-for-alias-vred-in-macos-mojave-over-opengl-deprecation?utm_source=rss1.0mainlinkanon&amp;utm_medium=feed">
+<title>Autodesk Drops Support For Alias, VRED In macOS Mojave Over OpenGL Deprecation</title>
+<link>http://rss.slashdot.org/~r/Slashdot/slashdot/~3/3_I47zzX6MU/autodesk-drops-support-for-alias-vred-in-macos-mojave-over-opengl-deprecation</link>
+<description>"Autodesk has published a support document announcing that it is stopping development of its Alias and VRED vertical market packages</description>
+<dc:creator>BeauHD</dc:creator>
+<dc:date>2018-07-30T00:30:00+00:00</dc:date>
+<dc:subject>macosx</dc:subject>
+<slash:department>stop-drop-and-roll</slash:department>
+<slash:section>apple</slash:section>
+<slash:comments>146</slash:comments>
+<slash:hit_parade>146,146,91,82,7,3,0</slash:hit_parade>
+<feedburner:origLink>https://apple.slashdot.org/story/18/07/29/1939212/autodesk-drops-support-for-alias-vred-in-macos-mojave-over-opengl-deprecation?utm_source=rss1.0mainlinkanon&amp;utm_medium=feed</feedburner:origLink></item>
+<item rdf:about="https://yro.slashdot.org/story/18/07/29/1924235/pentagon-creates-do-not-buy-list-of-russian-chinese-software?utm_source=rss1.0mainlinkanon&amp;utm_medium=feed">
+<title>Pentagon Creates 'Do Not Buy' List of Russian, Chinese Software</title>
+<link>http://rss.slashdot.org/~r/Slashdot/slashdot/~3/sJzCKPU4Ky0/pentagon-creates-do-not-buy-list-of-russian-chinese-software</link>
+<description>An anonymous reader quotes a report from Defense One</description>
+<dc:creator>BeauHD</dc:creator>
+<dc:date>2018-07-29T22:22:00+00:00</dc:date>
+<dc:subject>military</dc:subject>
+<slash:department>off-limits</slash:department>
+<slash:section>yro</slash:section>
+<slash:comments>121</slash:comments>
+<slash:hit_parade>121,115,42,33,5,1,0</slash:hit_parade>
+<feedburner:origLink>https://yro.slashdot.org/story/18/07/29/1924235/pentagon-creates-do-not-buy-list-of-russian-chinese-software?utm_source=rss1.0mainlinkanon&amp;utm_medium=feed</feedburner:origLink></item>
+<item rdf:about="https://hardware.slashdot.org/story/18/07/29/0728243/magic-leap-offers-a-first-look-at-its-mixed-reality-os?utm_source=rss1.0mainlinkanon&amp;utm_medium=feed">
+<title>Magic Leap Offers a First Look At Its Mixed Reality OS</title>
+<link>http://rss.slashdot.org/~r/Slashdot/slashdot/~3/4F3Qwu-BvFE/magic-leap-offers-a-first-look-at-its-mixed-reality-os</link>
+<description>TechCrunch's Lucas Matney describes the Lumin operating system that will power Magic Leap's upcoming Magic Leap One </description>
+<dc:creator>BeauHD</dc:creator>
+<dc:date>2018-07-29T20:20:00+00:00</dc:date>
+<dc:subject>os</dc:subject>
+<slash:department>not-so-secret-after-all</slash:department>
+<slash:section>hardware</slash:section>
+<slash:comments>36</slash:comments>
+<slash:hit_parade>36,32,16,12,5,2,1</slash:hit_parade>
+<feedburner:origLink>https://hardware.slashdot.org/story/18/07/29/0728243/magic-leap-offers-a-first-look-at-its-mixed-reality-os?utm_source=rss1.0mainlinkanon&amp;utm_medium=feed</feedburner:origLink></item>
+<item rdf:about="https://news.slashdot.org/story/18/07/29/079212/mozilla-is-working-on-a-chrome-like-site-isolation-feature-for-firefox?utm_source=rss1.0mainlinkanon&amp;utm_medium=feed">
+<title>Mozilla Is Working On a Chrome-Like 'Site Isolation' Feature For Firefox</title>
+<link>http://rss.slashdot.org/~r/Slashdot/slashdot/~3/eJnB3BP9sOU/mozilla-is-working-on-a-chrome-like-site-isolation-feature-for-firefox</link>
+<description>An anonymous reader writes: "The Mozilla Foundation</description>
+<dc:creator>BeauHD</dc:creator>
+<dc:date>2018-07-29T19:19:00+00:00</dc:date>
+<dc:subject>mozilla</dc:subject>
+<slash:department>behind-the-scenes</slash:department>
+<slash:section>news</slash:section>
+<slash:comments>41</slash:comments>
+<slash:hit_parade>41,38,15,9,8,5,3</slash:hit_parade>
+<feedburner:origLink>https://news.slashdot.org/story/18/07/29/079212/mozilla-is-working-on-a-chrome-like-site-isolation-feature-for-firefox?utm_source=rss1.0mainlinkanon&amp;utm_medium=feed</feedburner:origLink></item>
+<item rdf:about="https://hardware.slashdot.org/story/18/07/29/0527245/intels-10nm-cannon-lake-processors-wont-arrive-until-late-2019?utm_source=rss1.0mainlinkanon&amp;utm_medium=feed">
+<title>Intel's 10nm 'Cannon Lake' Processors Won't Arrive Until Late 2019</title>
+<link>http://rss.slashdot.org/~r/Slashdot/slashdot/~3/5ugh07HMqU8/intels-10nm-cannon-lake-processors-wont-arrive-until-late-2019</link>
+<description>At the company's second quarter 2018 financial results conference call, Intel chief engineering officer Venkata Renduchintala</description>
+<dc:creator>BeauHD</dc:creator>
+<dc:date>2018-07-29T18:18:00+00:00</dc:date>
+<dc:subject>intel</dc:subject>
+<slash:department>rained-out</slash:department>
+<slash:section>hardware</slash:section>
+<slash:comments>88</slash:comments>
+<slash:hit_parade>88,84,38,34,9,3,1</slash:hit_parade>
+<feedburner:origLink>https://hardware.slashdot.org/story/18/07/29/0527245/intels-10nm-cannon-lake-processors-wont-arrive-until-late-2019?utm_source=rss1.0mainlinkanon&amp;utm_medium=feed</feedburner:origLink></item>
+<item rdf:about="https://news.slashdot.org/story/18/07/29/069209/the-rogue-tesla-mechanic-resurrecting-salvaged-cars?utm_source=rss1.0mainlinkanon&amp;utm_medium=feed">
+<title>The Rogue Tesla Mechanic Resurrecting Salvaged Cars</title>
+<link>http://rss.slashdot.org/~r/Slashdot/slashdot/~3/i8KJA4Z_uHM/the-rogue-tesla-mechanic-resurrecting-salvaged-cars</link>
+<description>An anonymous reader quotes a report from Motherboard</description>
+<dc:creator>BeauHD</dc:creator>
+<dc:date>2018-07-29T17:17:00+00:00</dc:date>
+<dc:subject>transportation</dc:subject>
+<slash:department>elbow-grease-required</slash:department>
+<slash:section>news</slash:section>
+<slash:comments>112</slash:comments>
+<slash:hit_parade>112,109,63,55,15,10,2</slash:hit_parade>
+<feedburner:origLink>https://news.slashdot.org/story/18/07/29/069209/the-rogue-tesla-mechanic-resurrecting-salvaged-cars?utm_source=rss1.0mainlinkanon&amp;utm_medium=feed</feedburner:origLink></item>
+<item rdf:about="https://hardware.slashdot.org/story/18/07/29/0547233/samsungs-unbreakable-oled-display-gets-certified?utm_source=rss1.0mainlinkanon&amp;utm_medium=feed">
+<title>Samsung's 'Unbreakable' OLED Display Gets Certified</title>
+<link>http://rss.slashdot.org/~r/Slashdot/slashdot/~3/Ezd7P0_faWY/samsungs-unbreakable-oled-display-gets-certified</link>
+<description>Samsung Display, a subsidiary of Samsung Electronics, just introduced a flexible OLED panel that has a transparent plastic cover already attached</description>
+<dc:creator>BeauHD</dc:creator>
+<dc:date>2018-07-29T16:16:00+00:00</dc:date>
+<dc:subject>displays</dc:subject>
+<slash:department>displays-of-the-future</slash:department>
+<slash:section>hardware</slash:section>
+<slash:comments>60</slash:comments>
+<slash:hit_parade>60,58,37,33,6,2,1</slash:hit_parade>
+<feedburner:origLink>https://hardware.slashdot.org/story/18/07/29/0547233/samsungs-unbreakable-oled-display-gets-certified?utm_source=rss1.0mainlinkanon&amp;utm_medium=feed</feedburner:origLink></item>
+<item rdf:about="https://yro.slashdot.org/story/18/07/29/070251/boston-globe-outs-secret-tsa-tracking-program-quiet-skies-at-airports?utm_source=rss1.0mainlinkanon&amp;utm_medium=feed">
+<title>Boston Globe Outs Secret TSA Tracking Program 'Quiet Skies' At Airports</title>
+<link>http://rss.slashdot.org/~r/Slashdot/slashdot/~3/TCZbIcj3vpg/boston-globe-outs-secret-tsa-tracking-program-quiet-skies-at-airports</link>
+<description>The Boston Globe reports of a previously undisclosed program, called "Quiet Skies," that targets travelers</description>
+<dc:creator>BeauHD</dc:creator>
+<dc:date>2018-07-29T15:15:00+00:00</dc:date>
+<dc:subject>government</dc:subject>
+<slash:department>domestic-surveillance</slash:department>
+<slash:section>yro</slash:section>
+<slash:comments>187</slash:comments>
+<slash:hit_parade>187,179,110,91,23,12,7</slash:hit_parade>
+<feedburner:origLink>https://yro.slashdot.org/story/18/07/29/070251/boston-globe-outs-secret-tsa-tracking-program-quiet-skies-at-airports?utm_source=rss1.0mainlinkanon&amp;utm_medium=feed</feedburner:origLink></item>
+<item rdf:about="https://news.slashdot.org/story/18/07/29/0515234/shareholder-sues-facebook-after-stock-plunge?utm_source=rss1.0mainlinkanon&amp;utm_medium=feed">
+<title>Shareholder Sues Facebook After Stock Plunge</title>
+<link>http://rss.slashdot.org/~r/Slashdot/slashdot/~3/XOssV3ZJ9lU/shareholder-sues-facebook-after-stock-plunge</link>
+<description>An anonymous reader quotes a report from Reuters</description>
+<dc:creator>BeauHD</dc:creator>
+<dc:date>2018-07-29T14:14:00+00:00</dc:date>
+<dc:subject>facebook</dc:subject>
+<slash:department>all-about-the-money</slash:department>
+<slash:section>news</slash:section>
+<slash:comments>94</slash:comments>
+<slash:hit_parade>94,92,45,38,7,4,3</slash:hit_parade>
+<feedburner:origLink>https://news.slashdot.org/story/18/07/29/0515234/shareholder-sues-facebook-after-stock-plunge?utm_source=rss1.0mainlinkanon&amp;utm_medium=feed</feedburner:origLink></item>
+<item rdf:about="https://hardware.slashdot.org/story/18/07/29/0021238/slashdot-asks-which-is-better-a-basic-income-or-a-guaranteed-job?utm_source=rss1.0mainlinkanon&amp;utm_medium=feed">
+<title>Slashdot Asks: Which is Better, a Basic Income or a Guaranteed Job?</title>
+<link>http://rss.slashdot.org/~r/Slashdot/slashdot/~3/ehwCU3e6r7I/slashdot-asks-which-is-better-a-basic-income-or-a-guaranteed-job</link>
+<description>Barack Obama said this month that AI research is accelerating</description>
+<dc:creator>EditorDavid</dc:creator>
+<dc:date>2018-07-29T10:34:00+00:00</dc:date>
+<dc:subject>robot</dc:subject>
+<slash:department>either-or</slash:department>
+<slash:section>hardware</slash:section>
+<slash:comments>657</slash:comments>
+<slash:hit_parade>657,646,381,327,54,32,15</slash:hit_parade>
+<feedburner:origLink>https://hardware.slashdot.org/story/18/07/29/0021238/slashdot-asks-which-is-better-a-basic-income-or-a-guaranteed-job?utm_source=rss1.0mainlinkanon&amp;utm_medium=feed</feedburner:origLink></item>
+<item rdf:about="https://tech.slashdot.org/story/18/07/29/0241239/zuckerberg-sold-more-stock-than-usual-faces-lawsuit-from-angry-investors?utm_source=rss1.0mainlinkanon&amp;utm_medium=feed">
+<title>Zuckerberg 'Sold More Stock Than Usual', Faces Lawsuit From Angry Investors</title>
+<link>http://rss.slashdot.org/~r/Slashdot/slashdot/~3/yWO0GLooAR8/zuckerberg-sold-more-stock-than-usual-faces-lawsuit-from-angry-investors</link>
+<description>"Facebook executives said on Wednesday its profit margins would plummet for
+</description>
+<dc:creator>EditorDavid</dc:creator>
+<dc:date>2018-07-29T07:34:00+00:00</dc:date>
+<dc:subject>facebook</dc:subject>
+<slash:department>speaking-of-downvoting</slash:department>
+<slash:section>technology</slash:section>
+<slash:comments>73</slash:comments>
+<slash:hit_parade>73,71,38,34,10,8,4</slash:hit_parade>
+<feedburner:origLink>https://tech.slashdot.org/story/18/07/29/0241239/zuckerberg-sold-more-stock-than-usual-faces-lawsuit-from-angry-investors?utm_source=rss1.0mainlinkanon&amp;utm_medium=feed</feedburner:origLink></item>
+<item rdf:about="https://slashdot.org/story/18/07/29/020249/amazon-is-finally-profitable-earns-25-billion-over-the-last-three-months?utm_source=rss1.0mainlinkanon&amp;utm_medium=feed">
+<title>Amazon Is Finally Profitable, Earns $2.5 Billion Over the Last Three Months</title>
+<link>http://rss.slashdot.org/~r/Slashdot/slashdot/~3/AV3aXzJ-oRg/amazon-is-finally-profitable-earns-25-billion-over-the-last-three-months</link>
+<description>An anonymous reader quotes CNN</description>
+<dc:creator>EditorDavid</dc:creator>
+<dc:date>2018-07-29T04:34:00+00:00</dc:date>
+<dc:subject>business</dc:subject>
+<slash:department>used-and-new</slash:department>
+<slash:section>slashdot</slash:section>
+<slash:comments>66</slash:comments>
+<slash:hit_parade>66,62,25,19,7,4,3</slash:hit_parade>
+<feedburner:origLink>https://slashdot.org/story/18/07/29/020249/amazon-is-finally-profitable-earns-25-billion-over-the-last-three-months?utm_source=rss1.0mainlinkanon&amp;utm_medium=feed</feedburner:origLink></item>
+<item rdf:about="https://news.slashdot.org/story/18/07/28/0111235/are-there-dangers-in-a-cashless-society?utm_source=rss1.0mainlinkanon&amp;utm_medium=feed">
+<title>Are There Dangers in a Cashless Society?</title>
+<link>http://rss.slashdot.org/~r/Slashdot/slashdot/~3/oJhCz-X0wFM/are-there-dangers-in-a-cashless-society</link>
+<description>Slate asks why more businesses are refusing cash</description>
+<dc:creator>EditorDavid</dc:creator>
+<dc:date>2018-07-29T01:34:00+00:00</dc:date>
+<dc:subject>money</dc:subject>
+<slash:department>money-its-a-gas</slash:department>
+<slash:section>news</slash:section>
+<slash:comments>267</slash:comments>
+<slash:hit_parade>267,259,162,128,28,13,7</slash:hit_parade>
+<feedburner:origLink>https://news.slashdot.org/story/18/07/28/0111235/are-there-dangers-in-a-cashless-society?utm_source=rss1.0mainlinkanon&amp;utm_medium=feed</feedburner:origLink></item>
+<textinput rdf:about="https://slashdot.org/search.pl">
+<title>Search Slashdot</title>
+<description>Search Slashdot stories</description>
+<name>query</name>
+<link>https://slashdot.org/search.pl</link>
+</textinput>
+</rdf:RDF>

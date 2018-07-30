@@ -12,20 +12,56 @@ class FeedEntriesCollectionTest extends TestCase
     use WorksWithFeedEntries;
 
     /** @test */
-    function it_loads_feeds_from_string()
+    function it_loads_rss_2_feeds()
     {
-        $feedEntryCollection = new FeedEntryCollection(
-            file_get_contents($this->testFilePath.'feeds/001-rss-2.0.txt')
+        $rss2Feed = new FeedEntryCollection(
+            file_get_contents($this->testFilePath.'feeds/rss-2.0-001.txt')
         );
 
-        $entries = $feedEntryCollection->entries();
+        $entries = $rss2Feed->entries();
 
         $this->assertCount(4, $entries);
 
         $this->assertTrue($entries[0]->publishedAt instanceof Carbon);
 
         $this->assertMatchesJsonSnapshot(
-            $feedEntryCollection->toJson()
+            $rss2Feed->toJson()
+        );
+    }
+
+    /** @test */
+    function it_loads_rss_1_feeds()
+    {
+        $rss1Feed = new FeedEntryCollection(
+            file_get_contents($this->testFilePath.'feeds/rss-1.0-001.txt')
+        );
+
+        $entries = $rss1Feed->entries();
+
+        $this->assertCount(15, $entries);
+
+        $this->assertTrue($entries[0]->publishedAt instanceof Carbon);
+
+        $this->assertMatchesJsonSnapshot(
+            $rss1Feed->toJson()
+        );
+    }
+
+    /** @test */
+    function it_loads_atom_feeds()
+    {
+        $atomFeed = new FeedEntryCollection(
+            file_get_contents($this->testFilePath.'feeds/atom-001.txt')
+        );
+
+        $entries = $atomFeed->entries();
+
+        $this->assertCount(1, $entries);
+
+        $this->assertTrue($entries[0]->publishedAt instanceof Carbon);
+
+        $this->assertMatchesJsonSnapshot(
+            $atomFeed->toJson()
         );
     }
 
@@ -49,7 +85,7 @@ class FeedEntriesCollectionTest extends TestCase
     function it_gets_items_since_a_specific_datetime()
     {
         $feedEntryCollection = new FeedEntryCollection(
-            file_get_contents($this->testFilePath.'feeds/001-rss-2.0.txt')
+            file_get_contents($this->testFilePath.'feeds/rss-2.0-001.txt')
         );
 
         $entries = $feedEntryCollection->entriesSince('2003-05-28 12:00:00');
@@ -64,7 +100,7 @@ class FeedEntriesCollectionTest extends TestCase
     function items_since_only_returns_items_after_the_given_datetime()
     {
         $feedEntryCollection = new FeedEntryCollection(
-            file_get_contents($this->testFilePath.'feeds/001-rss-2.0.txt')
+            file_get_contents($this->testFilePath.'feeds/rss-2.0-001.txt')
         );
 
         // This is one second after one of the items was published.
