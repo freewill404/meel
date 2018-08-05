@@ -1,55 +1,82 @@
 @extends('layout.base-template', [
-    'title' => 'Account | Meel.me',
+    'title' => 'Settings | Meel.me',
 ])
 
 @section('content')
 
-    @include('layout.header', ['title' => 'Account'])
+    @include('layout.header', ['title' => 'Settings', 'maxWidth' => 'max-w-md'])
 
-    <div class="max-w-lg mx-auto mt-8 mb-16">
+    <div class="max-w-md mx-auto mt-8 mb-16">
 
-        <div class="flex justify-between">
-            <h2 class="mb-4">Upcoming</h2>
+        @if(Session::has('setting-status'))
+            <div class="p-2 mb-8 border-l-4 border-green">
+                {{ Session::get('setting-status') }}
+            </div>
+        @endif
 
-            <a class="text-black text-sm" href="{{ route('user.more') }}">Emails left: {{ $user->emails_left }}</a>
-        </div>
 
-        <div class="sm:pl-4">
-            @forelse($schedules->where('next_occurrence', '!=', null) as $schedule)
-                <email-schedule schedule-id="{{ $schedule->id }}"
-                                :is-recurring="{{ json_encode($schedule->is_recurring) }}"
-                                :times-sent="{{ $schedule->times_sent }}"
-                                when="{{ $schedule->when }}"
-                                initial-what="{{ $schedule->what }}"
-                                next-occurrence="{{ $schedule->next_occurrence->setTimezone($user->timezone) }}"
-                                last-sent-at="{{ $schedule->last_sent_at ? $schedule->last_sent_at->setTimezone($user->timezone) : null }}"
-                ></email-schedule>
-            @empty
-                <p>
-                    You have no upcoming emails.
-                </p>
-            @endforelse
+        <div class="panel w-2/3 mb-16">
+            <a class="text-black text-xl" href="{{ route('user.more') }}">You have <strong>{{ $user->emails_left }}</strong> emails left</a>
         </div>
 
 
-        <h2 class="mt-8 mb-4">Ended</h2>
+        <form class="panel w-2/3 mb-16" method="post" action="{{ route('user.account.settings.updateTimezone') }}">
+            {{ csrf_field() }}
 
-        <div class="sm:pl-4">
-            @forelse($schedules->where('next_occurrence', null)->reverse() as $schedule)
-                <email-schedule schedule-id="{{ $schedule->id }}"
-                                :is-recurring="{{ json_encode($schedule->is_recurring) }}"
-                                :times-sent="{{ $schedule->times_sent }}"
-                                when="{{ $schedule->when }}"
-                                initial-what="{{ $schedule->what }}"
-                                next-occurrence=""
-                                last-sent-at="{{ $schedule->last_sent_at ? $schedule->last_sent_at->setTimezone($user->timezone) : null }}"
-                ></email-schedule>
-            @empty
-                <p>
-                    You have no ended schedules.
-                </p>
-            @endforelse
-        </div>
+            <h3 class="mb-4">Change your timezone</h3>
+
+            <label class="block">
+                Timezone
+                <select name="timezone" class="field">
+                    @foreach($timezones as $region => $list)
+                        <optgroup label="{{ $region }}">
+                            @foreach($list as $timezone => $name)
+                                <option value="{{ $timezone }}" {{ $timezone === $user->timezone ? 'selected' : '' }}>{{ $name }}</option>
+                            @endforeach
+                        </optgroup>
+                    @endforeach
+                </select>
+            </label>
+
+            <button class="btn block ml-auto">Update timezone</button>
+        </form>
+
+
+        <form class="panel w-2/3 mb-16" method="post" action="{{ route('user.account.settings.updatePassword') }}">
+            {{ csrf_field() }}
+
+            <h3 class="mb-4">Change your password</h3>
+
+            <label>
+                New password
+                <input class="field" type="password" name="new_password" required>
+            </label>
+
+            <label>
+                Repeat new password
+                <input class="field" type="password" name="new_password_confirmation" required>
+            </label>
+
+            <p class="mb-2">
+                All other logged in devices will be logged out after changing your password.
+            </p>
+
+            <button class="btn block ml-auto">Change password</button>
+
+        </form>
+
+
+        @if($errors->count())
+            <div class="mx-auto text-md p-2 mt-8 bg-red-lighter rounded border-l-4 border-red">
+                <strong class="block mb-2">The following errors occurred:</strong>
+                <ul>
+                @foreach($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+                </ul>
+            </div>
+        @endif
+
     </div>
 
 @endsection

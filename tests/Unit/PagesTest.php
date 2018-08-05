@@ -21,12 +21,13 @@ class PagesTest extends TestCase
     ];
 
     protected $userRoutes = [
-        'home',
-        'user.meel.ok',
+        'user.schedules',
+        'user.schedules.ok',
+        'user.feeds',
+        'user.feeds.create',
         'user.feedback',
         'user.feedback.done',
         'user.account',
-        'user.account.settings',
         'user.more',
     ];
 

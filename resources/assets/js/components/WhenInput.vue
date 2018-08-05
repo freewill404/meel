@@ -3,18 +3,15 @@
         <input v-model="when"
                v-on:input="debounceInput"
                name="when"
-               class="field"
+               class="field mb-1"
+               maxlength="255"
                :class="{ 'border-red': ! valid }"
-               placeholder="now"
+               :placeholder="defaultWhen"
                :pattern="valid ? '.*' : '^$'"
         >
 
-        <div class="flex items-center justify-between h-4">
-            <small :class="{ 'text-red': ! valid }">
-                {{ valid ? humanInterpretation : 'Huh?' }}
-            </small>
-
-            <request-format v-if="! valid" :when="requestFormat"></request-format>
+        <div class="text-xs h-4" :class="{ 'text-red': ! valid }">
+            {{ valid ? humanInterpretation : (humanInterpretation ? humanInterpretation : 'Huh?') }}
         </div>
     </div>
 </template>
@@ -22,22 +19,40 @@
 <script>
     export default {
 
+        props: {
+            defaultWhen: String,
+            initialWhen: String,
+            feature: String,
+        },
+
         data: () => ({
+            when: '',
             humanInterpretation: '',
             valid: true,
-            requestFormat: '', // passing "when" to the RequestFormat component was causing errors
         }),
+
+        mounted: function() {
+            this.when = this.initialWhen;
+
+            if (this.when) {
+                this.validateWhen();
+            }
+        },
 
         methods: {
             debounceInput: _.debounce(function () {
+                this.validateWhen();
+            }, 200),
+
+            validateWhen: function () {
                 this.requestFormat = this.when;
 
-                axios.post('/api/v1/human-when-interpretation', { 'when': this.when }).then(response => {
+                axios.post('/api/v1/human-when-interpretation/'+this.feature, { 'when': this.when }).then(response => {
                     this.valid = response.data.valid;
 
                     this.humanInterpretation = response.data.humanInterpretation;
                 });
-            }, 200)
+            },
 
         }
     }

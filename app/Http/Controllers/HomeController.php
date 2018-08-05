@@ -8,6 +8,6 @@ class HomeController extends Controller
 {
     public function index()
     {
-        return Auth::check() ? view('meel') : view('home');
+        return Auth::check() ? view('schedules.create') : view('home');
     }
 }

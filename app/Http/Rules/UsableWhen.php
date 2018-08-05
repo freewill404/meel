@@ -14,9 +14,14 @@ class UsableWhen implements Rule
             return true;
         }
 
-        $scheduleFormat = new ScheduleFormat($value);
+        return $this->usableWhen(
+            new ScheduleFormat($value)
+        );
+    }
 
-        return $scheduleFormat->isUsableInterpretation();
+    protected function usableWhen(ScheduleFormat $schedule): bool
+    {
+        return $schedule->isUsableInterpretation();
     }
 
     public function message()

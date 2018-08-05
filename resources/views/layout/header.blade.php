@@ -1,5 +1,5 @@
 @auth()
-    @include('layout.header-auth', ['title' => $title])
+    @include('layout.header-auth', ['title' => $title, 'maxWidth' => $maxWidth])
 @endauth
 
 @guest

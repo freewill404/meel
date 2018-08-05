@@ -8,7 +8,7 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-class HomeControllerTest extends TestCase
+class SchedulesControllerTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -16,12 +16,12 @@ class HomeControllerTest extends TestCase
     function an_empty_when_uses_the_users_default_value()
     {
         $this->actingAs(factory(User::class)->create())
-            ->postHome([
+            ->createSchedule([
                 'what' => 'Example',
                 'when' => '',
             ])
             ->assertStatus(302)
-            ->assertRedirect(route('user.meel.ok'));
+            ->assertRedirect(route('user.schedules.ok'));
 
         $this->assertSame('now', Schedule::find(1)->when);
     }
@@ -36,8 +36,8 @@ class HomeControllerTest extends TestCase
         $this->assertSame(0, SiteStats::today()->email_schedules_created);
 
         $this->actingAs($firstUser)
-            ->postHome(['what' => 'Example', 'when' => 'now'])
-            ->assertRedirect(route('user.meel.ok'));
+            ->createSchedule(['what' => 'Example', 'when' => 'now'])
+            ->assertRedirect(route('user.schedules.ok'));
 
         $this->assertSame(1, SiteStats::today()->email_schedules_created);
 
@@ -46,16 +46,16 @@ class HomeControllerTest extends TestCase
         $secondUser = factory(User::class)->create();
 
         $this->actingAs($secondUser)
-            ->postHome(['what' => 'Example', 'when' => 'now'])
-            ->assertRedirect(route('user.meel.ok'));
+            ->createSchedule(['what' => 'Example', 'when' => 'now'])
+            ->assertRedirect(route('user.schedules.ok'));
 
         $this->assertSame(2, SiteStats::today()->email_schedules_created);
 
         $this->assertSame(1, $secondUser->refresh()->email_schedules_created);
     }
 
-    private function postHome($data)
+    private function createSchedule($data)
     {
-        return $this->post(route('user.meel.post'), $data);
+        return $this->post(route('user.schedules.post'), $data);
     }
 }

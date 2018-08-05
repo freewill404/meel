@@ -14,12 +14,14 @@ class SetNextPollAt
      */
     public function handle($event)
     {
-        $method = $event instanceof FeedCreating ? 'fill' : 'update';
-
-        $event->feed->{$method}([
+        $values = [
             'next_poll_at'    => (string) $event->feed->getNextPollDate(),
             'last_polled_at'  => secondless_now(),
             'last_poll_error' => $event->errorMessage ?? null,
-        ]);
+        ];
+
+        $event instanceof FeedCreating
+            ? $event->feed->fill($values)
+            : $event->feed->update($values);
     }
 }

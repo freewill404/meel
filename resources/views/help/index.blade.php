@@ -5,9 +5,9 @@
 
 @section('content')
 
-    <div class="max-w-md mx-auto mt-2 mb-16">
+    @include('layout.header', ['title' => 'Help', 'maxWidth' => 'max-w-md'])
 
-        @include('layout.header', ['title' => 'Help'])
+    <div class="max-w-md mx-auto mt-2 mb-16">
 
         <p class="text-md mt-8 sm:ml-4">
             Need help emailing yourself?

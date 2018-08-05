@@ -4,7 +4,7 @@
 
 @section('content')
 
-    @include('layout.header', ['title' => 'More emails'])
+    @include('layout.header', ['title' => 'More emails', 'maxWidth' => 'max-w-lg'])
 
     <div class="max-w-md mx-auto mt-8 mb-16">
 
@@ -23,7 +23,7 @@
             You will receive the emails within one day of the transaction.
         </p>
 
-        <form class="mt-8" action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+        <form class="panel mt-8" action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
             <input type="hidden" name="cmd" value="_s-xclick">
             <table>
                 <tr>

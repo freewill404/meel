@@ -13,7 +13,7 @@ class HumanInterpretationControllerTest extends TestCase
     /** @test */
     function you_need_to_be_logged_in()
     {
-        $this->json('POST', route('api.humanInterpretation'), [
+        $this->json('POST', route('api.humanInterpretation.feed'), [
                 'when' => 'tomorrow',
             ])
             ->assertStatus(401);
@@ -59,7 +59,7 @@ class HumanInterpretationControllerTest extends TestCase
 
     private function assertHumanInterpretation($expected, $input, $expectedIsValid)
     {
-        $content = $this->json('POST', route('api.humanInterpretation'), [
+        $content = $this->json('POST', route('api.humanInterpretation.schedule'), [
                 'when' => $input,
             ])
             ->assertStatus(200)

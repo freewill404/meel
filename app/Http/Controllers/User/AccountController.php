@@ -14,14 +14,6 @@ class AccountController extends Controller
     {
         return view('account.index', [
             'user'      => Auth::user(),
-            'schedules' => Auth::user()->schedules->sortBy('next_occurrence'),
-        ]);
-    }
-
-    public function settings()
-    {
-        return view('account.settings', [
-            'user'      => Auth::user(),
             'timezones' => Timezone::selectValues(),
         ]);
     }

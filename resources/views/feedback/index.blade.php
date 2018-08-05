@@ -4,8 +4,9 @@
 
 @section('content')
 
+    @include('layout.header-auth', ['title' => 'Feedback', 'maxWidth' => 'max-w-sm'])
+
     <div class="max-w-sm mx-auto">
-        @include('layout.header-auth', ['title' => 'Feedback'])
 
         <p class="mt-8">
             You can use this form to send feedback, ask questions or request a new <i>what format</i>.

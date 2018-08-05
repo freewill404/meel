@@ -28,4 +28,21 @@ class FeedObserverTest extends TestCase
         $this->assertSame(1, SiteStats::today()->feeds_created);
         $this->assertSame(1, $user->refresh()->feeds_created);
     }
+
+    /** @test */
+    function updating_fills_the_next_poll_at()
+    {
+        $user = factory(User::class)->create();
+
+        $feed = new Feed([
+            'user_id' => $user->id,
+            'when'    => 'every week',
+        ]);
+
+        $this->assertNull($feed->next_poll_at);
+
+        (new FeedObserver)->updating($feed);
+
+        $this->assertSame('2018-04-02 08:00:00', (string) $feed->next_poll_at);
+    }
 }
