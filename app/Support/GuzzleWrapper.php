@@ -24,7 +24,7 @@ class GuzzleWrapper
 
     public function get($url)
     {
-        return $this->guzzle->request('GET', $url);
+        return $this->guzzle->request('GET', $url, ['connect_timeout' => 5]);
     }
 
     public function fake()
