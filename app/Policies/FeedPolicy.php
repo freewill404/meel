@@ -20,6 +20,11 @@ class FeedPolicy
         return $user->id === $feed->user_id;
     }
 
+    public function create(User $user)
+    {
+        return $user->has_feeds_left;
+    }
+
     public function delete(User $user, Feed $feed)
     {
         return $user->id === $feed->user_id;

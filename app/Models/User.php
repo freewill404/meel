@@ -23,6 +23,7 @@ class User extends Authenticatable
     protected $casts = [
         'email_confirmed'           => 'bool',
         'emails_left'               => 'integer',
+        'max_feeds'                 => 'integer',
         'email_schedules_created'   => 'integer',
         'scheduled_emails_sent'     => 'integer',
         'scheduled_emails_not_sent' => 'integer',
@@ -49,6 +50,11 @@ class User extends Authenticatable
     public function getEmailsNotSentAttribute()
     {
         return $this->scheduled_emails_not_sent + $this->feed_emails_not_sent;
+    }
+
+    public function getHasFeedsLeftAttribute()
+    {
+        return $this->feeds()->count() < $this->max_feeds;
     }
 
     public function getDefaultWhenAttribute()

@@ -19,7 +19,10 @@ class FeedsController extends Controller
 
     public function create()
     {
-        return view('feeds.create');
+        return view('feeds.create', [
+            'user'      => $user = Auth::user(),
+            'feedCount' => $user->feeds()->count(),
+        ]);
     }
 
     public function store(Request $request)

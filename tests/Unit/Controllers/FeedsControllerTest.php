@@ -108,6 +108,46 @@ class FeedsControllerTest extends TestCase
         $this->assertSame(2, Feed::count());
     }
 
+    /** @test */
+    function it_can_create_a_feed()
+    {
+        $user = factory(User::class)->create();
+
+        $this->actingAs($user)
+            ->createFeed([
+                'url'               => 'http://meel.me/feed',
+                'when'              => 'every 2 months',
+                'group_new_entries' => false,
+            ])
+            ->assertStatus(302);
+
+        $this->assertSame(1, $user->feeds->count());
+
+        $feed = $user->feeds->first();
+
+        $this->assertSame('http://meel.me/feed', $feed->url);
+
+        $this->assertSame('every 2 months', $feed->when);
+
+        // A listener has set the following fields:
+        $this->assertSame('2018-05-01 08:00:00', (string) $feed->next_poll_at);
+        $this->assertSame((string) secondless_now(), (string) $feed->last_polled_at);
+    }
+
+    /** @test */
+    function it_can_only_create_a_feed_if_you_have_feeds_left()
+    {
+        $user = factory(User::class)->create(['max_feeds' => 2]);
+
+        $user->feeds()->saveMany(
+            factory(Feed::class, 2)->make()
+        );
+
+        $this->actingAs($user)
+            ->createFeed([])
+            ->assertStatus(403);
+    }
+
     private function createUserAndFeed(bool $groupNewEntries = true)
     {
         $user = factory(User::class)->create();
@@ -126,6 +166,11 @@ class FeedsControllerTest extends TestCase
             'when'              => $feed->when,
             'group_new_entries' => $feed->group_new_entries,
         ]);
+    }
+
+    private function createFeed($values)
+    {
+        return $this->post(route('user.feeds.store'), $values);
     }
 
     private function showFeed($feed)

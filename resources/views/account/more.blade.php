@@ -13,14 +13,18 @@
         </p>
 
         <p class="mt-8">
-            Once you run out of emails, email schedules will still run, but no emails will be sent.
-            You will be automatically notified when you are running out of emails.
+            Once you run out of emails, email schedules and feeds will still run, but no emails will be sent.
+            You receive a notification when you are running out of emails.
+            <br><br>
+            More emails can be purchased using PayPal.
+            You will receive the emails as soon as possible, usually within one day of the transaction.
         </p>
 
-        <h2 class="mt-8">More emails</h2>
+        <h2 class="mt-8">More feeds</h2>
         <p>
-            More emails can be purchased using PayPal.
-            You will receive the emails within one day of the transaction.
+            Every time you buy emails, the maximum amount of active feeds you are allowed to have will also increase.
+            For every euro spent on emails, you are allowed to have <strong>one extra active feed</strong>.
+            Your maximum feed limit will never be decreased, every time you buy emails it will be increased.
         </p>
 
         <form class="panel mt-8" action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
@@ -35,10 +39,10 @@
                 <tr>
                     <td>
                         <select class="field pointer" name="os0">
-                            <option value="100 emails">100 emails -  €3,00 EUR</option>
-                            <option value="400 emails">400 emails - €10,00 EUR</option>
-                            <option value="1000 emails">1000 emails -  €25,00 EUR</option>
-                            <option value="5000 emails">5000 emails - €100,00 EUR</option>
+                            <option value="100 emails">100 emails, +3 feeds -  €3,00 EUR</option>
+                            <option value="400 emails">400 emails, +10 feeds - €10,00 EUR</option>
+                            <option value="1000 emails">1000 emails, +25 feeds -  €25,00 EUR</option>
+                            <option value="5000 emails">5000 emails, +100 feeds - €100,00 EUR</option>
                         </select>
                     </td>
                 </tr>

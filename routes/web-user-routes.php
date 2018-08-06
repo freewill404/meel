@@ -7,8 +7,8 @@ Route::get('/ok',        ['uses' => 'SchedulesController@ok',    'as' => 'schedu
 
 Route::get('/feeds',           ['uses' => 'FeedsController@index',   'as' => 'feeds']);
 Route::get('/feeds/new',       ['uses' => 'FeedsController@create',  'as' => 'feeds.create']);
-Route::post('/feeds/new',      ['uses' => 'FeedsController@store',   'as' => 'feeds.store']);
-Route::get('/feeds/{feed}',    ['uses' => 'FeedsController@show',    'as' => 'feeds.show']  )->middleware('can:view,feed');
+Route::post('/feeds/new',      ['uses' => 'FeedsController@store',   'as' => 'feeds.store' ])->middleware('can:create,App\Models\Feed');
+Route::get('/feeds/{feed}',    ['uses' => 'FeedsController@show',    'as' => 'feeds.show'  ])->middleware('can:view,feed');
 Route::put('/feeds/{feed}',    ['uses' => 'FeedsController@update',  'as' => 'feeds.update'])->middleware('can:update,feed');
 Route::delete('/feeds/{feed}', ['uses' => 'FeedsController@delete',  'as' => 'feeds.delete'])->middleware('can:delete,feed');
 

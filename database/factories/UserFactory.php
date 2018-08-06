@@ -13,6 +13,7 @@ $factory->define(App\Models\User::class, function (Faker $faker) {
         'email_confirmed'     => true,
         'role'                => UserRole::USER,
         'emails_left'         => 100,
+        'max_feeds'           => 50,
 
         'email_schedules_created'   => 0,
         'scheduled_emails_sent'     => 0,
