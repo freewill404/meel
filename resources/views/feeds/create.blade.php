@@ -6,10 +6,10 @@
 
     @include('layout.header', ['title' => 'New feed', 'maxWidth' => 'max-w-sm'])
 
-    <form method="post" class="max-w-sm mx-auto mt-8 mb-16">
+    <form method="post" class="panel max-w-sm mx-auto mt-8 mb-16">
         {{ csrf_field() }}
 
-        <h3 class="mt-8">Feed url</h3>
+        <h3>Feed url</h3>
 
         <input type="url" name="url" class="field" value="{{ old('url') }}" placeholder="https://example.com/feed" required>
 

@@ -14,6 +14,10 @@
             This page should give you enough information to use the site.
         </p>
 
+        <h2 class="mt-8">Examples</h2>
+
+        <meel-example></meel-example>
+
         <h2 class="mt-8">When formats</h2>
         <p class="sm:ml-4">
             The format used for the "when" field is split up into three parts: recurring, relative and absolute.

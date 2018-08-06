@@ -6,13 +6,13 @@
 
     @include('layout.header', ['title' => 'Update feed', 'maxWidth' => 'max-w-sm'])
 
-    <div class="max-w-sm mx-auto mt-8 mb-16">
+    <div class="panel max-w-sm mx-auto mt-8 mb-16">
 
         <form method="post" id="update-form">
             {{ csrf_field() }}
             {{ method_field('PUT') }}
 
-            <h3 class="mt-8">Feed url</h3>
+            <h3>Feed url</h3>
 
             <input type="url" name="url" class="field" value="{{ old('url', $feed->url) }}" placeholder="https://example.com/feed" required>
 
@@ -46,11 +46,11 @@
 
         </form>
 
-        <div class="flex justify-between mt-8">
+        <div class="flex justify-between items-center mt-8">
             <form method="post">
                 {{ csrf_field() }}
                 {{ method_field('DELETE') }}
-                <button type="submit" class="btn-delete" onclick="return confirm('Are you sure you want to delete this feed?')">Delete feed</button>
+                <button type="submit" onclick="return confirm('Are you sure you want to delete this feed?')">Delete feed</button>
             </form>
 
             <button type="submit" class="btn" form="update-form">Update feed</button>

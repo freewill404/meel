@@ -1,6 +1,6 @@
 <template>
-    <div class="max-w-xs mx-auto text-sm">
-        <label class="block mt-8">
+    <div class="panel max-w-xs mx-auto text-sm">
+        <label class="block">
             What?
             <input type="text" :value="what" class="field text-sm" disabled>
         </label>
@@ -10,7 +10,7 @@
             <input type="text" :value="when" class="field text-sm" disabled>
         </label>
 
-        <button class="btn mt-4">Meel</button>
+        <button class="btn block ml-auto mt-4">Meel</button>
     </div>
 </template>
 

@@ -1,6 +1,6 @@
 @extends('layout.base-template', [
-    'title'       => 'Meel.me | Schedule and send (recurring) emails to yourself',
-    'description' => 'Keep your life on track by emailing yourself. Don\'t clog up your agenda with reminders, fill up your gmail with emails instead!',
+    'title'       => 'Meel.me | Email yourself',
+    'description' => 'Send yourself scheduled recurring emails. Add rss or atom feeds to have new entries emailed to you automatically.',
 ])
 
 @section('content')
@@ -23,45 +23,47 @@
             </div>
         </div>
 
-        <meel-example></meel-example>
 
-        <h3 class="mt-8">What</h3>
-        <p>
-            Meel.me lets you send (recurring) emails to yourself.
-            <br><br>
-            Use emails as reminders that show up on your phone and computer.
 
-            Use recurring emails to remind yourself of the things you know you should be doing,
-            such as going to the dentist at least once a year, or cleaning the house every month.
-        </p>
+        <div class="panel flex mt-8">
+            <span class="w-24 mr-4">@include('helpers.svg.envelope')</span>
 
-        <h3 class="mt-8">Why</h3>
-        <p>
-            Emails are convenient and simple. They show up on all your devices, even if you don't use Gmail or other Google products.
-            <br><br>
+            <span>
+                <h2 class="inline-block text-base">Send emails to yourself</h2> using a convenient written schedule syntax.
+                Make scheduled emails recurring to keep reminding yourself of things you know you should be doing.
+            </span>
+        </div>
 
-            <strong>Why not use Google reminders?</strong>
-            <br>
-            Emails are more convenient than Google reminders.
-            Reminders fill up your agenda (unless you filter them),
-            they don't show up on your computer,
-            they can't be easily dismissed,
-            and the only way to quickly create them is by yelling "OK Google" at your phone, which is less than ideal in public.
-        </p>
 
-        <h3 class="mt-8">How</h3>
-        <p>
-            Creating an email schedule is easy.
-            The time the email should be sent is interpreted from normal english.
-            A detailed guide can be found on the <a class="font-bold" href="{{ route('help') }}">help page.</a>
-            <br><br>
-            <a class="font-bold" href="{{ route('register') }}">Register an account</a> and start emailing yourself today!
-        </p>
+        <div class="panel flex mt-8">
+            <span class="w-24 mr-4">@include('helpers.svg.feed')</span>
 
-        <h3 class="mt-8">Open source</h3>
-        <p>
-            Meel.me is open-source. You can view the code and contribute on <a class="font-bold" href="https://github.com/SjorsO/meel" target="_blank">Github</a>!
-        </p>
+            <span>
+                <h2 class="inline-block text-base">Have new rss or atom feed entries emailed to you.</h2>
+                Assign a schedule to the feeds to only receive new entries at a specific time.
+            </span>
+        </div>
+
+
+        <div class="panel flex mt-8">
+            <span class="w-24 mr-4">@include('helpers.svg.clock')</span>
+
+            <span>
+                <h3 class="inline-block text-base">Use convenient schedules</h3> to receive emails exactly when you want to.
+                Schedules are flexible and easy to write.
+                <a class="text-black underline" href="{{ route('help') }}">Learn more about written schedules.</a>
+            </span>
+        </div>
+
+
+        <div class="panel flex mt-8">
+            <span class="w-16 mr-4">@include('helpers.svg.github')</span>
+
+            <span>
+                <h3 class="inline-block text-base">Meel.me is open source.</h3>
+                You can view the code and contribute <a class="text-black underline" href="https://github.com/SjorsO/meel" target="_blank">on Github</a>!
+            </span>
+        </div>
 
     </div>
 

@@ -9,7 +9,7 @@
         @include('layout.header', ['title' => 'Login'])
     </div>
 
-    <form class="max-w-xs mx-auto p-2" method="post" action="{{ route('login') }}">
+    <form class="max-w-xs mx-auto panel" method="post" action="{{ route('login') }}">
         {{ csrf_field() }}
         <input type="hidden" name="remember" value="1">
 
