@@ -16,6 +16,7 @@ class CreateUsersTable extends Migration
             $table->string('role')->default(UserRole::USER);
             $table->string('timezone')->default('Europe/Amsterdam');
             $table->unsignedInteger('emails_left')->default(100);
+            $table->unsignedInteger('max_feeds')->default(5);
 
             $table->unsignedInteger('email_schedules_created')->default(0);
             $table->unsignedInteger('scheduled_emails_sent')->default(0);
