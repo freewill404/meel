@@ -8,11 +8,10 @@ use App\Events\Feeds\FeedPollFailed;
 use App\Jobs\BaseJob;
 use App\Meel\Feeds\FeedEntryCollection;
 use App\Models\Feed;
-use App\Support\Facades\Guzzler;
 use Exception;
 use GuzzleHttp\Exception\RequestException;
-use GuzzleHttp\Psr7\Response;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use SjorsO\Gobble\Facades\Gobble as Guzzle;
 use Zend\Feed\Exception\RuntimeException as FeedException;
 
 class PollFeedJob extends BaseJob implements ShouldQueue
@@ -34,8 +33,7 @@ class PollFeedJob extends BaseJob implements ShouldQueue
     protected function pollFeed()
     {
         try {
-            /** @var Response $response */
-            $response = Guzzler::get($this->feed->url);
+            $response = Guzzle::get($this->feed->url);
 
             $feedEntryCollection = new FeedEntryCollection(
                 $response->getBody()->getContents()

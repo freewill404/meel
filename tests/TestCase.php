@@ -3,10 +3,10 @@
 namespace Tests;
 
 use App\Models\User;
-use App\Support\Facades\Guzzler;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Contracts\Console\Kernel;
+use SjorsO\Gobble\Facades\Gobble as Guzzle;
 use SjorsO\MocksTime\MocksTime;
 use Spatie\Snapshots\MatchesSnapshots;
 
@@ -30,7 +30,7 @@ abstract class TestCase extends BaseTestCase
             Mail::fake();
         }
 
-        Guzzler::fake();
+       Guzzle::fake();
     }
 
     protected function tearDown()

@@ -6,11 +6,13 @@ use App\Events\Feeds\FeedNotPolled;
 use App\Events\Feeds\FeedPolled;
 use App\Events\Feeds\FeedPollFailed;
 use App\Jobs\Feeds\PollFeedJob;
+use App\Mail\FeedEntriesEmail;
 use App\Models\Feed;
 use App\Models\User;
-use App\Support\Facades\Guzzler;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Mail;
+use SjorsO\Gobble\Facades\Gobble as Guzzle;
 use Tests\TestCase;
 
 class PollFeedJobTest extends TestCase
@@ -30,13 +32,30 @@ class PollFeedJobTest extends TestCase
         $this->user->feeds()->save(
             $this->feed = factory(Feed::class)->make()
         );
+    }
 
-        Event::fake();
+    /** @test */
+    function it_actually_makes_http_requests()
+    {
+        Guzzle::unfake();
+
+        $this->feed->update([
+            'url'            => 'https://seths.blog/feed/',
+            'last_polled_at' => now()->subYears(50),
+        ]);
+
+        PollFeedJob::dispatchNow($this->feed);
+
+        Mail::assertQueued(FeedEntriesEmail::class, 1);
+
+        $this->assertNull($this->feed->last_poll_error);
     }
 
     /** @test */
     function it_does_not_poll_if_the_user_has_no_emails_left()
     {
+        Event::fake();
+
         $this->feed->user->update(['emails_left' => 0]);
 
         PollFeedJob::dispatchNow($this->feed);
@@ -51,7 +70,9 @@ class PollFeedJobTest extends TestCase
     /** @test */
     function it_polls_the_feed_url()
     {
-        Guzzler::pushFile($this->testFilePath.'feeds/rss-2.0-001.txt');
+        Event::fake();
+
+        Guzzle::pushFile($this->testFilePath.'feeds/rss-2.0-001.txt');
 
         PollFeedJob::dispatchNow($this->feed);
 
@@ -73,7 +94,7 @@ class PollFeedJobTest extends TestCase
     /** @test */
     function it_dispatches_an_event_on_non_200_status_codes()
     {
-        Guzzler::pushString('error', 404);
+        Guzzle::pushString('error', 404);
 
         $this->assertPollFails('meel.feed-http-error-404');
     }
@@ -81,13 +102,15 @@ class PollFeedJobTest extends TestCase
     /** @test */
     function it_dispatches_an_event_when_a_feed_cant_be_parsed()
     {
-        Guzzler::pushString('valid page, but not a feed', 200);
+        Guzzle::pushString('valid page, but not a feed', 200);
 
         $this->assertPollFails('meel.feed-parse-error');
     }
 
     private function assertPollFails($message)
     {
+        Event::fake();
+
         PollFeedJob::dispatchNow($this->feed);
 
         Event::assertDispatchedTimes(FeedPollFailed::class, 1);

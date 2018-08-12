@@ -6,7 +6,7 @@ use App\Listeners\Observers\FeedObserver;
 use App\Listeners\Observers\ScheduleObserver;
 use App\Models\Feed;
 use App\Models\Schedule;
-use App\Support\GuzzleWrapper;
+use GuzzleHttp\Client as Guzzle;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Passport\Passport;
 
@@ -23,6 +23,8 @@ class AppServiceProvider extends ServiceProvider
     {
         Passport::ignoreMigrations();
 
-        $this->app->singleton(GuzzleWrapper::class);
+        $this->app->bind(Guzzle::class, function () {
+            return new Guzzle(['timeout' => 5, 'connect_timeout' => 5]);
+        });
     }
 }
