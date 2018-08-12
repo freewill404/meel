@@ -28,5 +28,7 @@ class Kernel extends ConsoleKernel
         // Other
         $schedule->job(GenerateSitemapJob::class   )->dailyAt('2:05');
         $schedule->call([SiteStats::class, 'today'])->twiceDaily(); // Ensure every day has a SiteStats model
+
+        $schedule->command('backup:run --only-db')->dailyAt('2:10');
     }
 }
