@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3f2d173a24f8a79a474d954cf00ad552",
+    "content-hash": "fc08ed87f8559857ce8901848dde8f0a",
     "packages": [
         {
             "name": "defuse/php-encryption",
@@ -2458,6 +2458,57 @@
                 "uuid"
             ],
             "time": "2018-07-19T23:38:55+00:00"
+        },
+        {
+            "name": "sjorso/configless-laravel-backup",
+            "version": "0.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/SjorsO/configless-laravel-backup.git",
+                "reference": "d43cece8f50cda993c3d3650962dd6b2c6eb6dc3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/SjorsO/configless-laravel-backup/zipball/d43cece8f50cda993c3d3650962dd6b2c6eb6dc3",
+                "reference": "d43cece8f50cda993c3d3650962dd6b2c6eb6dc3",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.0",
+                "spatie/laravel-backup": "^5.10"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^7.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "SjorsO\\ConfiglessLaravelBackup\\Providers\\ConfiglessBackupProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "SjorsO\\ConfiglessLaravelBackup\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Sjors Ottjes",
+                    "email": "sjorsottjes@gmail.com"
+                }
+            ],
+            "description": "Use spatie/laravel-backup without publishing a config file",
+            "homepage": "https://github.com/SjorsO/configless-laravel-backup",
+            "keywords": [
+                "configless"
+            ],
+            "time": "2018-08-13T19:41:54+00:00"
         },
         {
             "name": "sjorso/enum",

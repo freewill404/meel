@@ -12,10 +12,10 @@
         "laravel/passport": "^6.0",
         "laravel/tinker": "^1.0",
         "propaganistas/laravel-fakeid": "^4.0",
+        "sjorso/configless-laravel-backup": "^0.0.1",
         "sjorso/enum": "^1.0",
         "sjorso/gobble": "^1.0.0",
         "spatie/flysystem-dropbox": "^1.0",
-        "spatie/laravel-backup": "^5.10",
         "spatie/laravel-sitemap": "^5.0",
         "zendframework/zend-feed": "^2.10"
     },
