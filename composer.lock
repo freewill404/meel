@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "89e2f351dfce30cc173aa1a4819855fa",
+    "content-hash": "3f2d173a24f8a79a474d954cf00ad552",
     "packages": [
         {
             "name": "defuse/php-encryption",
@@ -1041,6 +1041,63 @@
             "time": "2015-04-20T18:58:01+00:00"
         },
         {
+            "name": "jenssegers/optimus",
+            "version": "v0.2.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/jenssegers/optimus.git",
+                "reference": "9bb0fcbaa3b7a6a0eb3e6c07e672ce4de42600af"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/jenssegers/optimus/zipball/9bb0fcbaa3b7a6a0eb3e6c07e672ce4de42600af",
+                "reference": "9bb0fcbaa3b7a6a0eb3e6c07e672ce4de42600af",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "kherge/box": "^2.7",
+                "phpseclib/phpseclib": "^2.0",
+                "phpunit/phpunit": "^4.0|^5.0",
+                "satooshi/php-coveralls": "^1.0",
+                "symfony/console": "^2.6|^3.0"
+            },
+            "suggest": {
+                "ext-gmp": "Required for 32bit systems"
+            },
+            "bin": [
+                "optimus"
+            ],
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Jenssegers\\Optimus\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jens Segers",
+                    "homepage": "https://jenssegers.com"
+                }
+            ],
+            "description": "Id obfuscation based on Knuth's integer hash method",
+            "homepage": "https://github.com/jenssegers/optimus",
+            "keywords": [
+                "hashids",
+                "id obfuscation",
+                "ids",
+                "obfuscation",
+                "optimus"
+            ],
+            "time": "2017-04-21T10:14:58+00:00"
+        },
+        {
             "name": "laravel/framework",
             "version": "v5.6.33",
             "source": {
@@ -1988,6 +2045,69 @@
                 "x509"
             ],
             "time": "2018-04-15T16:55:05+00:00"
+        },
+        {
+            "name": "propaganistas/laravel-fakeid",
+            "version": "4.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Propaganistas/Laravel-FakeId.git",
+                "reference": "27cadcc9b8b272acbd0586d8339db23f183c1cc6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Propaganistas/Laravel-FakeId/zipball/27cadcc9b8b272acbd0586d8339db23f183c1cc6",
+                "reference": "27cadcc9b8b272acbd0586d8339db23f183c1cc6",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/config": ">=5.5,<5.7",
+                "illuminate/container": ">=5.5,<5.7",
+                "illuminate/routing": ">=5.5,<5.7",
+                "illuminate/support": ">=5.5,<5.7",
+                "jenssegers/optimus": "^0.2.2",
+                "php": ">=7.0",
+                "phpseclib/phpseclib": "^2.0"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^3.5",
+                "phpunit/phpunit": "*"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Propaganistas\\LaravelFakeId\\FakeIdServiceProvider"
+                    ],
+                    "aliases": {
+                        "FakeId": "Propaganistas\\LaravelFakeId\\Facades\\FakeId"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Propaganistas\\LaravelFakeId\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Propaganistas",
+                    "email": "Propaganistas@users.noreply.github.com"
+                }
+            ],
+            "description": "Automatic ID obfuscation for Eloquent models.",
+            "keywords": [
+                "fakeid",
+                "hashids",
+                "laravel",
+                "obfuscation",
+                "optimus"
+            ],
+            "time": "2018-07-23T17:21:19+00:00"
         },
         {
             "name": "psr/container",

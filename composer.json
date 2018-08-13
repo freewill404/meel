@@ -11,6 +11,7 @@
         "laravel/framework": "5.6.*",
         "laravel/passport": "^6.0",
         "laravel/tinker": "^1.0",
+        "propaganistas/laravel-fakeid": "^4.0",
         "sjorso/enum": "^1.0",
         "sjorso/gobble": "^1.0.0",
         "spatie/flysystem-dropbox": "^1.0",

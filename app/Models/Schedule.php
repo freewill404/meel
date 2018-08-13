@@ -8,9 +8,12 @@ use App\Mail\Email;
 use App\Meel\Schedules\ScheduleFormat;
 use App\Meel\Schedules\WhatString;
 use Illuminate\Database\Eloquent\Model;
+use Propaganistas\LaravelFakeId\RoutesWithFakeIds as ObfuscateRouteIds;
 
 class Schedule extends Model
 {
+    use ObfuscateRouteIds;
+
     protected $guarded = [];
 
     protected $casts = [

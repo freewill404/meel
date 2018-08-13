@@ -5,6 +5,10 @@ Email yourself - [meel.me](https://meel.me)
 [Compare with current laravel/laravel version](https://github.com/laravel/laravel/compare/5da2d13b04ede450120affdd46c0cbe3a2fe54ef...master)
 
 ## Install
+Required extensions:
+- [gmp](http://php.net/manual/en/book.gmp.php) - for obfuscating ids in routes
+
+Installation:
 ```bash
 cp .env.example .env # fill in the arrows in the .env file
 

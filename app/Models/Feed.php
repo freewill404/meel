@@ -6,10 +6,13 @@ use App\Events\Feeds\FeedCreating;
 use App\Meel\Schedules\ScheduleFormat;
 use App\Support\DateTime\SecondlessDateTimeString;
 use Illuminate\Database\Eloquent\Model;
+use Propaganistas\LaravelFakeId\RoutesWithFakeIds as ObfuscateRouteIds;
 use RuntimeException;
 
 class Feed extends Model
 {
+    use ObfuscateRouteIds;
+
     protected $guarded = [];
 
     protected $dispatchesEvents = [
