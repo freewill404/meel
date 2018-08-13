@@ -2388,16 +2388,16 @@
         },
         {
             "name": "sjorso/gobble",
-            "version": "1.0.0",
+            "version": "1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/SjorsO/gobble.git",
-                "reference": "7ecab659b1f42d4969dd7ad7cf32a5450d70c433"
+                "reference": "a188c1654d0cf2d0819717ac79474b6624f5c9f2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/SjorsO/gobble/zipball/7ecab659b1f42d4969dd7ad7cf32a5450d70c433",
-                "reference": "7ecab659b1f42d4969dd7ad7cf32a5450d70c433",
+                "url": "https://api.github.com/repos/SjorsO/gobble/zipball/a188c1654d0cf2d0819717ac79474b6624f5c9f2",
+                "reference": "a188c1654d0cf2d0819717ac79474b6624f5c9f2",
                 "shasum": ""
             },
             "require": {
@@ -2446,7 +2446,7 @@
                 "mock",
                 "testing"
             ],
-            "time": "2018-08-12T08:50:39+00:00"
+            "time": "2018-08-12T09:30:05+00:00"
         },
         {
             "name": "spatie/browsershot",

@@ -23,6 +23,8 @@ class AppServiceProvider extends ServiceProvider
     {
         Passport::ignoreMigrations();
 
+        Passport::withoutCookieSerialization();
+
         $this->app->bind(Guzzle::class, function () {
             return new Guzzle(['timeout' => 5, 'connect_timeout' => 5]);
         });
