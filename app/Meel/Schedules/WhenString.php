@@ -6,7 +6,7 @@ class WhenString
 {
     protected $preparedString;
 
-    protected $replaceWords = [
+    private const REPLACE_WORDS = [
         'a'       => '1',
         'an'      => '1',
         'one'     => '1',
@@ -101,7 +101,7 @@ class WhenString
 
         $string = strtolower($string);
 
-        foreach ($this->replaceWords as $search => $replace) {
+        foreach (static::REPLACE_WORDS as $search => $replace) {
             $string = preg_replace('/(^| )'.$search.'( |$)/', '${1}'.$replace.'${2}', $string);
         }
 

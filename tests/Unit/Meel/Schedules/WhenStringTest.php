@@ -51,19 +51,21 @@ class WhenStringTest extends TestCase
     /** @test */
     function it_changes_written_numbers_to_actual_numbers()
     {
-        $this->assertPreparedInput('in 1 hour', 'in one hour');
-        $this->assertPreparedInput('in 2 hours', 'in two hours');
-        $this->assertPreparedInput('in 3 hours', 'in three hours');
-        $this->assertPreparedInput('in 4 hours', 'in four hours');
-        $this->assertPreparedInput('in 5 hours', 'in five hours');
-        $this->assertPreparedInput('in 6 hours', 'in six hours');
-        $this->assertPreparedInput('in 7 hours', 'in seven hours');
-        $this->assertPreparedInput('in 8 hours', 'in eight hours');
-        $this->assertPreparedInput('in 9 hours', 'in nine hours');
-        $this->assertPreparedInput('in 10 hours', 'in ten hours');
-        $this->assertPreparedInput('in 15 minutes', 'in fifteen minutes');
-        $this->assertPreparedInput('in 30 minutes', 'in thirty minutes');
-        $this->assertPreparedInput('in 60 minutes', 'in sixty minutes');
+        $this->assertPreparedInput([
+            'in one hour'        => 'in 1 hour',
+            'in two hours'       => 'in 2 hours',
+            'in three hours'     => 'in 3 hours',
+            'in four hours'      => 'in 4 hours',
+            'in five hours'      => 'in 5 hours',
+            'in six hours'       => 'in 6 hours',
+            'in seven hours'     => 'in 7 hours',
+            'in eight hours'     => 'in 8 hours',
+            'in nine hours'      => 'in 9 hours',
+            'in ten hours'       => 'in 10 hours',
+            'in fifteen minutes' => 'in 15 minutes',
+            'in thirty minutes'  => 'in 30 minutes',
+            'in sixty minutes'   => 'in 60 minutes',
+        ]);
     }
 
     /** @test */
@@ -99,37 +101,49 @@ class WhenStringTest extends TestCase
     /** @test */
     function it_changes_short_days_to_full_days()
     {
-        $this->assertPreparedInput('on monday',    'on mon');
-        $this->assertPreparedInput('on tuesday',   'on tue');
-        $this->assertPreparedInput('on tuesday',   'on tues');
-        $this->assertPreparedInput('on wednesday', 'on wed');
-        $this->assertPreparedInput('on thursday',  'on thu');
-        $this->assertPreparedInput('on thursday',  'on thur');
-        $this->assertPreparedInput('on thursday',  'on thurs');
-        $this->assertPreparedInput('on friday',    'on fri');
-        $this->assertPreparedInput('on saturday',  'on sat');
-        $this->assertPreparedInput('on sunday',    'on sun');
+        $this->assertPreparedInput([
+            'on mon'   => 'on monday',
+            'on tue'   => 'on tuesday',
+            'on tues'  => 'on tuesday',
+            'on wed'   => 'on wednesday',
+            'on thu'   => 'on thursday',
+            'on thur'  => 'on thursday',
+            'on thurs' => 'on thursday',
+            'on fri'   => 'on friday',
+            'on sat'   => 'on saturday',
+            'on sun'   => 'on sunday',
+        ]);
     }
 
     /** @test */
     function it_changes_short_months_to_full_months()
     {
-        $this->assertPreparedInput('in january',   'in jan');
-        $this->assertPreparedInput('in february',  'in feb');
-        $this->assertPreparedInput('in march',     'in mar');
-        $this->assertPreparedInput('in april',     'in apr');
-        $this->assertPreparedInput('in june',      'in jun');
-        $this->assertPreparedInput('in july',      'in jul');
-        $this->assertPreparedInput('in august',    'in aug');
-        $this->assertPreparedInput('in september', 'in sep');
-        $this->assertPreparedInput('in september', 'in sept');
-        $this->assertPreparedInput('in october',   'in oct');
-        $this->assertPreparedInput('in november',  'in nov');
-        $this->assertPreparedInput('in december',  'in dec');
+        $this->assertPreparedInput([
+            'in jan'  => 'in january',
+            'in feb'  => 'in february',
+            'in mar'  => 'in march',
+            'in apr'  => 'in april',
+            'in jun'  => 'in june',
+            'in jul'  => 'in july',
+            'in aug'  => 'in august',
+            'in sep'  => 'in september',
+            'in sept' => 'in september',
+            'in oct'  => 'in october',
+            'in nov'  => 'in november',
+            'in dec'  => 'in december',
+        ]);
     }
 
-    private function assertPreparedInput($expected, $input)
+    private function assertPreparedInput($expected, $input = null)
     {
+        if (is_array($expected)) {
+            foreach ($expected as $key => $value) {
+                $this->assertPreparedInput($value, $key);
+            }
+
+            return;
+        }
+
         $whenString = new WhenString($input);
 
         $this->assertSame(
