@@ -3,15 +3,17 @@
     <br>
     <br>
 
-    Title: Star City
+    <a href="http://liftoff.msfc.nasa.gov/news/2003/news-starcity.asp">Star City</a>
+
 <br>
 Published at: 2003-06-03 11:39:21
-<br>
-Url: http://liftoff.msfc.nasa.gov/news/2003/news-starcity.asp    <br>
+    <br>
     <br>
 
-    Title: 
+    Title: (no title)
+    <br>
+    Url: (no url)
+
 <br>
 Published at: 2003-05-30 13:06:42
-<br>
-Url: ';
+';
