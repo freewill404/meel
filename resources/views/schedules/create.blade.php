@@ -6,7 +6,7 @@
 
     @include('layout.header', ['title' => 'Meel.me', 'maxWidth' => 'max-w-sm'])
 
-    <form method="post" class="panel max-w-xs mx-auto mt-8">
+    <form method="post" class="max-w-xs mx-auto mt-8">
         {{ csrf_field() }}
 
         <label class="block">
