@@ -164,6 +164,10 @@ class WhenString
             return $date.'-'.static::MONTHS[$writtenMonth];
         }, $string);
 
+        // Changes patterns like: "2000 01-01", "01-01 2000" into "01-01-2000"
+        $string = preg_replace('/(\d{4}) (\d\d-\d\d)/', '$2-$1', $string);
+        $string = preg_replace('/(\d\d-\d\d) (\d{4})/', '$1-$2', $string);
+
         return $string;
     }
 

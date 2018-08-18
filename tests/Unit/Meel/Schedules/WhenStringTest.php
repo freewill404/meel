@@ -139,14 +139,14 @@ class WhenStringTest extends TestCase
     {
         $this->assertPreparedInput([
             '1st sept'      => '01-09',
-            '2018 1st sept' => '2018 01-09',
+            '2018 1st sept' => '01-09-2018',
             '2nd sept'      => '02-09',
             '3rd sept'      => '03-09',
-            '1 sept 2018'   => '01-09 2018',
-            '1st sept 2018' => '01-09 2018',
+            '1 sept 2018'   => '01-09-2018',
+            '1st sept 2018' => '01-09-2018',
             'sept 1'        => '01-09',
             'on sept 1'     => 'on 01-09',
-            '2018 sept 1st' => '2018 01-09',
+            '2018 sept 1st' => '01-09-2018',
             'sept 1st'      => '01-09',
             'sept 2nd'      => '02-09',
             'sept 3rd'      => '03-09',

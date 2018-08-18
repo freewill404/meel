@@ -35,6 +35,13 @@ class DateString
         [$this->year, $this->month, $this->day] = explode('-', $string);
     }
 
+    public function addYears($int)
+    {
+        $this->year += $int;
+
+        return $this;
+    }
+
     public function isAfterToday($timezone = null): bool
     {
         return $this->compareToNow($timezone) === -1;

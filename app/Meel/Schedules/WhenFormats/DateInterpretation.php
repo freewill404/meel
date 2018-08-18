@@ -53,11 +53,9 @@ class DateInterpretation
 
         // Match dates like: "2000-01-01", "2000 01-01", "2000 01 01"
         if (preg_match('/\d{4}[\- ]\d?\d[\- ]\d?\d/', $string, $matches)) {
-            [$year, $a, $b] = preg_split('/[\- ]/', $matches[0]);
+            [$year, $month, $day] = preg_split('/[\- ]/', $matches[0]);
 
-            [$day, $month] = $this->parseDayAndMonth($a, $b);
-
-            if ($day && $year > 1999 && $year < 2100) {
+            if ($day >= 1 && $day <= 31 && $month >= 1 && $month <= 12 && $year > 1999 && $year < 2100) {
                 $this->year = $year;
 
                 $this->month = $month;
@@ -71,8 +69,8 @@ class DateInterpretation
         // Match dates like:
         //   "01-01", "31-12", "12-31"
         //   "2020-05", "05-2020"
-        if (preg_match('/\d+-\d+/', $string, $matches)) {
-            [$a, $b] = explode('-', $matches[0]);
+        if (preg_match('/\d+[\- ]\d+/', $string, $matches)) {
+            [$a, $b] = preg_split('/[\- ]/', $matches[0]);
 
             if ($a < 99 && $b < 99) {
                 [$day, $month] = $this->parseDayAndMonth($a, $b);
@@ -139,9 +137,13 @@ class DateInterpretation
 
     public function getDateString(): DateString
     {
-        return new DateString(
+        $dateString = new DateString(
             $this->getYear().'-'.$this->getMonth().'-'.$this->getDay()
         );
+
+        return $dateString->isBeforeToday($this->timezone) && ! $this->hasSpecifiedYear()
+            ? $dateString->addYears(1)
+            : $dateString;
     }
 
     protected function defaultYear()

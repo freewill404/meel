@@ -41,7 +41,16 @@ class DateInterpretationTest extends TestCase
         $this->assertDateInterpretation('2018-03-28', '03-28');
 
         // ambiguous m-d (in this case always assume d-m)
-        $this->assertDateInterpretation('2018-02-03', '03-02');
+        // also, this date is in the past and doesn't specify a year, so it sets the next year
+        $this->assertDateInterpretation('2019-02-03', '03-02');
+    }
+
+    /** @test */
+    function if_a_date_is_in_the_past_and_does_not_specify_a_year_it_sets_next_year()
+    {
+        $this->assertDateInterpretation('2019-01-31', '31-01');
+
+        $this->assertDateInterpretation('2018-01-31', '31-01-2018');
     }
 
     /** @test */
