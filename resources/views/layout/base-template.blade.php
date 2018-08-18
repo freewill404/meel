@@ -31,7 +31,7 @@
 </head>
 <body class="bg-grey-lighter min-h-full relative">
 
-    <div id="app" class="container mx-auto p-4">
+    <div id="app" class="container mx-auto p-4" style="min-height:500px;">
         @yield('content')
     </div>
 
