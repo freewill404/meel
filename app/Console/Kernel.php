@@ -29,6 +29,6 @@ class Kernel extends ConsoleKernel
         $schedule->job(GenerateSitemapJob::class   )->dailyAt('2:05');
         $schedule->call([SiteStats::class, 'today'])->twiceDaily(); // Ensure every day has a SiteStats model
 
-        $schedule->command('backup:run-configless --only-db --set-destination-disks=dropbox')->dailyAt('2:10');
+        $schedule->command('backup:run-configless --disable-notifications --only-db --set-destination-disks=dropbox')->dailyAt('2:10');
     }
 }
