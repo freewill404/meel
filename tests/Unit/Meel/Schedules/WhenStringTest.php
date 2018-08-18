@@ -134,6 +134,37 @@ class WhenStringTest extends TestCase
         ]);
     }
 
+    /** @test */
+    function it_replaces_written_months_with_short_dates()
+    {
+        $this->assertPreparedInput([
+            '1st sept'      => '01-09',
+            '2018 1st sept' => '2018 01-09',
+            '2nd sept'      => '02-09',
+            '3rd sept'      => '03-09',
+            '1 sept 2018'   => '01-09 2018',
+            '1st sept 2018' => '01-09 2018',
+            'sept 1'        => '01-09',
+            'on sept 1'     => 'on 01-09',
+            '2018 sept 1st' => '2018 01-09',
+            'sept 1st'      => '01-09',
+            'sept 2nd'      => '02-09',
+            'sept 3rd'      => '03-09',
+            '01-may-2020'   => '01-05-2020',
+            'may-01-2020'   => '01-05-2020',
+            '2020-may-31'   => '2020-31-05',
+
+            '01 sept 02' => '01-09 02',
+
+            'sept 500rd' => 'september 500rd',
+            '500rd sept' => '500rd september',
+            '0 sept'     => '0 september',
+            'sept 0'     => 'september 0',
+            '32 sept'    => '32 september',
+            'sept 32'    => 'september 32',
+        ]);
+    }
+
     private function assertPreparedInput($expected, $input = null)
     {
         if (is_array($expected)) {
@@ -149,7 +180,7 @@ class WhenStringTest extends TestCase
         $this->assertSame(
             $expected,
             $actual = $whenString->getPreparedString(),
-            "WhenString input '{$input}' was prepared as '{$actual}', expected '{$expected}'"
+            "WhenString error:\n\n  input:    {$input}\n  prepared: {$actual}\n  expected: {$expected}\n"
         );
     }
 }

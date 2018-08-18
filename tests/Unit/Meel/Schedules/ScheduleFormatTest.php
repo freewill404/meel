@@ -3,6 +3,7 @@
 namespace Tests\Unit\Meel\Schedules;
 
 use App\Meel\Schedules\ScheduleFormat;
+use App\Meel\Schedules\WhenString;
 use Illuminate\Support\Carbon;
 use Tests\TestCase;
 
@@ -19,6 +20,12 @@ class ScheduleFormatTest extends TestCase
         'saturday at 22:00' => '2018-03-31 22:00:00',
         'sat at 22:00'      => '2018-03-31 22:00:00',
         'sat'               => '2018-03-31 08:00:00',
+        'sept 1'            => '2018-09-01 08:00:00',
+        '1st sept 2020'     => '2020-09-01 08:00:00',
+        '2020 1 sept'       => '2020-09-01 08:00:00',
+        '1-may-2020'        => '2020-05-01 08:00:00',
+        '2020-05'           => '2020-05-01 08:00:00',
+        '05-2020'           => '2020-05-01 08:00:00',
     ];
 
     protected $recurringSchedules = [
@@ -108,12 +115,18 @@ class ScheduleFormatTest extends TestCase
         $this->assertSame(
             $expectedNextOccurrence,
             $actual = (string) $scheduleFormat->nextOccurrence(),
-
-            "\nWrong interpretation\n Input:    '{$writtenInput}'\n Expected: '{$expectedNextOccurrence}' ".
-            Carbon::parse($expectedNextOccurrence)->format('l').
-            "\n Actual:   '{$actual}' ".
-            Carbon::parse($actual)->format('l').
-            "\n\n Current now: ".now()." ".now()->format('l')."\n"
+            implode("\n", [
+                "",
+                "Wrong interpretation",
+                "",
+                "Input:    {$writtenInput}",
+                "Prepared: ".WhenString::prepare($writtenInput),
+                "Expected: {$expectedNextOccurrence} ".Carbon::parse($expectedNextOccurrence)->format('l'),
+                "Actual:   {$actual} ".Carbon::parse($actual)->format('l'),
+                "",
+                "Current now: ".now()." ".now()->format('l'),
+                "",
+            ])
         );
     }
 

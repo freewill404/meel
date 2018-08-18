@@ -91,6 +91,21 @@ class WhenString
         'fourth' => '4th',
     ];
 
+    private const MONTHS = [
+        'january'   => '01',
+        'february'  => '02',
+        'march'     => '03',
+        'april'     => '04',
+        'may'       => '05',
+        'june'      => '06',
+        'july'      => '07',
+        'august'    => '08',
+        'september' => '09',
+        'october'   => '10',
+        'november'  => '11',
+        'december'  => '12',
+    ];
+
     public function __construct(string $string)
     {
         $string = str_replace(',', ' and ', $string);
@@ -105,12 +120,51 @@ class WhenString
             $string = preg_replace('/(^| )'.$search.'( |$)/', '${1}'.$replace.'${2}', $string);
         }
 
+        $string = $this->replaceWrittenMonths($string);
+
         $this->preparedString = $string;
     }
 
     public function getPreparedString()
     {
         return $this->preparedString;
+    }
+
+    protected function replaceWrittenMonths($string)
+    {
+        $months = '(january|february|march|april|may|june|july|august|september|october|november|december)';
+
+        if (! preg_match('/'.$months.'/', $string)) {
+            return $string;
+        }
+
+        // Turns patterns like: "01 september", "1st september" into "01-09"
+        $string = preg_replace_callback('/(\d+)(?:st|nd|rd|)[\- ]'.$months.'/', function ($matches) {
+            $date = str_pad($matches[1], 2, '0', STR_PAD_LEFT);
+
+            if ($date == 0 || $date > 31) {
+                return $matches[0];
+            }
+
+            $writtenMonth = $matches[2];
+
+            return $date.'-'.static::MONTHS[$writtenMonth];
+        }, $string);
+
+        // Turns patterns like: "september 01", "september 1st" into "01-09"
+        $string = preg_replace_callback('/'.$months.'[\- ](\d+)(?:st|nd|rd|)/', function ($matches) {
+            $date = str_pad($matches[2], 2, '0', STR_PAD_LEFT);
+
+            if ($date == 0 || $date > 31) {
+                return $matches[0];
+            }
+
+            $writtenMonth = $matches[1];
+
+            return $date.'-'.static::MONTHS[$writtenMonth];
+        }, $string);
+
+        return $string;
     }
 
     public static function prepare($string): string

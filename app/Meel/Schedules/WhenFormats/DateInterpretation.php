@@ -32,6 +32,111 @@ class DateInterpretation
         }
     }
 
+    protected function interpretDate($string)
+    {
+        // Match dates like: "01-01-2000", "01-01 2000", "01 01 2000"
+        if (preg_match('/\d?\d[\- ]\d?\d[\- ]\d{4}/', $string, $matches)) {
+            [$a, $b, $year] = preg_split('/[\- ]/', $matches[0]);
+
+            [$day, $month] = $this->parseDayAndMonth($a, $b);
+
+            if ($day && $year > 1999 && $year < 2100) {
+                $this->year = $year;
+
+                $this->month = $month;
+
+                $this->day = $day;
+            }
+
+            return;
+        }
+
+        // Match dates like: "2000-01-01", "2000 01-01", "2000 01 01"
+        if (preg_match('/\d{4}[\- ]\d?\d[\- ]\d?\d/', $string, $matches)) {
+            [$year, $a, $b] = preg_split('/[\- ]/', $matches[0]);
+
+            [$day, $month] = $this->parseDayAndMonth($a, $b);
+
+            if ($day && $year > 1999 && $year < 2100) {
+                $this->year = $year;
+
+                $this->month = $month;
+
+                $this->day = $day;
+            }
+
+            return;
+        }
+
+        // Match dates like:
+        //   "01-01", "31-12", "12-31"
+        //   "2020-05", "05-2020"
+        if (preg_match('/\d+-\d+/', $string, $matches)) {
+            [$a, $b] = explode('-', $matches[0]);
+
+            if ($a < 99 && $b < 99) {
+                [$day, $month] = $this->parseDayAndMonth($a, $b);
+
+                $this->day = $day;
+
+                $this->month = $month;
+            } elseif ($a >= 2000 && $a <= 2099 && $b >= 1 && $b <= 12) {
+                $this->year = $a;
+
+                $this->month = $b;
+            } elseif ($b >= 2000 && $b <= 2099 && $a >= 1 && $a <= 12) {
+                $this->year = $b;
+
+                $this->month = $a;
+            }
+
+            return;
+        }
+
+        // Match years between 2000 and 2099
+        if (preg_match('/(20\d\d)/', $string, $matches)) {
+            $this->year = $matches[1];
+        }
+    }
+
+    /**
+     * Given an "a" and "b" integer, figure out which one is the day,
+     * and which one is the month.
+     *
+     * If ambiguous, assumes dd-mm-yyyy format.
+     *
+     * @param $a
+     * @param $b
+     *
+     * @return array
+     */
+    protected function parseDayAndMonth($a, $b)
+    {
+        $failed = [null, null];
+
+        if (! preg_match('/^\d+$/', $a) || ! preg_match('/^\d+$/', $b)) {
+            return $failed;
+        }
+
+        if ($a <= 0 || $b <= 0) {
+            return $failed;
+        }
+
+        if ($a <= 12 && $b <= 12) {
+            return [$a, $b];
+        }
+
+        if ($a <= 31 && $b <= 12) {
+            return [$a, $b];
+        }
+
+        if ($a <= 12 && $b <= 31) {
+            return [$b, $a];
+        }
+
+        return $failed;
+    }
+
     public function getDateString(): DateString
     {
         return new DateString(
@@ -87,86 +192,5 @@ class DateInterpretation
     public function hasSpecifiedDay(): bool
     {
         return $this->day !== null;
-    }
-
-    protected function interpretDate($string)
-    {
-        // Match dates like:
-        //   "01-01-2000"
-        //   "1-10-2000"
-        //   "10-1-2000"
-        //   "1-1-2000"
-        if (preg_match('/(\d?\d-\d?\d-\d\d\d\d)/', $string, $matches)) {
-            [$a, $b, $year] = explode('-', $matches[1]);
-
-            [$day, $month] = $this->parseDayAndMonth($a, $b);
-
-            if ($day && $year > 1999 && $year < 2100) {
-                $this->year = $year;
-
-                $this->month = $month;
-
-                $this->day = $day;
-            }
-
-            return;
-        }
-
-        // Match dates like:
-        //   "23-2"
-        //   "2-23"
-        if (preg_match('/(\d?\d-\d?\d)/', $string, $matches)) {
-            [$a, $b] = explode('-', $matches[1]);
-
-            [$day, $month] = $this->parseDayAndMonth($a, $b);
-
-            $this->month = $month;
-
-            $this->day = $day;
-
-            return;
-        }
-
-        // Match years between 2000 and 2099
-        if (preg_match('/(20\d\d)/', $string, $matches)) {
-            $this->year = $matches[1];
-        }
-    }
-
-    /**
-     * Given an "a" and "b" integer, figure out which one is the day,
-     * and which one is the month.
-     *
-     * @param $a
-     * @param $b
-     *
-     * @return array
-     */
-    protected function parseDayAndMonth($a, $b)
-    {
-        $failed = [null, null];
-
-        if (! preg_match('/^\d+$/', $a) || ! preg_match('/^\d+$/', $b)) {
-            return $failed;
-        }
-
-        if ($a <= 0 || $b <= 0) {
-            return $failed;
-        }
-
-        // If ambiguous, assume dd-mm-yyyy format.
-        if ($a <= 12 && $b <= 12) {
-            return [$a, $b];
-        }
-
-        if ($a <= 31 && $b <= 12) {
-            return [$a, $b];
-        }
-
-        if ($a <= 12 && $b <= 31) {
-            return [$b, $a];
-        }
-
-        return $failed;
     }
 }
