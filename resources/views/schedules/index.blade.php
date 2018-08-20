@@ -16,7 +16,7 @@
 
         <div class="sm:pl-4">
             @forelse($schedules->where('next_occurrence', '!=', null) as $schedule)
-                <email-schedule schedule-id="{{ $schedule->id }}"
+                <email-schedule schedule-id="{{ $schedule->obfuscated_id }}"
                                 :is-recurring="{{ json_encode($schedule->is_recurring) }}"
                                 :times-sent="{{ $schedule->times_sent }}"
                                 when="{{ $schedule->when }}"
@@ -36,7 +36,7 @@
 
         <div class="sm:pl-4">
             @forelse($schedules->where('next_occurrence', null)->reverse() as $schedule)
-                <email-schedule schedule-id="{{ $schedule->id }}"
+                <email-schedule schedule-id="{{ $schedule->obfuscated_id }}"
                                 :is-recurring="{{ json_encode($schedule->is_recurring) }}"
                                 :times-sent="{{ $schedule->times_sent }}"
                                 when="{{ $schedule->when }}"

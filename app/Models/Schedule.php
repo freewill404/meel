@@ -49,6 +49,11 @@ class Schedule extends Model
         return WhatString::format($this);
     }
 
+    public function getObfuscatedIdAttribute()
+    {
+        return $this->getRouteKey();
+    }
+
     public function scopeShouldBeSentNow($query)
     {
         return $query->where('next_occurrence', '<=', secondless_now());
