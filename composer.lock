@@ -104,16 +104,16 @@
         },
         {
             "name": "doctrine/cache",
-            "version": "v1.7.1",
+            "version": "v1.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/cache.git",
-                "reference": "b3217d58609e9c8e661cd41357a54d926c4a2a1a"
+                "reference": "d768d58baee9a4862ca783840eca1b9add7a7f57"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/cache/zipball/b3217d58609e9c8e661cd41357a54d926c4a2a1a",
-                "reference": "b3217d58609e9c8e661cd41357a54d926c4a2a1a",
+                "url": "https://api.github.com/repos/doctrine/cache/zipball/d768d58baee9a4862ca783840eca1b9add7a7f57",
+                "reference": "d768d58baee9a4862ca783840eca1b9add7a7f57",
                 "shasum": ""
             },
             "require": {
@@ -124,8 +124,9 @@
             },
             "require-dev": {
                 "alcaeus/mongo-php-adapter": "^1.1",
+                "doctrine/coding-standard": "^4.0",
                 "mongodb/mongodb": "^1.1",
-                "phpunit/phpunit": "^5.7",
+                "phpunit/phpunit": "^7.0",
                 "predis/predis": "~1.0"
             },
             "suggest": {
@@ -134,7 +135,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.7.x-dev"
+                    "dev-master": "1.8.x-dev"
                 }
             },
             "autoload": {
@@ -169,12 +170,12 @@
                 }
             ],
             "description": "Caching library offering an object-oriented API for many cache backends",
-            "homepage": "http://www.doctrine-project.org",
+            "homepage": "https://www.doctrine-project.org",
             "keywords": [
                 "cache",
                 "caching"
             ],
-            "time": "2017-08-25T07:02:50+00:00"
+            "time": "2018-08-21T18:01:43+00:00"
         },
         {
             "name": "doctrine/dbal",
@@ -1099,16 +1100,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v5.6.33",
+            "version": "v5.6.34",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "8a708b989adc320c451ee639d812af81f884666b"
+                "reference": "66c9cf8119b422b71273271db1f12e20d74ad49b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/8a708b989adc320c451ee639d812af81f884666b",
-                "reference": "8a708b989adc320c451ee639d812af81f884666b",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/66c9cf8119b422b71273271db1f12e20d74ad49b",
+                "reference": "66c9cf8119b422b71273271db1f12e20d74ad49b",
                 "shasum": ""
             },
             "require": {
@@ -1234,7 +1235,7 @@
                 "framework",
                 "laravel"
             ],
-            "time": "2018-08-09T20:36:39+00:00"
+            "time": "2018-08-21T13:44:37+00:00"
         },
         {
             "name": "laravel/passport",
@@ -2048,23 +2049,23 @@
         },
         {
             "name": "propaganistas/laravel-fakeid",
-            "version": "4.0.0",
+            "version": "4.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Propaganistas/Laravel-FakeId.git",
-                "reference": "27cadcc9b8b272acbd0586d8339db23f183c1cc6"
+                "reference": "b9c490d73c175adb80330733f8892b10d9c88ea0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Propaganistas/Laravel-FakeId/zipball/27cadcc9b8b272acbd0586d8339db23f183c1cc6",
-                "reference": "27cadcc9b8b272acbd0586d8339db23f183c1cc6",
+                "url": "https://api.github.com/repos/Propaganistas/Laravel-FakeId/zipball/b9c490d73c175adb80330733f8892b10d9c88ea0",
+                "reference": "b9c490d73c175adb80330733f8892b10d9c88ea0",
                 "shasum": ""
             },
             "require": {
-                "illuminate/config": ">=5.5,<5.7",
-                "illuminate/container": ">=5.5,<5.7",
-                "illuminate/routing": ">=5.5,<5.7",
-                "illuminate/support": ">=5.5,<5.7",
+                "illuminate/config": ">=5.5,<5.8",
+                "illuminate/container": ">=5.5,<5.8",
+                "illuminate/routing": ">=5.5,<5.8",
+                "illuminate/support": ">=5.5,<5.8",
                 "jenssegers/optimus": "^0.2.2",
                 "php": ">=7.0",
                 "phpseclib/phpseclib": "^2.0"
@@ -2107,7 +2108,7 @@
                 "obfuscation",
                 "optimus"
             ],
-            "time": "2018-07-23T17:21:19+00:00"
+            "time": "2018-08-16T11:46:12+00:00"
         },
         {
             "name": "psr/container",
@@ -2559,16 +2560,16 @@
         },
         {
             "name": "sjorso/gobble",
-            "version": "1.0.1",
+            "version": "1.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/SjorsO/gobble.git",
-                "reference": "a188c1654d0cf2d0819717ac79474b6624f5c9f2"
+                "reference": "af72f63aff3561358f29f23fe9e355c3b54c3046"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/SjorsO/gobble/zipball/a188c1654d0cf2d0819717ac79474b6624f5c9f2",
-                "reference": "a188c1654d0cf2d0819717ac79474b6624f5c9f2",
+                "url": "https://api.github.com/repos/SjorsO/gobble/zipball/af72f63aff3561358f29f23fe9e355c3b54c3046",
+                "reference": "af72f63aff3561358f29f23fe9e355c3b54c3046",
                 "shasum": ""
             },
             "require": {
@@ -2606,7 +2607,7 @@
                     "email": "sjorsottjes@gmail.com"
                 }
             ],
-            "description": "Laravel facade for Guzzle that is easy to fake",
+            "description": "A Laravel specific wrapper around Guzzle that makes it easy to mock responses",
             "homepage": "https://github.com/SjorsO/gobble",
             "keywords": [
                 "Guzzle",
@@ -2617,7 +2618,7 @@
                 "mock",
                 "testing"
             ],
-            "time": "2018-08-12T09:30:05+00:00"
+            "time": "2018-08-21T18:24:45+00:00"
         },
         {
             "name": "spatie/browsershot",
