@@ -2,7 +2,7 @@
 Email yourself - [meel.me](https://meel.me)
 
 ## Laravel
-[Compare with current laravel/laravel version](https://github.com/laravel/laravel/compare/5da2d13b04ede450120affdd46c0cbe3a2fe54ef...master)
+[Compare with current laravel/laravel version](https://github.com/laravel/laravel/compare/7028b17ed8bf35ee2f1269c0f9c985b411cb4469...master)
 
 ## Install
 Required extensions:
