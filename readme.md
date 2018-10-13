@@ -18,7 +18,7 @@ php artisan key:generate
 
 php artisan passport:keys
  
-php artisan migrate (--seed)
+php artisan migrate:fresh --seed
  
 npm install && npm run dev
 ```
