@@ -17,6 +17,11 @@
             <input class="field" type="email" name="email" value="{{ old('email') }}" required autofocus>
         </label>
 
+        <label>
+            Password
+            <input class="field" type="password" name="password" required>
+        </label>
+
         <label class="block">
             Timezone
             <select name="timezone" class="field">
@@ -28,16 +33,6 @@
                     </optgroup>
                 @endforeach
             </select>
-        </label>
-
-        <label>
-            Password
-            <input class="field" type="password" name="password" required>
-        </label>
-
-        <label>
-            Repeat password
-            <input class="field" type="password" name="password_confirmation" required>
         </label>
 
         <button type="submit" class="btn block ml-auto mt-4">Register</button>

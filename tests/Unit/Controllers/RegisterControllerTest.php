@@ -39,7 +39,7 @@ class RegisterControllerTest extends TestCase
     {
         factory(User::class)->create([
             'email_confirm_token' => 'UNIQUE_TOKEN',
-            'email_confirmed'     => false,
+            'email_confirmed' => false,
         ]);
 
         $this->get(route('register.confirm').'?token=UNIQUE_TOKEN')
@@ -70,10 +70,9 @@ class RegisterControllerTest extends TestCase
     private function registerUser($data = [])
     {
         return $this->post(route('register.post'), $data + [
-            'email'                 => 'test@example.com',
-            'timezone'              => 'Europe/Amsterdam',
-            'password'              => 'secret',
-            'password_confirmation' => 'secret',
+            'email' => 'test@example.com',
+            'timezone'=> 'Europe/Amsterdam',
+            'password'=> 'secret',
         ]);
     }
 }

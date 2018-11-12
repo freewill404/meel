@@ -29,7 +29,7 @@ class RegisterController extends Controller
         $request->validate([
             'email'    => ['required', 'string', 'email', 'max:255', new UniqueEmail],
             'timezone' => Timezone::required(),
-            'password' => 'required|string|min:6|confirmed',
+            'password' => 'required|string|min:6',
         ]);
 
         $user = User::create([
@@ -67,7 +67,7 @@ class RegisterController extends Controller
             });
 
         $user->update([
-            'email_confirmed'     => true,
+            'email_confirmed' => true,
             'email_confirm_token' => null,
         ]);
 
