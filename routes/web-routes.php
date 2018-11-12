@@ -3,6 +3,9 @@
 Route::get('/', ['uses' => 'HomeController@index', 'as' => 'home']);
 
 Route::view('/help', 'help.index')->name('help');
+Route::view('/about', 'help.about')->name('about');
+Route::view('/about/schedules', 'help.schedules-intro')->name('schedules-intro');
+Route::view('/about/feeds', 'help.feeds-intro')->name('feeds-intro');
 
 
 Route::get('login',   ['uses' => 'Auth\LoginController@showLoginForm', 'as' => 'login']);
