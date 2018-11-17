@@ -15,7 +15,7 @@
 
     <link rel="icon" type="image/png" href="/favicon.png" />
 
-    <link href="https://fonts.googleapis.com/css?family=Assistant" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Assistant:400,600,700,800" rel="stylesheet">
     <style>
         body {
             font-family: 'Assistant', sans-serif;

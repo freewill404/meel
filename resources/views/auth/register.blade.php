@@ -35,7 +35,7 @@
             </select>
         </label>
 
-        <button type="submit" class="btn block ml-auto mt-4">Register</button>
+        <button type="submit" class="btn block ml-auto mt-4">Create account</button>
     </form>
 
 
