@@ -19,7 +19,7 @@
 
 
     <h2 class="text-3xl mt-4 mb-2">An introduction to emailing yourself</h2>
-    <p class="text-xl max-w-md leading-normal ml-6">
+    <p class="text-xl max-w-md leading-normal sm:ml-6">
         Emails are great: they are lightweight, they work on every device, and they are easy to delete.
         You can use emails as to-do list items, leave them unread if you aren't done with them yet, delete them as soon as you are.
         <br><br>
@@ -27,15 +27,14 @@
     </p>
 
     <h3 class="text-2xl mt-8 mb-2">Inbox zero</h3>
-    <p class="text-xl max-w-md leading-normal ml-6">
+    <p class="text-xl max-w-md leading-normal sm:ml-6">
         Emailing yourself works best when you take an inbox zero approach at email management.
         That basically means that your inbox should always be empty.
-        Delete emails when you are done with them, don't let unread emails pile up.
-        You can archive important emails so you can look them up later, but you'll probably never need to.
+        Delete or archive emails when you are done with them, don't let unread emails pile up.
     </p>
 
     <h3 class="text-2xl mt-8 mb-2">Remind the future you</h3>
-    <p class="text-xl max-w-md leading-normal ml-6">
+    <p class="text-xl max-w-md leading-normal sm:ml-6">
         With meel.me you can create scheduled emails that will arrive exactly when you want them to.
         <br><br>
         <a href="{{ route('schedules-intro') }}">Learn more about schedules »</a>

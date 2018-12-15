@@ -19,14 +19,14 @@
 
 
     <h2 class="text-3xl mt-4 mb-2">An introduction to feeds</h2>
-    <p class="text-xl max-w-md leading-normal ml-6">
+    <p class="text-xl max-w-md leading-normal sm:ml-6">
         Apart from being a self-emailing service, Meel.me is also an email based rss reader.
         Email is great, rss feeds are great, why not combine them?
         You can add feeds to your account and have new entries delivered to your inbox as soon as they are published.
     </p>
 
     <h3 class="text-2xl mt-8 mb-2">Scheduling feeds</h3>
-    <p class="text-xl max-w-md leading-normal ml-6">
+    <p class="text-xl max-w-md leading-normal sm:ml-6">
         You can use <a href="{{ route('schedules-intro') }}#recurring">recurring schedules</a> to receive new entries when it best suits you.
         For example, if you enjoy reading Seth's daily blogs during your Sunday lunch, you can add a feed like this:
         <br>
@@ -40,7 +40,7 @@
     </p>
 
     <h3 class="text-2xl mt-8 mb-2">Give it a try</h3>
-    <p class="text-xl max-w-md leading-normal ml-6">
+    <p class="text-xl max-w-md leading-normal sm:ml-6">
         Why not register an account and give meel.me a try?
         <br><br>
         <a href="{{ route('register') }}">Get started »</a>

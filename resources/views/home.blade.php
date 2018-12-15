@@ -21,27 +21,27 @@
 
 
 
-        <div class="flex flex-col mx-auto text-center">
+        <div class="flex flex-col mx-auto text-center sm:mb-24 mb-12">
             <h1 class="text-5xl mb-4 font-extrabold">Email yourself</h1>
 
-            <h2 class="font-normal">Sending yourself email has never been this easy</h2>
+            <h2 class="font-normal">Use email as a to-do list and stay inbox zero</h2>
         </div>
 
 
 
-        <div class="flex justify-between max-w-lg mx-auto mt-24">
-            <div class="flex flex-col w-48 text-center">
+        <div class="flex sm:flex-row flex-col justify-between max-w-lg mx-auto">
+            <div class="flex flex-col w-48 text-center sm:mx-0 mx-auto">
                 <span class="w-10 mx-auto">@include('helpers.svg.envelope')</span>
 
                 <h2 class="text-xl my-2 font-semibold">Email yourself</h2>
                 <p class="text-lg">
-                    Use email as a to-do list to keep yourself on track
+                    Sending yourself email couldn't be easier
                 </p>
                 <a href="{{ route('about') }}" class="italic text-black mt-4">Learn more</a>
             </div>
 
 
-            <div class="flex flex-col w-48 text-center">
+            <div class="flex flex-col w-48 text-center sm:mx-0 mx-auto sm:my-0 my-6">
                 <span class="w-10 mx-auto">@include('helpers.svg.clock')</span>
 
                 <h2 class="text-xl my-2 font-semibold">Schedules</h2>
@@ -52,7 +52,7 @@
             </div>
 
 
-            <div class="flex flex-col w-48 text-center">
+            <div class="flex flex-col w-48 text-center sm:mx-0 mx-auto">
                 <span class="w-10 mx-auto">@include('helpers.svg.feed')</span>
 
                 <h2 class="text-xl my-2 font-semibold">Email-based RSS reader</h2>
@@ -62,17 +62,16 @@
                 <a href="{{ route('feeds-intro') }}" class="italic text-black mt-4">Learn more about feeds</a>
             </div>
         </div>
-
     </div>
 
 
     <div class="py-8 my-12 text-center bg-blue-lightest border-t-2 border-b-2">
         <div class="max-w-2xl mx-auto">
-            <div class="flex justify-between items-center max-w-md mt-4 mx-auto">
+            <div class="flex justify-between max-w-md mt-4 md:mx-auto mx-2">
                 <div class="flex flex-col text-center">
                     <span class="w-8 mx-auto">@include('helpers.svg.schedule-created')</span>
                     <span class="text-2xl my-2 font-semibold">{{ $schedulesCreated }}</span>
-                    schedules created
+                    schedules<br>created
                 </div>
 
                 <div class="flex flex-col text-center">
@@ -90,17 +89,17 @@
 
             <div class="text-grey text-sm text-right mt-4 pr-8">since june 2018</div>
         </div>
-
     </div>
+
 
     <div class="container mx-auto px-4 mb-12">
 
-        <div class="flex justify-center items-center mx-auto px-4">
-            <div class="w-48 mr-16">
+        <div class="flex sm:flex-row flex-col justify-center items-center mx-auto px-4">
+            <div class="sm:w-48 w-32 sm:mr-16 mr-0">
                 @include('helpers.svg.github')
             </div>
 
-            <div class="max-w-xs">
+            <div class="max-w-xs sm:text-left text-center">
                 <h2 class="text-3xl mb-4">Open source</h2>
                 <p class="text-lg">
                     Meel.me is open-source and licensed under the terms of the MIT license.
