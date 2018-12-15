@@ -2,7 +2,7 @@
 
 namespace App\Http\Rules;
 
-use App\Meel\Schedules\ScheduleFormat;
+use App\Meel\When\ScheduleFormat;
 
 class UsableRecurringWhen extends UsableWhen
 {

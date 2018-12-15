@@ -6,7 +6,7 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Contracts\Console\Kernel;
-use SjorsO\Gobble\Facades\Gobble as Guzzle;
+use SjorsO\Gobble\Facades\Gobble;
 use SjorsO\MocksTime\MocksTime;
 use Spatie\Snapshots\MatchesSnapshots;
 
@@ -17,6 +17,8 @@ abstract class TestCase extends BaseTestCase
     protected $testFilePath;
 
     protected $mailFake = true;
+
+    protected $snapshotDirectory = '';
 
     public function setUp()
     {
@@ -30,7 +32,7 @@ abstract class TestCase extends BaseTestCase
             Mail::fake();
         }
 
-       Guzzle::fake();
+       Gobble::fake();
     }
 
     protected function tearDown()
@@ -62,11 +64,9 @@ abstract class TestCase extends BaseTestCase
 
     protected function getFileSnapshotDirectory(): string
     {
-        $subDirectory = property_exists($this, 'snapshotDirectory')
-            ? DIRECTORY_SEPARATOR.$this->snapshotDirectory
-            : '';
+        $snapshotDirectory = ltrim($this->snapshotDirectory, '/');
 
-        return $this->testFilePath.'_snapshots_'.$subDirectory;
+        return base_path('tests/Files/_snapshots_/'.$snapshotDirectory);
     }
 
     public function createApplication()

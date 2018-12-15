@@ -10,7 +10,9 @@ Required extensions:
 
 Installation:
 ```bash
-cp .env.example .env # fill in the arrows in the .env file
+cp .env.example .env
+
+# Fill in the .env file
 
 composer install
 

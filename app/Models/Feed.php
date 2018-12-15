@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use App\Events\Feeds\FeedCreating;
-use App\Meel\Schedules\ScheduleFormat;
+use App\Meel\When\ScheduleFormat;
 use App\Support\DateTime\SecondlessDateTimeString;
 use Illuminate\Database\Eloquent\Model;
 use Propaganistas\LaravelFakeId\RoutesWithFakeIds as ObfuscateRouteIds;

@@ -2,7 +2,7 @@
 
 namespace App\Listeners\Observers;
 
-use App\Meel\Schedules\ScheduleFormat;
+use App\Meel\When\ScheduleFormat;
 use App\Models\Schedule;
 use App\Models\SiteStats;
 use Carbon\Carbon;

@@ -5,8 +5,8 @@ namespace App\Models;
 use App\Events\ScheduledEmailNotSent;
 use App\Events\ScheduledEmailSent;
 use App\Mail\Email;
-use App\Meel\Schedules\ScheduleFormat;
-use App\Meel\Schedules\WhatString;
+use App\Meel\When\ScheduleFormat;
+use App\Meel\What\WhatString;
 use Illuminate\Database\Eloquent\Model;
 use Propaganistas\LaravelFakeId\RoutesWithFakeIds as ObfuscateRouteIds;
 

@@ -2,9 +2,6 @@ let defaultConfig = require('tailwindcss/defaultConfig')()
 
 module.exports = {
 
-
-    // 'Assistant', sans-serif
-
     width: Object.assign(defaultConfig.width, {
         '1/4': '25%',
         '2/4': '50%',
