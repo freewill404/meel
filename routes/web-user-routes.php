@@ -17,6 +17,7 @@ Route::get('/feedback',      ['uses' => 'FeedbackController@index', 'as' => 'fee
 Route::post('/feedback',     ['uses' => 'FeedbackController@post',  'as' => 'feedback.post']);
 Route::get('/feedback/done', ['uses' => 'FeedbackController@done',  'as' => 'feedback.done']);
 
+
 Route::get('/account',          ['uses' => 'AccountController@index',          'as' => 'account']);
 Route::post('/account/edit/tz', ['uses' => 'AccountController@updateTimezone', 'as' => 'account.settings.updateTimezone']);
 Route::post('/account/edit/pw', ['uses' => 'AccountController@updatePassword', 'as' => 'account.settings.updatePassword']);

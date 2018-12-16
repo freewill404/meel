@@ -35,14 +35,12 @@ class SendAdminDigestJob extends BaseJob implements ShouldQueue
             'feed emails sent:     '.$siteStats->sum->feed_emails_sent,
             'feed emails not sent: '.$siteStats->sum->feed_emails_not_sent,
             '',
-            'total emails sent: '.$siteStats->sum->emails_sent,
-            'total emails sent: '.$siteStats->sum->emails_not_sent,
+            'total emails sent:     '.$siteStats->sum->emails_sent,
+            'total emails not sent: '.$siteStats->sum->emails_not_sent,
             '',
             'period start: '.$lastMonthStart,
             'period end  : '.$lastMonthEnd
         ]);
-
-        $month = $lastMonthStart->format('F');
 
         $adminEmails = User::where('role', UserRole::ADMIN)
             ->pluck('email')
@@ -52,7 +50,9 @@ class SendAdminDigestJob extends BaseJob implements ShouldQueue
             })
             ->all();
 
-        Mail::raw($content, function (Message $message) use ($month, $adminEmails) {
+        $month = $lastMonthStart->format('F');
+
+        Mail::raw($content, function (Message $message) use ($adminEmails, $month) {
             $message->to($adminEmails)->subject('Admin Digest for '.$month.' | Meel.me');
         });
     }
