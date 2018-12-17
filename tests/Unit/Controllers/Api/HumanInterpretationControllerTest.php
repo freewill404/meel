@@ -27,6 +27,16 @@ class HumanInterpretationControllerTest extends TestCase
     }
 
     /** @test */
+    function it_resets_the_seconds()
+    {
+        // If it doesn't correctly reset the seconds, every diff is 1 minute off.
+        $this->apiLogin()->assertValidHumanInterpretation(
+            'Once, in 1 minute',
+            'in 1 minute'
+        );
+    }
+
+    /** @test */
     function basic_invalid_interpretation()
     {
         $this->apiLogin()->assertInvalidHumanInterpretation('', 'ALL THE TIME BRO!');
@@ -35,7 +45,10 @@ class HumanInterpretationControllerTest extends TestCase
     /** @test */
     function basic_non_recurring_interpretation()
     {
-        $this->apiLogin()->assertValidHumanInterpretation('Once, at 2018-04-04 16:00:00 (Wednesday)', 'next week at 16:00');
+        $this->apiLogin()->assertValidHumanInterpretation(
+            'Once, next Wednesday at 16:00',
+            'next week at 16:00'
+        );
     }
 
     /** @test */
@@ -44,7 +57,10 @@ class HumanInterpretationControllerTest extends TestCase
         $user = factory(User::class)->create(['timezone' => 'Asia/Shanghai']);
 
         $this->apiLogin($user)
-            ->assertValidHumanInterpretation('Once, at 2018-04-04 16:00:00 (Wednesday)', 'next week at 16:00');
+            ->assertValidHumanInterpretation(
+                'Once, next Wednesday at 16:00',
+                'next week at 16:00'
+            );
     }
 
     private function assertValidHumanInterpretation($expected, $input)

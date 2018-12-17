@@ -3,45 +3,46 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Meel\DateTimeDiff;
 use App\Meel\When\ScheduleFormat;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class HumanInterpretation extends Controller
 {
     public function schedule(Request $request)
     {
-        $request->validate([
-            'when' => 'nullable|string|max:255',
-        ]);
+        [$error, $schedule, $diffString] = $this->interpret($request);
 
-        $writtenInput = $request->get('when');
-
-        if ($writtenInput === null) {
-            return ['valid' => true, 'humanInterpretation' => ''];
+        if ($error) {
+            return $error;
         }
 
-        $schedule = new ScheduleFormat($writtenInput, $request->user()->timezone);
+        $string = $schedule->isRecurring()
+            ? 'Recurring '.$schedule->getIntervalDescription().', first occurrence '.$diffString
+            : 'Once, '.$diffString;
 
-        if (! $schedule->isUsableInterpretation()) {
-            return ['valid' => false, 'humanInterpretation' => ''];
-        }
-
-        $nextOccurrenceString = $schedule->nextOccurrence();
-
-        $dayOfTheWeek = Carbon::parse($nextOccurrenceString)->format('l');
-
-        $humanInterpretation = $schedule->isRecurring()
-            ? 'Recurring '.$schedule->getIntervalDescription().', first occurrence at '
-            : 'Once, at ';
-
-        return [
-            'valid' => true,
-            'humanInterpretation' => $humanInterpretation.$nextOccurrenceString.' ('.$dayOfTheWeek.')',
-        ];
+        return ['valid' => true, 'humanInterpretation' => $string];
     }
 
     public function feed(Request $request)
+    {
+        [$error, $schedule, $diffString] = $this->interpret($request);
+
+        if ($error) {
+            return $error;
+        }
+
+        if (! $schedule->isRecurring()) {
+            return ['valid' => false, 'humanInterpretation' => 'This schedule is not recurring'];
+        }
+
+        return [
+            'valid' => true,
+            'humanInterpretation' => 'Recurring '.$schedule->getIntervalDescription().', first poll '.$diffString,
+        ];
+    }
+
+    private function interpret(Request $request)
     {
         $request->validate([
             'when' => 'nullable|string|max:255',
@@ -50,30 +51,21 @@ class HumanInterpretation extends Controller
         $writtenInput = $request->get('when');
 
         if ($writtenInput === null) {
-            return ['valid' => true, 'humanInterpretation' => ''];
+            $error = ['valid' => true, 'humanInterpretation' => ''];
+
+            return [$error, null, null];
         }
 
-        $schedule = new ScheduleFormat($writtenInput, $request->user()->timezone);
+        $schedule = new ScheduleFormat($writtenInput, $tz = $request->user()->timezone);
 
         if (! $schedule->isUsableInterpretation()) {
-            return ['valid' => false, 'humanInterpretation' => ''];
+            $error = ['valid' => false, 'humanInterpretation' => ''];
+
+            return [$error, null, null];
         }
 
-        if (! $schedule->isRecurring()) {
-            return ['valid' => false, 'humanInterpretation' => 'This schedule is not recurring'];
-        }
+        $dateTimeDiff = new DateTimeDiff(now($tz), $schedule->nextOccurrence());
 
-        $userNow = now($request->user()->timezone);
-
-        $nextOccurrence = Carbon::parse($schedule->nextOccurrence());
-
-        $format = $userNow->year === $nextOccurrence->year
-            ? 'l, \t\h\e jS \o\f F \a\t H:i'
-            : 'l, \t\h\e jS \o\f F, Y \a\t H:i';
-
-        return [
-            'valid' => true,
-            'humanInterpretation' => 'Recurring '.$schedule->getIntervalDescription().', first poll on '.$nextOccurrence->format($format),
-        ];
+        return [null, $schedule, $dateTimeDiff->raw()];
     }
 }
