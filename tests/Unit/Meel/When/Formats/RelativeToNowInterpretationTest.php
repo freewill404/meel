@@ -8,134 +8,84 @@ use Tests\TestCase;
 
 class RelativeToNowInterpretationTest extends TestCase
 {
-    /** @test */
-    function it_interprets_when_a_string_is_relative_to_now()
-    {
-        $this->assertIsRelativeToNow('now');
-        $this->assertIsRelativeToNow('right now');
-        $this->assertIsRelativeToNow('an hour from now');
-        $this->assertIsRelativeToNow('in two hours');
-        $this->assertIsRelativeToNow('next month');
-    }
+    private $testValues = [
+        '2018-03-28 12:00' => [
+            'now' => '2018-03-28 12:00:00',
+            'right now' => '2018-03-28 12:00:00',
+
+            'next year' => '2019-03-28 08:00:00',
+            'in 1 year' => '2019-03-28 08:00:00',
+            'in 3 years' => '2021-03-28 08:00:00',
+
+            'next month' => '2018-04-28 08:00:00',
+            'in 1 month' => '2018-04-28 08:00:00',
+            '3 months from now' => '2018-06-28 08:00:00',
+
+            'next week' => '2018-04-04 08:00:00',
+            '3 weeks from now' => '2018-04-18 08:00:00',
+
+            'tomorrow' => '2018-03-29 08:00:00',
+            'tomorrow at 17:00' => '2018-03-29 08:00:00',
+            'in 1 day' => '2018-03-29 08:00:00',
+            '3 days from now' => '2018-03-31 08:00:00',
+
+            '3 hours from now' => '2018-03-28 15:00:00',
+            '3 minutes from now' => '2018-03-28 12:03:00',
+            '2 hours and 15 minutes from now' => '2018-03-28 14:15:00',
+
+            // It uses a default time if no time is specified.
+            'in 1 week' => '2018-04-04 08:00:00',
+            'in 1 hour' => '2018-03-28 13:00:00',
+
+            'next saturday' => '2018-03-31 08:00:00',
+            'this tues' => '2018-04-03 08:00:00',
+        ],
+    ];
+
+    private $notRelativeToNow = [
+        '2018-03-28 12:00' => [
+            '1 hour',
+            '24th of may 2018',
+        ],
+    ];
 
     /** @test */
-    function it_interprets_when_a_string_is_not_relative_to_now()
+    function relative_to_now()
     {
-        $this->assertIsNotRelativeToNow('1 hour');
-        $this->assertIsNotRelativeToNow('24th of may 2018');
-    }
+        foreach ($this->testValues as $now => $values) {
+            foreach ($values as $writtenInput => $expected) {
+                $relativeNow = new RelativeToNowInterpretation($now, $writtenInput);
 
-    /** @test */
-    function it_interprets_now()
-    {
-        $this->assertRelativeNow('2018-03-28 12:00:00', 'now');
+                if (! $relativeNow->isRelativeToNow()) {
+                    $this->fail("RelativeToNowInterpretation interpreted '{$writtenInput}' as not being relative to now, should be '{$expected}'");
+                }
 
-        $this->assertRelativeNow('2018-03-28 12:00:00', 'right now');
-    }
+                $this->assertSame(
+                    $expected,
+                    $actual = (string) $relativeNow->getDateTime(),
 
-    /** @test */
-    function it_interprets_years()
-    {
-        $this->assertRelativeNow('2019-03-28 08:00:00', 'next year');
-
-        $this->assertRelativeNow('2019-03-28 08:00:00', 'in 1 year');
-
-        $this->assertRelativeNow('2021-03-28 08:00:00', 'in 3 years');
-    }
-
-    /** @test */
-    function it_interprets_months()
-    {
-        $this->assertRelativeNow('2018-04-28 08:00:00', 'next month');
-
-        $this->assertRelativeNow('2018-04-28 08:00:00', 'in 1 month');
-
-        $this->assertRelativeNow('2018-06-28 08:00:00', '3 months from now');
-    }
-
-    /** @test */
-    function it_interprets_weeks()
-    {
-        $this->assertRelativeNow('2018-04-04 08:00:00', 'next week');
-
-        $this->assertRelativeNow('2018-04-18 08:00:00', '3 weeks from now');
-    }
-
-    /** @test */
-    function it_interprets_days()
-    {
-        $this->assertRelativeNow('2018-03-29 08:00:00', 'tomorrow');
-
-        $this->assertRelativeNow('2018-03-29 08:00:00', 'tomorrow at 17:00');
-
-        $this->assertRelativeNow('2018-03-29 08:00:00', 'in 1 day');
-
-        $this->assertRelativeNow('2018-03-31 08:00:00', '3 days from now');
-    }
-
-    /** @test */
-    function it_interprets_hours_and_minutes()
-    {
-        $this->assertRelativeNow('2018-03-28 15:00:00', '3 hours from now');
-
-        $this->assertRelativeNow('2018-03-28 12:03:00', '3 minutes from now');
-
-        $this->assertRelativeNow('2018-03-28 14:15:00', '2 hours and 15 minutes from now');
-    }
-
-    /** @test */
-    function it_uses_the_default_time_if_no_time_is_specified()
-    {
-        $this->assertRelativeNow('2018-03-28 13:00:00', 'in 1 hour');
-
-        $this->assertRelativeNow('2018-04-04 08:00:00', 'in 1 week');
-    }
-
-    /** @test */
-    function it_interprets_written_days()
-    {
-        $this->assertRelativeNow('2018-03-31 08:00:00', 'next saturday');
-
-        $this->assertRelativeNow('2018-04-03 08:00:00', 'this tues');
-    }
-
-    private function assertIsRelativeToNow($input)
-    {
-        $relativeNow = new RelativeToNowInterpretation($input);
-
-        $this->assertTrue(
-            $relativeNow->isRelativeToNow(),
-            "RelativeToNowInterpretation did not interpret '{$input}' to be relative to now"
-        );
-    }
-
-    private function assertIsNotRelativeToNow($input)
-    {
-        $relativeNow = new RelativeToNowInterpretation($input);
-
-        $this->assertFalse(
-            $relativeNow->isRelativeToNow(),
-            "RelativeToNowInterpretation interpreted '{$input}' to be relative to now"
-        );
-    }
-
-    private function assertRelativeNow($expected, $input)
-    {
-        $relativeNow = new RelativeToNowInterpretation($input);
-
-        if (! $relativeNow->isRelativeToNow()) {
-            $this->fail("RelativeToNowInterpretation interpreted '{$input}' as not being relative to now, should be '{$expected}'");
+                    "\nWrong RelativeToNowInterpretation\n Input:    '{$writtenInput}'\n Expected: '{$expected}' ".
+                    Carbon::parse($expected)->format('l').
+                    "\n Actual:   '{$actual}' ".
+                    Carbon::parse($actual)->format('l').
+                    "\n\n Current now: $now\n"
+                );
+            }
         }
+    }
 
-        $this->assertSame(
-            $expected,
-            $actual = (string) $relativeNow->getDateTime(),
+    /** @test */
+    function not_relative_to_now()
+    {
+        foreach ($this->notRelativeToNow as $now => $values) {
+            foreach ($values as $writtenInput) {
+                $relativeNow = new RelativeToNowInterpretation($now, $writtenInput);
 
-            "\nWrong RelativeToNowInterpretation\n Input:    '{$input}'\n Expected: '{$expected}' ".
-            Carbon::parse($expected)->format('l').
-            "\n Actual:   '{$actual}' ".
-            Carbon::parse($actual)->format('l').
-            "\n\n Current now: ".now()." ".now()->format('l')."\n"
-        );
+                $this->assertFalse(
+                    $relativeNow->isRelativeToNow(),
+                    "RelativeToNowInterpretation interpreted '{$writtenInput}' to be relative to now"
+                );
+            }
+        }
     }
 }

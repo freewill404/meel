@@ -39,9 +39,9 @@ class Schedule extends Model
 
     public function getIsRecurringAttribute()
     {
-        $schedule = new ScheduleFormat($this->when);
+        $schedule = new ScheduleFormat(now(), $this->when);
 
-        return $schedule->isRecurring();
+        return $schedule->recurring();
     }
 
     public function getFormattedWhatAttribute()

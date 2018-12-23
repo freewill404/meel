@@ -8,96 +8,109 @@ use Tests\TestCase;
 
 class DateInterpretationTest extends TestCase
 {
+    protected $fullValues = [
+        '2018-03-28' => [
+            '28-03-2018' => '2018-03-28',
+            'On 28-03-2018' => '2018-03-28',
+            '31-01-2018' => '2018-01-31',
+
+            // ambiguous d-m/m-d
+            '03-02-2018' => '2018-02-03',
+        ]
+    ];
+
+    protected $dayMonthValues = [
+        '2018-03-28' => [
+            // unambiguous m-d
+            '28-03' => '2018-03-28',
+            'On 28-03' => '2018-03-28',
+
+            // ambiguous m-d (in this case always assume d-m)
+            // also, this date is in the past and doesn't specify a year, so it sets the next year
+            '03-02' => '2019-02-03',
+
+            '31-01' => '2019-01-31',
+        ],
+    ];
+
+    protected $yearValues = [
+        '2018-03-28' => [
+            'in the year 2020' => '2020-01-01',
+        ],
+    ];
+
+    protected $unusableValues = [
+        '31-06',
+        '32-05',
+        '00-06',
+    ];
+
     /** @test */
-    function it_interprets_valid_long_dates()
+    function it_interprets_valid_full_date_values()
     {
-        // d-m-Y
-        $this->assertDateInterpretation('2018-03-28', '28-03-2018');
-        $dateInterpretation = $this->assertDateInterpretation('2018-03-28', 'On 28-03-2018');
-
-        $this->assertTrue($dateInterpretation->hasSpecifiedYear());
-        $this->assertTrue($dateInterpretation->hasSpecifiedMonth());
-        $this->assertTrue($dateInterpretation->hasSpecifiedDay());
-
-        // unambiguous m-d-Y
-        $this->assertDateInterpretation('2018-03-28', '3-28-2018');
-
-        // ambiguous m-d-Y (in this case always assume d-m-Y)
-        $this->assertDateInterpretation('2018-02-03', '03-02-2018');
+        $this->assertDateInterpretations($this->fullValues, true, true, true);
     }
 
     /** @test */
     function it_interprets_valid_dates_without_a_year()
     {
-        // d-m
-        $this->assertDateInterpretation('2018-03-28', '28-03');
-        $dateInterpretation = $this->assertDateInterpretation('2018-03-28', 'On 28-03');
-
-        $this->assertFalse($dateInterpretation->hasSpecifiedYear());
-        $this->assertTrue($dateInterpretation->hasSpecifiedMonth());
-        $this->assertTrue($dateInterpretation->hasSpecifiedDay());
-
-        // unambiguous m-d
-        $this->assertDateInterpretation('2018-03-28', '03-28');
-
-        // ambiguous m-d (in this case always assume d-m)
-        // also, this date is in the past and doesn't specify a year, so it sets the next year
-        $this->assertDateInterpretation('2019-02-03', '03-02');
+        $this->assertDateInterpretations($this->dayMonthValues, false, true, true);
     }
 
     /** @test */
-    function if_a_date_is_in_the_past_and_does_not_specify_a_year_it_sets_next_year()
+    function it_interprets_valid_dates_with_only_a_year()
     {
-        $this->assertDateInterpretation('2019-01-31', '31-01');
-
-        $this->assertDateInterpretation('2018-01-31', '31-01-2018');
+        $this->assertDateInterpretations($this->yearValues, true, false, false);
     }
 
     /** @test */
-    function it_interprets_years()
+    function it_handles_unusable_values()
     {
-        $dateInterpretation = $this->assertDateInterpretation('2020-01-01', 'in the year 2020');
+        foreach ($this->unusableValues as $writtenInput) {
+            $preparedString = (new WhenString)->prepare($writtenInput);
 
-        $this->assertTrue($dateInterpretation->hasSpecifiedYear());
-        $this->assertFalse($dateInterpretation->hasSpecifiedMonth());
-        $this->assertFalse($dateInterpretation->hasSpecifiedDay());
+            $dateInterpretation = new DateInterpretation('2018-03-28 12:00:00', $preparedString);
+
+            $this->assertFalse(
+                $dateInterpretation->hasSpecifiedDate()
+            );
+        }
     }
 
-    /** @test */
-    function it_handles_the_amount_of_days_in_a_month()
+    private function assertDateInterpretations($testValues, bool $shouldHaveYear, bool $shouldHaveMonth, bool $shouldHaveDay)
     {
-        $this->assertNotUsable('31-06');
-        $this->assertNotUsable('32-05');
-        $this->assertNotUsable('00-06');
-    }
+        $interpretations = [];
 
-    private function assertDateInterpretation($expected, $string)
-    {
-        $preparedString = WhenString::prepare($string);
+        $failures = [];
 
-        $dateInterpretation = new DateInterpretation($preparedString);
+        foreach ($testValues as $now => $values) {
+            foreach ($values as $writtenInput => $expected) {
+                $preparedString = (new WhenString)->prepare($writtenInput);
 
-        if (! $dateInterpretation->hasSpecifiedDate()) {
-            $this->fail("DateInterpretation interpreted '{$string}' as not having a specified date, expected '{$expected}'");
+                $interpretations[] = $dateInterpretation = new DateInterpretation($now, $preparedString);
+
+                $actual = (string) $dateInterpretation->getDateString();
+
+                if ($expected !== $actual) {
+                    $failures[] = 'Set datetime:  '.$now;
+                    $failures[] = 'Written input: '.$writtenInput;
+
+                    if ($preparedString !== $writtenInput) {
+                        $failures[] = 'Prepared input: '.$preparedString;
+                    }
+
+                    $failures[] = 'Expected: '.$expected.'    actual: '.$actual;
+                    $failures[] = '';
+                }
+            }
         }
 
-        $this->assertSame(
-            $expected,
-            $actual = (string) $dateInterpretation->getDateString(),
-            "DateInterpretation interpreted '{$string}' as '{$actual}', expected '{$expected}'"
-        );
+        $this->assertSame('', implode("\n", $failures));
 
-        return $dateInterpretation;
-    }
-
-    private function assertNotUsable($string)
-    {
-        $preparedString = WhenString::prepare($string);
-
-        $dateInterpretation = new DateInterpretation($preparedString);
-
-        $this->assertFalse(
-            $dateInterpretation->hasSpecifiedDate()
-        );
+        foreach ($interpretations as $dateInterpretation) {
+            $this->assertTrue($dateInterpretation->hasSpecifiedYear() === $shouldHaveYear);
+            $this->assertTrue($dateInterpretation->hasSpecifiedMonth() === $shouldHaveMonth);
+            $this->assertTrue($dateInterpretation->hasSpecifiedDay() === $shouldHaveDay);
+        }
     }
 }

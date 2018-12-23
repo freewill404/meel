@@ -104,10 +104,10 @@ class DateTimeDiffTest extends TestCase
             foreach ($values as $nextOccurrenceTime => $expected) {
                 $dateTimeDiff = new DateTimeDiff('2018-05-15 '.$nowTime.(mt_rand(0, 1) ? ':00' : ':15'), '2018-05-15 '.$nextOccurrenceTime.':00');
 
-                if ($dateTimeDiff->raw() !== $expected) {
+                if ($dateTimeDiff->diff() !== $expected) {
                     $failures[] = '  '.$nowTime.' - '.$nextOccurrenceTime;
                     $failures[] = '  Expected: '.$expected;
-                    $failures[] = '  Actual:   '.$dateTimeDiff->raw();
+                    $failures[] = '  Actual:   '.$dateTimeDiff->diff();
                     $failures[] = '';
                 }
             }
@@ -127,12 +127,12 @@ class DateTimeDiffTest extends TestCase
             foreach ($values as $nextOccurrence => $expected) {
                 $dateTimeDiff = new DateTimeDiff($now.(mt_rand(0, 1) ? ':00' : ':15'), $nextOccurrence);
 
-                if ($dateTimeDiff->raw() !== $expected) {
+                if ($dateTimeDiff->diff() !== $expected) {
                     $failCount++;
 
                     $failures[] = '  '.$now.' - '.$nextOccurrence;
                     $failures[] = '  Expected: '.$expected;
-                    $failures[] = '  Actual:   '.$dateTimeDiff->raw();
+                    $failures[] = '  Actual:   '.$dateTimeDiff->diff();
                     $failures[] = '';
                 }
             }

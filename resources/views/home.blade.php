@@ -24,7 +24,7 @@
         <div class="flex flex-col mx-auto text-center sm:mb-24 mb-12">
             <h1 class="text-5xl mb-4 font-extrabold">Email yourself</h1>
 
-            <h2 class="font-normal">Use email as a to-do list and stay inbox zero</h2>
+            <h2 class="font-normal">Use email as a to-do list, then stay inbox zero</h2>
         </div>
 
 

@@ -4,6 +4,7 @@ namespace App\Meel\When\Formats\Recurring;
 
 use App\Support\DateTime\DateString;
 use App\Support\DateTime\SecondlessTimeString;
+use Carbon\Carbon;
 
 class Monthly extends RecurringWhenFormat
 {
@@ -34,13 +35,13 @@ class Monthly extends RecurringWhenFormat
         }
     }
 
-    public function getNextDate(SecondlessTimeString $setTime, $timezone = null): DateString
+    public function getNextDate(Carbon $now, SecondlessTimeString $setTime): DateString
     {
-        $setTimeIsLaterThanNow = $setTime->laterThanNow($timezone);
+        $setTimeIsLaterThanNow = $setTime->laterThan($now);
 
         $baseMonth = $this->monthInterval === 1
-            ? now($timezone)->lastOfMonth()
-            : now($timezone)->addMonths($this->monthInterval)->lastOfMonth();
+            ? $now->copy()->lastOfMonth()
+            : $now->copy()->addMonthNoOverflow($this->monthInterval)->lastOfMonth();
 
         // When the request is for date 28, 29, 30 or 31, and the current month
         // has less days than that, set the date to the last day of the month.
@@ -50,15 +51,15 @@ class Monthly extends RecurringWhenFormat
 
         $monthlyOnDate = new DateString($baseMonth);
 
-        if ($monthlyOnDate->isAfterToday($timezone)) {
+        if ($monthlyOnDate->isAfter($now)) {
             return $monthlyOnDate;
         }
 
-        if ($monthlyOnDate->isToday($timezone) && $setTimeIsLaterThanNow) {
+        if ($monthlyOnDate->isSame($now) && $setTimeIsLaterThanNow) {
             return $monthlyOnDate;
         }
 
-        $nextMonth = now($timezone)->addMonths($this->monthInterval)->lastOfMonth();
+        $nextMonth = $now->copy()->addMonthNoOverflow($this->monthInterval)->lastOfMonth();
 
         if ($nextMonth->day >= $this->date) {
             $nextMonth->day($this->date);

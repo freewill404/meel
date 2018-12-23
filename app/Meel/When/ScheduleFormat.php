@@ -9,6 +9,7 @@ use App\Meel\When\Formats\DateInterpretation;
 use App\Meel\When\Formats\RecurringInterpretation;
 use App\Meel\When\Formats\RelativeToNowInterpretation;
 use App\Meel\When\Formats\TimeInterpretation;
+use Carbon\Carbon;
 
 class ScheduleFormat
 {
@@ -20,34 +21,36 @@ class ScheduleFormat
 
     protected $recurringInterpretation;
 
-    protected $timezone;
+    private $now;
 
-    public function __construct($writtenInput, $timezone = null)
+    public function __construct($dateTime, $writtenInput)
     {
-        $this->timezone = $timezone;
+        $this->now = $dateTime instanceof Carbon
+            ? $dateTime->copy()
+            : Carbon::parse($dateTime);
 
-        $preparedWrittenInput = WhenString::prepare($writtenInput);
+        $preparedWrittenInput = (new WhenString)->prepare($writtenInput);
 
-        $this->dateInterpretation = new DateInterpretation($preparedWrittenInput, $timezone);
+        $this->dateInterpretation = new DateInterpretation($this->now, $preparedWrittenInput);
 
-        $this->relativeNow = new RelativeToNowInterpretation($preparedWrittenInput, $timezone);
+        $this->relativeNow = new RelativeToNowInterpretation($this->now, $preparedWrittenInput);
 
         $this->timeInterpretation = new TimeInterpretation($preparedWrittenInput);
 
-        $this->recurringInterpretation = new RecurringInterpretation($preparedWrittenInput);
+        $this->recurringInterpretation = new RecurringInterpretation($this->now, $preparedWrittenInput);
     }
 
-    public function isUsableInterpretation(): bool
+    public function usable()
     {
         return (bool) $this->nextOccurrence();
     }
 
-    public function isRecurring(): bool
+    public function recurring()
     {
         return $this->recurringInterpretation->isUsableMatch();
     }
 
-    public function getIntervalDescription()
+    public function intervalDescription()
     {
         return $this->recurringInterpretation->intervalDescription();
     }
@@ -70,15 +73,15 @@ class ScheduleFormat
             return null;
         }
 
-        $dateTime = new SecondlessDateTimeString($date ?? now($this->timezone), $time);
+        $dateTime = new SecondlessDateTimeString($date ?? $this->now, $time);
 
-        return $dateTime->isInThePast($this->timezone) ? null : $dateTime;
+        return $dateTime->isBefore($this->now) ? null : $dateTime;
     }
 
     protected function getNextInterpretedDate(SecondlessTimeString $setTime): ?DateString
     {
-        if ($this->isRecurring()) {
-            return $this->recurringInterpretation->getNextDate($setTime, $this->timezone);
+        if ($this->recurring()) {
+            return $this->recurringInterpretation->getNextDate($setTime);
         }
 
         if ($this->dateInterpretation->hasSpecifiedDate()) {

@@ -4,8 +4,6 @@ namespace App\Meel\When;
 
 class WhenString
 {
-    protected $preparedString;
-
     private const REPLACE_WORDS = [
         'a'       => '1',
         'an'      => '1',
@@ -106,7 +104,7 @@ class WhenString
         'december'  => '12',
     ];
 
-    public function __construct(string $string)
+    public function prepare($string): string
     {
         $string = str_replace(',', ' and ', $string);
 
@@ -120,14 +118,7 @@ class WhenString
             $string = preg_replace('/(^| )'.$search.'( |$)/', '${1}'.$replace.'${2}', $string);
         }
 
-        $string = $this->replaceWrittenMonths($string);
-
-        $this->preparedString = $string;
-    }
-
-    public function getPreparedString()
-    {
-        return $this->preparedString;
+        return $this->replaceWrittenMonths($string);
     }
 
     protected function replaceWrittenMonths($string)
@@ -169,12 +160,5 @@ class WhenString
         $string = preg_replace('/(\d\d-\d\d) (\d{4})/', '$1-$2', $string);
 
         return $string;
-    }
-
-    public static function prepare($string): string
-    {
-        $whenString = new static($string);
-
-        return $whenString->getPreparedString();
     }
 }

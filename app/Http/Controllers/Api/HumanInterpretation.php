@@ -17,8 +17,8 @@ class HumanInterpretation extends Controller
             return $error;
         }
 
-        $string = $schedule->isRecurring()
-            ? 'Recurring '.$schedule->getIntervalDescription().', first occurrence '.$diffString
+        $string = $schedule->recurring()
+            ? 'Recurring '.$schedule->intervalDescription().', first occurrence '.$diffString
             : 'Once, '.$diffString;
 
         return ['valid' => true, 'humanInterpretation' => $string];
@@ -32,13 +32,13 @@ class HumanInterpretation extends Controller
             return $error;
         }
 
-        if (! $schedule->isRecurring()) {
+        if (! $schedule->recurring()) {
             return ['valid' => false, 'humanInterpretation' => 'This schedule is not recurring'];
         }
 
         return [
             'valid' => true,
-            'humanInterpretation' => 'Recurring '.$schedule->getIntervalDescription().', first poll '.$diffString,
+            'humanInterpretation' => 'Recurring '.$schedule->intervalDescription().', first poll '.$diffString,
         ];
     }
 
@@ -56,16 +56,19 @@ class HumanInterpretation extends Controller
             return [$error, null, null];
         }
 
-        $schedule = new ScheduleFormat($writtenInput, $tz = $request->user()->timezone);
+        $schedule = new ScheduleFormat(
+            $now = now($request->user()->timezone),
+            $writtenInput
+        );
 
-        if (! $schedule->isUsableInterpretation()) {
+        if (! $schedule->usable()) {
             $error = ['valid' => false, 'humanInterpretation' => ''];
 
             return [$error, null, null];
         }
 
-        $dateTimeDiff = new DateTimeDiff(now($tz), $schedule->nextOccurrence());
+        $dateTimeDiff = new DateTimeDiff($now, $schedule->nextOccurrence());
 
-        return [null, $schedule, $dateTimeDiff->raw()];
+        return [null, $schedule, $dateTimeDiff->diff()];
     }
 }

@@ -10,9 +10,9 @@ class RelativeNow extends RelativeWhenFormat
 
     public $isRelativeToNow = false;
 
-    public function __construct(string $string, $timezone = null)
+    public function __construct($now, string $writtenInput)
     {
-        $this->isRelativeToNow = $string === 'now' || $string === 'right now';
+        $this->isRelativeToNow = $writtenInput === 'now' || $writtenInput === 'right now';
     }
 
     public function isUsableMatch(): bool

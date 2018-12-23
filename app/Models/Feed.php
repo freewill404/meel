@@ -38,9 +38,12 @@ class Feed extends Model
             return secondless_now()->addMinutes(15);
         }
 
-        $schedule = new ScheduleFormat($this->when, $this->user->timezone);
+        $schedule = new ScheduleFormat(
+            now($this->user->timezone),
+            $this->when
+        );
 
-        if (! $schedule->isRecurring()) {
+        if (! $schedule->recurring()) {
             throw new RuntimeException('Feed '.$this->id.' has a schedule that is not recurring: '.$this->when);
         }
 

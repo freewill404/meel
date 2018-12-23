@@ -12,62 +12,50 @@ use Tests\TestCase;
 
 class RecurringInterpretationTest extends TestCase
 {
-    /** @test */
-    function it_interprets_weekly_intervals()
-    {
-        $this->assertRecurringInterpretation(Weekly::class, 'weekly');
+    private $testValues = [
+        Weekly::class => [
+            'weekly',
+            'weekly on wednesday',
+        ],
 
-        $this->assertRecurringInterpretation(Weekly::class, 'weekly on wednesday');
-    }
+        Monthly::class => [
+            'monthly',
+            'monthly on the 12th',
+            'monthly on the 32th',
+            'monthly on the 0th',
+        ],
 
-    /** @test */
-    function it_interprets_monthly_intervals()
-    {
-        $this->assertRecurringInterpretation(Monthly::class, 'monthly');
+        Yearly::class => [
+            'yearly',
+            'yearly in march',
+            'yearly on the 14th of march',
+            'yearly in march on the 13th',
+        ],
 
-        $this->assertRecurringInterpretation(Monthly::class, 'monthly on the 12th');
-
-        $this->assertRecurringInterpretation(Monthly::class, 'monthly on the 32th');
-
-        $this->assertRecurringInterpretation(Monthly::class, 'monthly on the 0th');
-    }
-
-    /** @test */
-    function it_interprets_yearly_intervals()
-    {
-        $this->assertRecurringInterpretation(Yearly::class, 'yearly');
-
-        $this->assertRecurringInterpretation(Yearly::class, 'yearly in march');
-
-        $this->assertRecurringInterpretation(Yearly::class, 'yearly on the 14th of march');
-
-        $this->assertRecurringInterpretation(Yearly::class, 'yearly in march on the 13th');
-    }
+        MonthlyNthDay::class => [
+            'first tuesday of the month',
+            'second tuesday of the month',
+            'third tuesday of the month',
+            'fourth tuesday of the month',
+            'last tuesday of the month',
+        ],
+    ];
 
     /** @test */
-    function it_interprets_monthly_on_the_nth_day_intervals()
+    function it_uses_the_correct_class()
     {
-        $this->assertRecurringInterpretation(MonthlyNthDay::class, 'first tuesday of the month');
+        foreach ($this->testValues as $expectedClass => $writtenInputs) {
+            foreach ($writtenInputs as $writtenInput) {
+                $preparedString = (new WhenString)->prepare($writtenInput);
 
-        $this->assertRecurringInterpretation(MonthlyNthDay::class, 'second tuesday of the month');
+                $recurringInterpretation = new RecurringInterpretation('2018-03-28 12:00:00', $preparedString);
 
-        $this->assertRecurringInterpretation(MonthlyNthDay::class, 'third tuesday of the month');
-
-        $this->assertRecurringInterpretation(MonthlyNthDay::class, 'fourth tuesday of the month');
-
-        $this->assertRecurringInterpretation(MonthlyNthDay::class, 'last tuesday of the month');
-    }
-
-    private function assertRecurringInterpretation($expectedFormat, $string)
-    {
-        $preparedString = WhenString::prepare($string);
-
-        $recurringInterpretation = new RecurringInterpretation($preparedString);
-
-        $this->assertInstanceOf(
-            $expectedFormat,
-            $actual = $recurringInterpretation->getMatchedFormat(),
-            "Interpreted '{$string}' as a '".get_class($actual)."' format, expected '{$expectedFormat}'"
-        );
+                $this->assertInstanceOf(
+                    $expectedClass,
+                    $actual = $recurringInterpretation->getMatchedFormat(),
+                    "Interpreted '{$writtenInput}' as a '".get_class($actual)."' format, expected '{$expectedClass}'"
+                );
+            }
+        }
     }
 }

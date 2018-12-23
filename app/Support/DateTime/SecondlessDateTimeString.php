@@ -17,17 +17,22 @@ class SecondlessDateTimeString
         $this->timeString = new SecondlessTimeString($timeString);
     }
 
-    public function isInThePast($timezone): bool
+    public function isBefore($dateTime)
     {
-        if ($this->dateString->isBeforeToday($timezone)) {
+        $carbon = Carbon::parse($dateTime);
+
+        $date = $carbon->format('Y-m-d');
+        $time = $carbon->format('H:i:s');
+
+        if ($this->dateString->isBefore($date)) {
             return true;
         }
 
-        if ($this->dateString->isAfterToday($timezone)) {
+        if ($this->dateString->isAfter($date)) {
             return false;
         }
 
-        return $this->timeString->earlierThanNow($timezone);
+        return $this->timeString->earlierThan($time);
     }
 
     public function changeTimezone($fromTimezone, $toTimezone)

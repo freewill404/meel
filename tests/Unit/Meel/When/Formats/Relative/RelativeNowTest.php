@@ -9,18 +9,16 @@ class RelativeNowTest extends RelativeWhenFormatTestCase
     protected $whenFormat = RelativeNow::class;
 
     protected $shouldMatch = [
-        'now',
-        'right now',
+        '2018-05-15 12:00:00' => [
+            'now' => '2018-05-15 12:00:00',
+            'right now' => '2018-05-15 12:00:00',
+        ],
     ];
 
     protected $shouldNotMatch = [
-        'nowadays',
-        '1 month from now',
+        '2018-05-15 12:00:00' => [
+            'nowadays',
+            '1 month from now',
+        ],
     ];
-
-    /** @test */
-    function it_does_not_transform()
-    {
-        $this->assertTransformedNow('2018-03-28 12:00:15', 'now');
-    }
 }

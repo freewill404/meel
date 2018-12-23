@@ -5,7 +5,7 @@ namespace App\Meel\When\Formats\Recurring;
 use App\Support\DateTime\DateString;
 use App\Support\DateTime\SecondlessTimeString;
 use Carbon\Carbon;
-use LogicException;
+use RuntimeException;
 
 class GivenDays extends RecurringWhenFormat
 {
@@ -28,13 +28,13 @@ class GivenDays extends RecurringWhenFormat
         }
     }
 
-    public function getNextDate(SecondlessTimeString $setTime, $timezone = null): DateString
+    public function getNextDate(Carbon $now, SecondlessTimeString $setTime): DateString
     {
-        $carbon = now($timezone);
-
-        if ($this->isGivenDay($carbon) && $setTime->laterThanNow($timezone)) {
-            return new DateString($carbon);
+        if ($this->isGivenDay($now) && $setTime->laterThan($now)) {
+            return new DateString($now);
         }
+
+        $carbon = $now->copy();
 
         for ($i = 0; $i < 7; $i++) {
             $carbon->addDays(1);
@@ -44,10 +44,10 @@ class GivenDays extends RecurringWhenFormat
             }
         }
 
-        throw new LogicException('Invalid days');
+        throw new RuntimeException('Invalid days');
     }
 
-    protected function isGivenDay(Carbon $carbon)
+    private function isGivenDay(Carbon $carbon)
     {
         return in_array($carbon->format('l'), $this->days);
     }

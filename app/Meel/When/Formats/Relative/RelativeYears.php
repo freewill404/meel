@@ -8,26 +8,26 @@ class RelativeYears extends RelativeWhenFormat
 {
     public $years = 0;
 
-    public function __construct(string $string, $timezone = null)
+    public function __construct($now, string $writtenInput)
     {
-        $this->years = $this->parseYears($string);
+        $this->years = $this->parseYears($writtenInput);
     }
 
-    protected function parseYears($string)
+    protected function parseYears($writtenInput)
     {
-        if (strpos($string, 'next year') !== false) {
+        if (strpos($writtenInput, 'next year') !== false) {
             return 1;
         }
 
-        if (preg_match('/(\d+) years? .*from now/', $string, $matches)) {
+        if (preg_match('/(\d+) years? .*from now/', $writtenInput, $matches)) {
             return (int) $matches[1];
         }
 
-        if (preg_match('/in (\d+) years?/', $string, $matches)) {
+        if (preg_match('/in (\d+) years?/', $writtenInput, $matches)) {
             return (int) $matches[1];
         }
 
-        if (preg_match('/in .*and (\d+) years?/', $string, $matches)) {
+        if (preg_match('/in .*and (\d+) years?/', $writtenInput, $matches)) {
             return (int) $matches[1];
         }
 

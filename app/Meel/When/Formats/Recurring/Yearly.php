@@ -41,12 +41,12 @@ class Yearly extends RecurringWhenFormat
         }
     }
 
-    public function getNextDate(SecondlessTimeString $setTime, $timezone = null): DateString
+    public function getNextDate(Carbon $now, SecondlessTimeString $setTime): DateString
     {
-        $carbon = Carbon::parse('this year '.$this->monthOfTheYear);
+        $carbon = $now->copy()->modify('this year '.$this->monthOfTheYear);
 
         if ($this->yearInterval > 1) {
-            $carbon->addYears($this->yearInterval);
+            $carbon->addYearsNoOverflow($this->yearInterval);
         }
 
         $carbon->lastOfMonth();
@@ -57,15 +57,15 @@ class Yearly extends RecurringWhenFormat
 
         $thisYearDateString = new DateString($carbon);
 
-        if ($thisYearDateString->isAfterToday($timezone)) {
+        if ($thisYearDateString->isAfter($now)) {
             return $thisYearDateString;
         }
 
-        if ($thisYearDateString->isToday($timezone) && $setTime->laterThanNow($timezone)) {
+        if ($thisYearDateString->isSame($now) && $setTime->laterThan($now)) {
             return $thisYearDateString;
         }
 
-        $nextYear = Carbon::parse('next year '.$this->monthOfTheYear)->lastOfMonth();
+        $nextYear = $carbon->addYearsNoOverflow(1)->lastOfMonth();
 
         if ($nextYear->day >= $this->dateOfTheMonth) {
             $nextYear->day($this->dateOfTheMonth);

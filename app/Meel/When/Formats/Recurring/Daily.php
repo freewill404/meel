@@ -4,6 +4,7 @@ namespace App\Meel\When\Formats\Recurring;
 
 use App\Support\DateTime\DateString;
 use App\Support\DateTime\SecondlessTimeString;
+use Carbon\Carbon;
 
 class Daily extends RecurringWhenFormat
 {
@@ -24,12 +25,10 @@ class Daily extends RecurringWhenFormat
         }
     }
 
-    public function getNextDate(SecondlessTimeString $setTime, $timezone = null): DateString
+    public function getNextDate(Carbon $now, SecondlessTimeString $setTime): DateString
     {
-        $now = now($timezone);
-
-        return $this->daysInterval === 1 && $setTime->laterThanNow($timezone)
+        return $this->daysInterval === 1 && $setTime->laterThan($now)
             ? new DateString($now)
-            : new DateString($now->addDays($this->daysInterval));
+            : new DateString($now->copy()->addDays($this->daysInterval));
     }
 }

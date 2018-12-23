@@ -3,7 +3,6 @@
 namespace Tests\Unit\Meel\When\Formats\Recurring;
 
 use App\Meel\When\Formats\Recurring\Monthly;
-use Carbon\Carbon;
 
 class MonthlyTest extends RecurringWhenFormatTestCase
 {
@@ -19,57 +18,29 @@ class MonthlyTest extends RecurringWhenFormatTestCase
         'every 0 months'
     ];
 
-    /** @test */
-    function it_uses_a_default_date_if_no_date_is_specified()
-    {
-        $this->assertNextDate('2018-04-01', 'monthly');
-    }
+    protected $testValuesExcludingToday = [
+        '2018-03-28' => [
+            'monthly' => ['2018-04-01', '2018-05-01', '2018-06-01', '2018-07-01'],
+            'every 2 months' => ['2018-05-01', '2018-07-01', '2018-09-01', '2018-11-01'],
 
-    /** @test */
-    function it_can_get_the_next_date_on_short_months()
-    {
-        // May has 31 days
-        Carbon::setTestNow('2018-05-01 12:00:15');
+            // It uses the closest possible date if the month is short.
+            'monthly on the 31st' => ['2018-03-31', '2018-04-30', '2018-05-31', '2018-06-30'],
 
-        $this->assertNextDate('2018-05-31', 'monthly on the 31st');
+            'bimonthly on the 15th' => ['2018-05-15', '2018-07-15', '2018-09-15', '2018-11-15'],
 
-        // June has 30 days
-        Carbon::setTestNow('2018-06-01 12:00:15');
+            'every 3 months' => ['2018-06-01', '2018-09-01', '2018-12-01', '2019-03-01'],
+        ],
+    ];
 
-        // It uses the closest possible date if the month is short.
-        $this->assertNextDate('2018-06-30', 'monthly on the 31st');
-    }
+    protected $testValuesIncludingToday = [
+        '2018-03-14' => [
+            'monthly on the 14th' => ['2018-03-14', '2018-03-14'],
+        ],
+    ];
 
-    /** @test */
-    function it_can_get_the_next_date_on_the_same_day()
-    {
-        Carbon::setTestNow('2018-03-14 12:00:15');
-
-        [$beforeNow, $exactlyNow, $afterNow] = $this->getTimeStrings();
-
-        $this->assertNextDate('2018-04-14', 'monthly on the 14th', $beforeNow);
-
-        $this->assertNextDate('2018-04-14', 'monthly on the 14th', $exactlyNow);
-
-        $this->assertNextDate('2018-03-14', 'monthly on the 14th', $afterNow);
-    }
-
-    /** @test */
-    function it_can_have_a_month_interval()
-    {
-        $this->assertNextDate('2018-03-31', 'every 1 months on the 31st');
-        $this->assertNextDate('2018-05-31', 'bimonthly on the 31st');
-        $this->assertNextDate('2018-06-30', 'every 3 months on the 31st');
-
-        Carbon::setTestNow('2018-05-31 12:00:15');
-
-        $this->assertNextDate('2018-07-31', 'bimonthly on the 31st');
-    }
-
-    /** @test */
-    function it_has_the_correct_interval_description()
-    {
-        $this->assertIntervalDescription('monthly', 'every month');
-        $this->assertIntervalDescription('every 2 months', 'bimonthly');
-    }
+    protected $testIntervalDescriptions = [
+        'every month' => 'monthly',
+        'bimonthly' => 'every 2 months',
+        'every 3 months' => 'every 3 months',
+    ];
 }

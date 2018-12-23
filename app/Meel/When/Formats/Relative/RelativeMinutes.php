@@ -10,22 +10,22 @@ class RelativeMinutes extends RelativeWhenFormat
 
     public $minutes = 0;
 
-    public function __construct(string $string, $timezone = null)
+    public function __construct($now, string $writtenInput)
     {
-        $this->minutes = $this->parseMinutes($string);
+        $this->minutes = $this->parseMinutes($writtenInput);
     }
 
-    protected function parseMinutes($string)
+    protected function parseMinutes($writtenInput)
     {
-        if (preg_match('/in (\d+) minutes?/', $string, $matches)) {
+        if (preg_match('/in (\d+) minutes?/', $writtenInput, $matches)) {
             return (int) $matches[1];
         }
 
-        if (preg_match('/in .*and (\d+) minutes?/', $string, $matches)) {
+        if (preg_match('/in .*and (\d+) minutes?/', $writtenInput, $matches)) {
             return (int) $matches[1];
         }
 
-        if (preg_match('/(\d+) minutes? .*from now/', $string, $matches)) {
+        if (preg_match('/(\d+) minutes? .*from now/', $writtenInput, $matches)) {
             return (int) $matches[1];
         }
 

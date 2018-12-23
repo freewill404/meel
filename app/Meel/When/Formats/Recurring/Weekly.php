@@ -31,12 +31,12 @@ class Weekly extends RecurringWhenFormat
         }
     }
 
-    public function getNextDate(SecondlessTimeString $setTime, $timezone = null): DateString
+    public function getNextDate(Carbon $now, SecondlessTimeString $setTime): DateString
     {
-        $setTimeIsLaterThanNow = $setTime->laterThanNow($timezone);
+        $setTimeIsLaterThanNow = $setTime->laterThan($now);
 
         $weeklyOnDay = new DateString(
-            $carbon = Carbon::parse('this week '.$this->day, $timezone)
+            $carbon = $now->copy()->modify('this week '.$this->day)
         );
 
         // Weekly schedules  with an interval essentially work like this:
@@ -46,22 +46,22 @@ class Weekly extends RecurringWhenFormat
         // the next wednesday (tomorrow) counts as the first week.
         if ($this->weekInterval > 1) {
             $carbon->addWeeks(
-                $this->weekInterval - ($weeklyOnDay->isAfterToday($timezone) ? 1 : 0)
+                $this->weekInterval - ($weeklyOnDay->isAfter($now) ? 1 : 0)
             );
         }
 
         $weeklyOnDay = new DateString($carbon);
 
-        if ($weeklyOnDay->isAfterToday($timezone)) {
+        if ($weeklyOnDay->isAfter($now)) {
             return $weeklyOnDay;
         }
 
-        if ($weeklyOnDay->isToday($timezone) && $setTimeIsLaterThanNow) {
+        if ($weeklyOnDay->isSame($now) && $setTimeIsLaterThanNow) {
             return $weeklyOnDay;
         }
 
         return new DateString(
-            Carbon::parse('next week '.$this->day, $timezone)
+            $now->copy()->modify('next week '.$this->day)
         );
     }
 }

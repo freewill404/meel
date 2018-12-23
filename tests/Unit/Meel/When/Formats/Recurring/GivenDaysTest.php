@@ -14,49 +14,33 @@ class GivenDaysTest extends RecurringWhenFormatTestCase
         'every monday, tues and thursday'
     ];
 
-    /** @test */
-    function it_can_get_the_next_date_on_the_same_day()
-    {
-        [$beforeNow, $exactlyNow, $afterNow] = $this->getTimeStrings();
+    protected $testValuesExcludingToday = [
+        '2018-03-29' => [
+            'every wednesday and thursday' => ['2018-04-04', '2018-04-05', '2018-04-11', '2018-04-12', '2018-04-18', '2018-04-19'],
+            'every sunday, friday and monday' => ['2018-03-30', '2018-04-01', '2018-04-02', '2018-04-06', '2018-04-08', '2018-04-09'],
+            'every thursday' => ['2018-04-05', '2018-04-12', '2018-04-19', '2018-04-26'],
 
-        $this->assertNextDate('2018-03-29', 'every wednesday and thursday', $beforeNow);
+        ],
+    ];
 
-        $this->assertNextDate('2018-03-29', 'every wednesday and thursday', $exactlyNow);
+    protected $testValuesIncludingToday = [
+        // Wednesday
+        '2018-03-28' => [
+            'every wednesday and thursday' => ['2018-03-28', '2018-03-28'],
+            'every thurs' => ['2018-03-29', '2018-03-29'],
+        ],
 
-        $this->assertNextDate('2018-03-28', 'every wednesday and thursday', $afterNow);
-    }
+        // Tuesday
+        '2018-03-27' => [
+            'every wednesday' => ['2018-03-28', '2018-03-28'],
+        ],
+    ];
 
-    /** @test */
-    function it_interprets_given_days()
-    {
-        $this->assertNextDate('2018-03-29', 'every thursday, friday and monday');
-
-        $this->setTestNowDate('2018-03-29');
-
-        $this->assertNextDate('2018-03-30', 'every thursday, friday and monday');
-
-        $this->setTestNowDate('2018-03-30');
-
-        $this->assertNextDate('2018-04-02', 'every thursday, friday and monday');
-
-        $this->setTestNowDate('2018-04-02');
-
-        $this->assertNextDate('2018-04-05', 'every thursday, friday and monday');
-    }
-
-    /** @test */
-    function it_can_get_the_next_day_with_one_given_day()
-    {
-        $this->assertNextDate('2018-03-29', 'every thursday');
-
-        $this->setTestNowDate('2018-03-29');
-
-        $this->assertNextDate('2018-04-05', 'every thursday');
-
-        $this->setTestNowDate('2018-04-05');
-
-        $this->assertNextDate('2018-04-12', 'every thursday');
-    }
+    protected $testIntervalDescriptions = [
+        'every thursday, friday and monday' => 'on 3 given days',
+        'every wednesday' => 'every Wednesday',
+        'every friday and friday' => 'every Friday',
+    ];
 
     /** @test */
     function it_has_all_the_given_days()
@@ -72,19 +56,9 @@ class GivenDaysTest extends RecurringWhenFormatTestCase
         ]);
     }
 
-    /** @test */
-    function it_has_the_correct_interval_description()
-    {
-        $this->assertIntervalDescription('on 3 given days', 'every thursday, friday and monday');
-
-        $this->assertIntervalDescription('every Wednesday', 'every wednesday');
-
-        $this->assertIntervalDescription('every Friday', 'every friday and friday');
-    }
-
     private function assertGivenDays($string, array $expectedDays)
     {
-        $preparedString = WhenString::prepare($string);
+        $preparedString = (new WhenString)->prepare($string);
 
         $class = new class($preparedString) extends GivenDays {
             public function getDays()

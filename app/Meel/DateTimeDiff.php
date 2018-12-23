@@ -26,7 +26,7 @@ class DateTimeDiff
         $this->value = $this->parse();
     }
 
-    public function raw()
+    public function diff()
     {
         return $this->value;
     }

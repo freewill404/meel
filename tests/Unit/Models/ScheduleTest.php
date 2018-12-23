@@ -242,11 +242,11 @@ class ScheduleTest extends TestCase
     function it_gets_all_schedules_that_should_be_sent_right_now()
     {
         $amsterdamUser = factory(User::class)->create(['timezone' => 'Europe/Amsterdam']);
-        $chinaUser     = factory(User::class)->create(['timezone' => 'Asia/Shanghai']);
-        $londonUser    = factory(User::class)->create(['timezone' => 'Europe/London']);
+        $chinaUser = factory(User::class)->create(['timezone' => 'Asia/Shanghai']);
+        $londonUser = factory(User::class)->create(['timezone' => 'Europe/London']);
 
-        $chinaUser->schedules()->create([    'what' => 'c1', 'when' => 'at 18:01']);
-        $londonUser->schedules()->create([   'what' => 'l1', 'when' => 'at 11:01']);
+        $chinaUser->schedules()->create(['what' => 'c1', 'when' => 'at 18:01']);
+        $londonUser->schedules()->create(['what' => 'l1', 'when' => 'at 11:01']);
         $amsterdamUser->schedules()->create(['what' => 'a1', 'when' => 'at 12:01']);
 
         $this->progressTimeInMinutes(1);

@@ -19,27 +19,25 @@ class DailyTest extends RecurringWhenFormatTestCase
         'every 0 days',
     ];
 
-    /** @test */
-    function it_can_get_the_next_date_on_the_same_day()
-    {
-        [$beforeNow, $exactlyNow, $afterNow] = $this->getTimeStrings();
+    protected $testValuesExcludingToday = [
+        '2018-03-28' => [
+            'daily' => ['2018-03-29', '2018-03-30', '2018-03-31', '2018-04-01', '2018-04-02'],
+            'every 2 days' => ['2018-03-30', '2018-04-01', '2018-04-03', '2018-04-05'],
+            'every 3 days' => ['2018-03-31', '2018-04-03', '2018-04-06', '2018-04-09'],
+        ],
+    ];
 
-        $this->assertNextDate('2018-03-29', 'daily', $beforeNow);
+    protected $testValuesIncludingToday = [
+        '2018-03-26' => [
+            'daily' => ['2018-03-26', '2018-03-26'],
+            'every 2 days' => ['2018-03-28', '2018-03-30', '2018-04-01'],
+            'every 3 days' => ['2018-03-29', '2018-04-01', '2018-04-04'],
+        ],
+    ];
 
-        $this->assertNextDate('2018-03-29', 'daily', $exactlyNow);
-
-        $this->assertNextDate('2018-03-28', 'daily', $afterNow);
-    }
-
-    /** @test */
-    function it_can_be_daily_with_an_interval()
-    {
-        $this->setTestNowDate('2018-03-15');
-
-        $this->assertNextDate('2018-03-17', 'every 2 days');
-
-        $this->setTestNowDate('2018-03-17');
-
-        $this->assertNextDate('2018-03-19', 'every 2 days');
-    }
+    protected $testIntervalDescriptions = [
+        'daily' => 'daily',
+        'every 2 days' => 'every 2 days',
+        'every 3 days' => 'every 3 days',
+    ];
 }

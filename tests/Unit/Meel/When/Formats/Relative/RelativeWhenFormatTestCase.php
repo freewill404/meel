@@ -4,6 +4,7 @@ namespace Tests\Unit\Meel\When\Formats\Relative;
 
 use App\Meel\When\Formats\Relative\RelativeWhenFormat;
 use App\Meel\When\WhenString;
+use Carbon\Carbon;
 use Tests\TestCase;
 
 abstract class RelativeWhenFormatTestCase extends TestCase
@@ -15,65 +16,95 @@ abstract class RelativeWhenFormatTestCase extends TestCase
 
     protected $shouldNotMatch = [];
 
-    protected function assertWhenFormatMatches($string)
+    protected function assertWhenFormatMatches($now, string $string)
     {
-        $preparedString = WhenString::prepare($string);
+        $preparedString = (new WhenString)->prepare($string);
+
+        /** @var RelativeWhenFormat $relativeWhenFormat */
+        $relativeWhenFormat = new $this->whenFormat($now, $preparedString);
 
         $this->assertTrue(
-            $this->whenFormat::matches($preparedString),
+            $relativeWhenFormat->isUsableMatch(),
+
             class_basename($this->whenFormat)." did not match prepared string: '{$preparedString}'\n".
             "Original string: ".$string."\n".
             "Prepared string: ".$preparedString
         );
     }
 
-    protected function assertWhenFormatDoesNotMatch($string)
+    protected function assertTransformedNow($expected, $now, $string)
     {
-        $preparedString = WhenString::prepare($string);
+        $preparedString = (new WhenString)->prepare($string);
 
-        $this->assertFalse(
-            $this->whenFormat::matches($preparedString),
-            class_basename($this->whenFormat)." matches prepared string: '{$preparedString}'\n".
-            "Original string: ".$string."\n".
-            "Prepared string: ".$preparedString
-        );
-    }
+        $transformedNow = Carbon::parse($now);
 
-    protected function assertTransformedNow($expected, $string)
-    {
-        $preparedString = WhenString::prepare($string);
+        /** @var RelativeWhenFormat $relativeWhenFormat */
+        $relativeWhenFormat = new $this->whenFormat($now, $preparedString);
 
-        $transformedNow = now();
-
-        $relativeWhen = new $this->whenFormat($preparedString);
-
-        $relativeWhen->transformNow($transformedNow);
+        $relativeWhenFormat->transformNow($transformedNow);
 
         $this->assertSame(
             $expected,
             $actual = $transformedNow->toDateTimeString(),
+
             class_basename($this->whenFormat)." incorrectly transformed now: \n".
-            "Original string: ".$string."\n".
-            "Prepared string: ".$preparedString."\n".
-            "Now            : ".now()->toDateTimeString()."\n".
-            "Expected       : ".$expected."\n".
-            "Actual         : ".$actual."\n"
+            "Original string: $string\n".
+            "Prepared string: $preparedString\n".
+            "Now            : $now\n".
+            "Expected       : $expected\n".
+            "Actual         : $actual\n"
         );
     }
 
     /** @test */
     function it_should_match()
     {
-        foreach ($this->shouldMatch as $string) {
-            $this->assertWhenFormatMatches($string);
+        foreach ($this->shouldMatch as $now => $values) {
+            foreach ($values as $writtenInput => $expected) {
+                $preparedString = (new WhenString)->prepare($writtenInput);
+
+                /** @var RelativeWhenFormat $relativeWhenFormat */
+                $relativeWhenFormat = new $this->whenFormat($now, $preparedString);
+
+                $this->assertTrue(
+                    $relativeWhenFormat->isUsableMatch(),
+
+                    class_basename($this->whenFormat)." did not match prepared string: '{$preparedString}'\n".
+                    "Original string: ".$writtenInput."\n".
+                    "Prepared string: ".$preparedString
+                );
+
+                $transformedNow = Carbon::parse($now);
+
+                $relativeWhenFormat->transformNow($transformedNow);
+
+                $this->assertSame(
+                    $expected,
+                    (string) $transformedNow,
+                    'Transformed date did not match'
+                );
+            }
         }
     }
 
     /** @test */
     function it_should_not_match()
     {
-        foreach ($this->shouldNotMatch as $string) {
-            $this->assertWhenFormatDoesNotMatch($string);
+        foreach ($this->shouldNotMatch as $now => $values) {
+            foreach ($values as $string) {
+                $preparedString = (new WhenString)->prepare($string);
+
+                /** @var RelativeWhenFormat $relativeWhenFormat */
+                $relativeWhenFormat = new $this->whenFormat($now, $preparedString);
+
+                $this->assertFalse(
+                    $relativeWhenFormat->isUsableMatch(),
+
+                    class_basename($this->whenFormat)." matches prepared string: '{$preparedString}'\n".
+                    "Original string: ".$string."\n".
+                    "Prepared string: ".$preparedString
+                );
+            }
         }
     }
 }

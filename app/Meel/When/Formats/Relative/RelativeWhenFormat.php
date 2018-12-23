@@ -8,7 +8,7 @@ abstract class RelativeWhenFormat
 {
     protected $specifiesTime = false;
 
-    abstract public function __construct(string $string, $timezone = null);
+    abstract public function __construct($now, string $writtenInput);
 
     abstract public function isUsableMatch(): bool;
 
@@ -19,10 +19,10 @@ abstract class RelativeWhenFormat
         return $this->specifiesTime;
     }
 
-    public static function matches(string $string): bool
-    {
-        $self = new static($string);
-
-        return $self->isUsableMatch();
-    }
+//    public static function matches(string $string): bool
+//    {
+//        $self = new static($string);
+//
+//        return $self->isUsableMatch();
+//    }
 }

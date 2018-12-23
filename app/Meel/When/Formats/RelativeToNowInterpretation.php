@@ -14,7 +14,8 @@ use App\Meel\When\WhenString;
 use App\Support\DateTime\DateString;
 use App\Support\DateTime\SecondlessDateTimeString;
 use App\Support\DateTime\SecondlessTimeString;
-use LogicException;
+use Carbon\Carbon;
+use RuntimeException;
 
 class RelativeToNowInterpretation
 {
@@ -28,18 +29,19 @@ class RelativeToNowInterpretation
         RelativeYears::class,
     ];
 
-    protected $timezone;
+    protected $now;
 
-    public function __construct(string $string, $timezone = null)
+    public function __construct($now, string $writtenInput)
     {
-        $this->timezone = $timezone;
+        $this->now = $now instanceof Carbon
+            ? $now->copy()
+            : Carbon::parse($now);
 
-        $preparedString = WhenString::prepare($string);
+        $preparedString = (new WhenString)->prepare($writtenInput);
 
-        $this->formats = collect($this->formats)
-            ->map(function ($format) use ($preparedString, $timezone) {
-                return new $format($preparedString, $timezone);
-            });
+        $this->formats = collect($this->formats)->map(function ($format) use ($preparedString) {
+            return new $format($this->now->copy(), $preparedString);
+        });
     }
 
     public function isRelativeToNow(): bool
@@ -69,10 +71,10 @@ class RelativeToNowInterpretation
     public function getDateTime(): SecondlessDateTimeString
     {
         if (! $this->isRelativeToNow()) {
-            throw new LogicException('The given input is not relative to now');
+            throw new RuntimeException('The given input is not relative to now');
         }
 
-        $relativeNow = now($this->timezone);
+        $relativeNow = $this->now->copy();
 
         $this->formats->each(function (RelativeWhenFormat $format) use ($relativeNow) {
             $format->transformNow($relativeNow);

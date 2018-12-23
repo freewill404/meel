@@ -4,6 +4,7 @@ namespace App\Meel\When\Formats\Recurring;
 
 use App\Support\DateTime\DateString;
 use App\Support\DateTime\SecondlessTimeString;
+use Carbon\Carbon;
 
 abstract class RecurringWhenFormat
 {
@@ -23,7 +24,7 @@ abstract class RecurringWhenFormat
         return $this->intervalDescription;
     }
 
-    abstract public function getNextDate(SecondlessTimeString $setTime, $timezone = null): DateString;
+    abstract public function getNextDate(Carbon $now, SecondlessTimeString $setTime): DateString;
 
     public static function matches(string $string): bool
     {

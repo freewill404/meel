@@ -5,6 +5,7 @@ namespace Tests\Unit\Meel\When\Formats\Recurring;
 use App\Support\DateTime\SecondlessTimeString;
 use App\Meel\When\Formats\Recurring\RecurringWhenFormat;
 use App\Meel\When\WhenString;
+use Carbon\Carbon;
 use Tests\TestCase;
 
 abstract class RecurringWhenFormatTestCase extends TestCase
@@ -15,6 +16,106 @@ abstract class RecurringWhenFormatTestCase extends TestCase
     protected $shouldMatch = [];
 
     protected $shouldNotMatch = [];
+
+    protected $testValuesExcludingToday = [];
+
+    protected $testValuesIncludingToday = [];
+
+    protected $testIntervalDescriptions = [];
+
+    /** @test */
+    function next_date_excluding_today()
+    {
+        if (count($this->testValuesExcludingToday) === 0) {
+            $this->fail('No tests for "$this->testValuesExcludingToday"');
+        }
+
+        // To prevent bugs caused by "=" and "<=", the tests are run twice, once
+        // with a "setTime" before the current time, and once with a "setTime"
+        // the same as the current time.
+        foreach (['11:00:00', '12:00:00'] as $setTimeString) {
+            foreach ($this->testValuesExcludingToday as $startingDate => $values) {
+                foreach ($values as $writtenInput => $expectedDates) {
+                    $dateNow = $startingDate;
+
+                    $preparedWrittenInput = (new WhenString)->prepare($writtenInput);
+
+                    foreach ($expectedDates as $expectedDate) {
+                        /** @var $format RecurringWhenFormat */
+                        $format = new $this->whenFormat($preparedWrittenInput);
+
+                        $now = Carbon::parse("$dateNow 12:00:00");
+
+                        $setTime = new SecondlessTimeString($setTimeString);
+
+                        $this->assertSame(
+                            $expectedDate,
+                            $actual = (string) $format->getNextDate($now->copy(), $setTime),
+                            class_basename($this->whenFormat)." wrong next date, expected: '{$expectedDate}', actual: '{$actual}'\n".
+                            "Now: {$now}     Set time: {$setTime}\n".
+                            "Original string: {$writtenInput}\n".
+                            "Prepared string: {$preparedWrittenInput}"
+                        );
+
+                        $dateNow = $expectedDate;
+                    }
+                }
+            }
+        }
+    }
+
+    /** @test */
+    function next_date_including_today()
+    {
+        if (count($this->testValuesIncludingToday) === 0) {
+            $this->fail('No tests for "$this->testValuesIncludingToday"');
+        }
+
+        foreach ($this->testValuesIncludingToday as $startingDate => $values) {
+            foreach ($values as $writtenInput => $expectedDates) {
+                $dateNow = $startingDate;
+
+                $preparedWrittenInput = (new WhenString)->prepare($writtenInput);
+
+                foreach ($expectedDates as $expectedDate) {
+                    /** @var $format RecurringWhenFormat */
+                    $format = new $this->whenFormat($preparedWrittenInput);
+
+                    $now = Carbon::parse("$dateNow 12:00:00");
+
+                    $setTime = new SecondlessTimeString('13:00:00');
+
+                    $this->assertSame(
+                        $expectedDate,
+                        $actual = (string) $format->getNextDate($now->copy(), $setTime),
+                        class_basename($this->whenFormat)." wrong next date, expected: '{$expectedDate}', actual: '{$actual}'\n".
+                        "Now: {$now}     Set time: {$setTime}\n".
+                        "Original string: {$writtenInput}\n".
+                        "Prepared string: {$preparedWrittenInput}\n"
+                    );
+
+                    $dateNow = $expectedDate;
+                }
+            }
+        }
+    }
+
+    /** @test */
+    function it_has_an_interval_description()
+    {
+        foreach ($this->testIntervalDescriptions as $writtenInput => $expectedDescription) {
+            $this->assertWhenFormatMatches($writtenInput);
+
+            /** @var RecurringWhenFormat $whenFormat */
+            $whenFormat = new $this->whenFormat(
+                (new WhenString)->prepare($writtenInput)
+            );
+
+            $this->assertSame(
+                $expectedDescription, $whenFormat->intervalDescription()
+            );
+        }
+    }
 
     /** @test */
     function it_should_match()
@@ -40,7 +141,7 @@ abstract class RecurringWhenFormatTestCase extends TestCase
 
     protected function assertWhenFormatMatches($string)
     {
-        $preparedString = WhenString::prepare($string);
+        $preparedString = (new WhenString)->prepare($string);
 
         $this->assertTrue(
             $this->whenFormat::matches($preparedString),
@@ -52,7 +153,7 @@ abstract class RecurringWhenFormatTestCase extends TestCase
 
     protected function assertWhenFormatDoesNotMatch($string)
     {
-        $preparedString = WhenString::prepare($string);
+        $preparedString = (new WhenString)->prepare($string);
 
         $this->assertFalse(
             $this->whenFormat::matches($preparedString),
@@ -61,47 +162,4 @@ abstract class RecurringWhenFormatTestCase extends TestCase
             "Prepared string: ".$preparedString
         );
     }
-
-    protected function assertNextDate($expected, $string, $setTime = null, $timezone = null)
-    {
-        $this->assertWhenFormatMatches($string);
-
-        $preparedString = WhenString::prepare($string);
-
-        /** @var $format RecurringWhenFormat */
-        $format = new $this->whenFormat($preparedString);
-
-        $setTime = new SecondlessTimeString($setTime ?? now($timezone));
-
-        $this->assertSame(
-            $expected,
-            $actual = (string) $format->getNextDate($setTime, $timezone),
-            class_basename($this->whenFormat)." wrong next date, expected: '{$expected}', actual: '{$actual}'\n".
-            "Original string: {$string}\n".
-            "Prepared string: {$preparedString}"
-        );
-    }
-
-    protected function assertIntervalDescription($expected, $string)
-    {
-        $this->assertWhenFormatMatches($string);
-
-        $whenFormat = new $this->whenFormat(
-            WhenString::prepare($string)
-        );
-
-        $this->assertSame(
-            $expected, $whenFormat->intervalDescription()
-        );
-    }
-
-    protected function getTimeStrings()
-    {
-        return [
-            new SecondlessTimeString(now()->subHours(1)),
-            new SecondlessTimeString(now()),
-            new SecondlessTimeString(now()->addHours(1)),
-        ];
-    }
-
 }

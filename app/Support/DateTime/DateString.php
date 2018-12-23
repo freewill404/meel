@@ -44,46 +44,77 @@ class DateString
 
     public function isAfterToday($timezone = null): bool
     {
-        return $this->compareToNow($timezone) === -1;
+        return $this->isAfter(now($timezone));
+    }
+
+    public function isAfter($dateTime)
+    {
+        if (! $dateTime instanceof Carbon) {
+            $dateTime = Carbon::parse($dateTime);
+        }
+
+        [$year, $month, $day] = explode('-', $dateTime->toDateString());
+
+        return $this->compareTo($year, $month, $day) === -1;
     }
 
     public function isToday($timezone = null): bool
     {
-        return $this->compareToNow($timezone) === 0;
+        return $this->isSame(
+            now($timezone)->toDateString()
+        );
+    }
+
+    public function isSame($dateTime): bool
+    {
+        if (! $dateTime instanceof Carbon) {
+            $dateTime = Carbon::parse($dateTime);
+        }
+
+        [$y, $m, $d] = explode('-', $dateTime->toDateString());
+
+        return $this->compareTo($y, $m, $d) === 0;
     }
 
     public function isBeforeToday($timezone = null): bool
     {
-        return $this->compareToNow($timezone) === 1;
+        return $this->isBefore(now($timezone));
     }
 
-    protected function compareToNow($timezone)
+    public function isBefore($dateTime)
     {
-        $now = now($timezone)->format('Y-m-d');
+        if (! $dateTime instanceof Carbon) {
+            $dateTime = Carbon::parse($dateTime);
+        }
 
-        [$yearNow, $monthNow, $dayNow] = explode('-', $now);
+        [$year, $month, $day] = explode('-', $dateTime->toDateString());
 
-        if ($yearNow > $this->year) {
+        return $this->compareTo($year, $month, $day) === 1;
+    }
+
+    private function compareTo($year, $month, $day)
+    {
+        if ($year > $this->year) {
             return 1;
         }
 
-        if ($yearNow < $this->year) {
+        if ($year < $this->year) {
             return -1;
         }
 
-        if ($monthNow > $this->month) {
+        if ($month > $this->month) {
             return 1;
         }
 
-        if ($monthNow < $this->month) {
+        if ($month < $this->month) {
             return -1;
         }
 
-        if ($dayNow > $this->day) {
+        if ($day > $this->day) {
             return 1;
         }
 
-        if ($dayNow < $this->day) {
+        if ($day < $this->day) {
             return -1;
         }
 

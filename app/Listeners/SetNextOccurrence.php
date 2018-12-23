@@ -15,9 +15,12 @@ class SetNextOccurrence
     {
         $userTimezone = $event->schedule->user->timezone;
 
-        $schedule = new ScheduleFormat($event->schedule->when, $userTimezone);
+        $schedule = new ScheduleFormat(
+            now($userTimezone),
+            $event->schedule->when
+        );
 
-        $nextOccurrence = $schedule->isRecurring()
+        $nextOccurrence = $schedule->recurring()
             ? $schedule->nextOccurrence()->changeTimezone($userTimezone, 'Europe/Amsterdam')
             : null;
 

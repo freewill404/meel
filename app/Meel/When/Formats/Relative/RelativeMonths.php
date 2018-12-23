@@ -8,26 +8,26 @@ class RelativeMonths extends RelativeWhenFormat
 {
     public $months = 0;
 
-    public function __construct(string $string, $timezone = null)
+    public function __construct($now, string $writtenInput)
     {
-        $this->months = $this->parseMonths($string);
+        $this->months = $this->parseMonths($writtenInput);
     }
 
-    protected function parseMonths($string)
+    protected function parseMonths($writtenInput)
     {
-        if (strpos($string, 'next month') !== false) {
+        if (strpos($writtenInput, 'next month') !== false) {
             return 1;
         }
 
-        if (preg_match('/(\d+) months? .*from now/', $string, $matches)) {
+        if (preg_match('/(\d+) months? .*from now/', $writtenInput, $matches)) {
             return (int) $matches[1];
         }
 
-        if (preg_match('/in (\d+) months?/', $string, $matches)) {
+        if (preg_match('/in (\d+) months?/', $writtenInput, $matches)) {
             return (int) $matches[1];
         }
 
-        if (preg_match('/in .*and (\d+) months?/', $string, $matches)) {
+        if (preg_match('/in .*and (\d+) months?/', $writtenInput, $matches)) {
             return (int) $matches[1];
         }
 

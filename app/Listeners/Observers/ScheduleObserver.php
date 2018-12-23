@@ -12,7 +12,11 @@ class ScheduleObserver
 {
     public function creating(Schedule $schedule)
     {
-        $scheduleFormat = new ScheduleFormat($schedule->when, $schedule->user->timezone);
+        $userTimezone = $schedule->user->timezone;
+
+        $scheduleFormat = new ScheduleFormat(
+            now($userTimezone), $schedule->when
+        );
 
         $nextOccurrence = $scheduleFormat->nextOccurrence();
 
@@ -20,7 +24,7 @@ class ScheduleObserver
             throw new RuntimeException('Invalid "when": '.$schedule->when);
         }
 
-        $nextOccurrence = (string) $nextOccurrence->changeTimezone($schedule->user->timezone, 'Europe/Amsterdam');
+        $nextOccurrence = (string) $nextOccurrence->changeTimezone($userTimezone, 'Europe/Amsterdam');
 
         $schedule->next_occurrence = Carbon::parse($nextOccurrence);
     }

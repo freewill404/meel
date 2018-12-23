@@ -3,57 +3,57 @@
 namespace App\Meel\When\Formats\Relative;
 
 use Carbon\Carbon;
-use LogicException;
+use RuntimeException;
 
 class RelativeDays extends RelativeWhenFormat
 {
     public $days = 0;
 
-    public function __construct(string $string, $timezone = null)
+    public function __construct($now, string $writtenInput)
     {
-        $this->days = $this->parseDays($string, $timezone);
+        $now = Carbon::parse((string) $now);
+
+        $this->days = $this->parseDays($now, $writtenInput);
     }
 
-    protected function parseDays($string, $timezone)
+    protected function parseDays(Carbon $now, $writtenInput)
     {
-        if (strpos($string, 'tomorrow') !== false) {
+        if (strpos($writtenInput, 'tomorrow') !== false) {
             return 1;
         }
 
-        if (preg_match('/(\d+) days? .*from now/', $string, $matches)) {
+        if (preg_match('/(\d+) days? .*from now/', $writtenInput, $matches)) {
             return (int) $matches[1];
         }
 
-        if (preg_match('/in (\d+) days?/', $string, $matches)) {
+        if (preg_match('/in (\d+) days?/', $writtenInput, $matches)) {
             return (int) $matches[1];
         }
 
-        if (preg_match('/in .*and (\d+) days?/', $string, $matches)) {
+        if (preg_match('/in .*and (\d+) days?/', $writtenInput, $matches)) {
             return (int) $matches[1];
         }
 
-        if (preg_match('/(?:^|next |this |on )(monday|tuesday|wednesday|thursday|friday|saturday|sunday)/', $string, $matches)) {
-            return $this->daysUntilNext($matches[1], $timezone);
+        if (preg_match('/(?:^|next |this |on )(monday|tuesday|wednesday|thursday|friday|saturday|sunday)/', $writtenInput, $matches)) {
+            return $this->daysUntilNext($now, $matches[1]);
         }
 
         return 0;
     }
 
-    protected function daysUntilNext(string $day, $timezone): int
+    protected function daysUntilNext(Carbon $now, string $day): int
     {
         $day = ucfirst($day);
 
-        $carbon = now($timezone);
-
         for ($i = 1; $i <= 7; $i++) {
-            $carbon->addDays(1);
+            $now->addDays(1);
 
-            if ($carbon->format('l') === $day) {
+            if ($now->format('l') === $day) {
                 return $i;
             }
         }
 
-        throw new LogicException();
+        throw new RuntimeException();
     }
 
     public function isUsableMatch(): bool

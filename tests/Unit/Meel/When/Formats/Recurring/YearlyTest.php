@@ -3,7 +3,6 @@
 namespace Tests\Unit\Meel\When\Formats\Recurring;
 
 use App\Meel\When\Formats\Recurring\Yearly;
-use Carbon\Carbon;
 
 class YearlyTest extends RecurringWhenFormatTestCase
 {
@@ -17,88 +16,42 @@ class YearlyTest extends RecurringWhenFormatTestCase
 
     protected $shouldNotMatch = [
         'every 0 years',
+        'every -1 years',
     ];
 
-    /** @test */
-    function it_uses_a_default_date_if_no_date_is_specified()
-    {
-        $this->assertNextDate('2019-01-01', 'yearly');
-    }
+    protected $testValuesExcludingToday = [
+        '2018-05-01' => [
+            'yearly' => ['2019-01-01', '2020-01-01', '2021-01-01'],
+            'yearly on the second of April' => ['2019-04-02', '2020-04-02', '2021-04-02'],
+            'yearly in Sept' => ['2018-09-01', '2019-09-01', '2020-09-01'],
+            'yearly in Aug' => ['2018-08-01', '2019-08-01', '2020-08-01'],
+            'yearly on the 20th' => ['2019-01-20', '2020-01-20', '2021-01-20'],
 
-    /** @test */
-    function it_can_get_the_next_date()
-    {
-        Carbon::setTestNow('2018-05-01 12:00:15');
+            'yearly on the 31st of May' => ['2018-05-31', '2019-05-31', '2020-05-31'],
 
-        $this->assertNextDate('2019-04-02', 'yearly on the second of April');
+            // It uses the closest possible date if the month is short.
+            'yearly on the 31st of June' => ['2018-06-30', '2019-06-30', '2020-06-30'],
 
-        $this->assertNextDate('2018-09-01', 'yearly in Sept');
+            'every 2 years in May' => ['2020-05-01', '2022-05-01', '2024-05-01'],
 
-        $this->assertNextDate('2018-08-01', 'yearly in Aug');
+            'every decade' => ['2028-01-01', '2038-01-01', '2048-01-01'],
+            'every century' => ['2118-01-01', '2218-01-01', '2318-01-01'],
+            'every millennium' => ['3018-01-01', '4018-01-01', '5018-01-01'],
 
-        $this->assertNextDate('2019-01-20', 'yearly on the 20th');
-    }
+            'yearly on the 29th of feb' => ['2019-02-28', '2020-02-29', '2021-02-28', '2022-02-28'],
 
-    /** @test */
-    function it_can_get_the_next_date_on_short_months()
-    {
-        // May has 31 days
-        Carbon::setTestNow('2018-05-01 12:00:15');
+            'every 2 years on the 29th of feb' => ['2020-02-29', '2022-02-28', '2024-02-29', '2026-02-28'],
+        ],
+    ];
 
-        $this->assertNextDate('2018-05-31', 'yearly on the 31st of May');
+    protected $testValuesIncludingToday = [
+        '2018-03-14' => [
+            'yearly on the 14th of March' => ['2018-03-14', '2018-03-14'],
+        ],
+    ];
 
-        // June has 30 days
-        Carbon::setTestNow('2018-06-01 12:00:15');
-
-        // It uses the closest possible date if the month is short.
-        $this->assertNextDate('2018-06-30', 'yearly on the 31st of June');
-    }
-
-    /** @test */
-    function it_can_get_the_next_date_on_the_same_day()
-    {
-        Carbon::setTestNow('2018-03-14 12:00:15');
-
-        [$beforeNow, $exactlyNow, $afterNow] = $this->getTimeStrings();
-
-        $this->assertNextDate('2019-03-14', 'yearly on the 14th of March', $beforeNow);
-
-        $this->assertNextDate('2019-03-14', 'yearly on the 14th of March', $exactlyNow);
-
-        $this->assertNextDate('2018-03-14', 'yearly on the 14th of March', $afterNow);
-    }
-
-    /** @test */
-    function it_can_have_a_yearly_interval()
-    {
-        $this->setTestNow('2018-05-01 12:00:15');
-
-        [$beforeNow, $exactlyNow, $afterNow] = $this->getTimeStrings();
-
-        $this->assertNextDate('2020-05-01', 'every 2 years in May', $afterNow);
-
-        $this->setTestNowDate('2020-05-01');
-
-        $this->assertNextDate('2022-05-01', 'every 2 years in May', $afterNow);
-    }
-
-    /** @test */
-    function it_understand_large_values()
-    {
-        $this->setTestNow('2018-05-01 12:00:15');
-
-        $this->assertNextDate('2028-01-01', 'every decade');
-
-        $this->assertNextDate('2118-01-01', 'every century');
-
-        $this->assertNextDate('3018-01-01', 'every millennium');
-    }
-
-    /** @test */
-    function it_has_the_correct_interval_description()
-    {
-        $this->assertIntervalDescription('yearly', 'yearly');
-
-        $this->assertIntervalDescription('every 2 years', 'every 2 years');
-    }
+    protected $testIntervalDescriptions = [
+        'yearly' => 'yearly',
+        'every 2 years' => 'every 2 years',
+    ];
 }

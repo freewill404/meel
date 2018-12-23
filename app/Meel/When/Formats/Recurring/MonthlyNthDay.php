@@ -34,24 +34,24 @@ class MonthlyNthDay extends RecurringWhenFormat
         }
     }
 
-    public function getNextDate(SecondlessTimeString $setTime, $timezone = null): DateString
+    public function getNextDate(Carbon $now, SecondlessTimeString $setTime): DateString
     {
-        $setTimeIsLaterThanNow = $setTime->laterThanNow($timezone);
+        $setTimeIsLaterThanNow = $setTime->laterThan($now);
 
         $nthDayThisMonth = new DateString(
-            Carbon::parse($this->nth.' '.$this->day.' of this month', $timezone)
+            $now->copy()->modify("{$this->nth} {$this->day} of this month")
         );
 
-        if ($nthDayThisMonth->isAfterToday($timezone)) {
+        if ($nthDayThisMonth->isAfter($now)) {
             return $nthDayThisMonth;
         }
 
-        if ($nthDayThisMonth->isToday($timezone) && $setTimeIsLaterThanNow) {
+        if ($nthDayThisMonth->isSame($now) && $setTimeIsLaterThanNow) {
             return $nthDayThisMonth;
         }
 
         return new DateString(
-            Carbon::parse($this->nth.' '.$this->day.' of next month', $timezone)
+            $now->copy()->modify("{$this->nth} {$this->day} of next month")
         );
     }
 }

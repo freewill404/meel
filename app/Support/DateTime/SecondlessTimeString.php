@@ -39,23 +39,9 @@ class SecondlessTimeString
         return $this->difference($timeString) < 0;
     }
 
-    public function earlierThanNow($timezone): bool
-    {
-        return $this->earlierThan(
-            now($timezone)
-        );
-    }
-
     public function laterThan($timeString): bool
     {
         return $this->difference($timeString) > 0;
-    }
-
-    public function laterThanNow($timezone): bool
-    {
-        return $this->laterThan(
-            now($timezone)
-        );
     }
 
     public function sameAs($timeString): bool

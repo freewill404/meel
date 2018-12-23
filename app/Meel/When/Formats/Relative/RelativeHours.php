@@ -10,22 +10,22 @@ class RelativeHours extends RelativeWhenFormat
 
     public $hours = 0;
 
-    public function __construct(string $string, $timezone = null)
+    public function __construct($now, string $writtenInput)
     {
-        $this->hours = $this->parseHours($string);
+        $this->hours = $this->parseHours($writtenInput);
     }
 
-    protected function parseHours($string)
+    protected function parseHours($writtenInput)
     {
-        if (preg_match('/in (\d+) hours?/', $string, $matches)) {
+        if (preg_match('/in (\d+) hours?/', $writtenInput, $matches)) {
             return (int) $matches[1];
         }
 
-        if (preg_match('/in .*and (\d+) hours?/', $string, $matches)) {
+        if (preg_match('/in .*and (\d+) hours?/', $writtenInput, $matches)) {
             return (int) $matches[1];
         }
 
-        if (preg_match('/(\d+) hours? .*from now/', $string, $matches)) {
+        if (preg_match('/(\d+) hours? .*from now/', $writtenInput, $matches)) {
             return (int) $matches[1];
         }
 

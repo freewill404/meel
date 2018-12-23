@@ -8,6 +8,6 @@ class UsableRecurringWhen extends UsableWhen
 {
     protected function usableWhen(ScheduleFormat $schedule): bool
     {
-        return $schedule->isUsableInterpretation() && $schedule->isRecurring();
+        return $schedule->usable() && $schedule->recurring();
     }
 }

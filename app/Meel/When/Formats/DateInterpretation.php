@@ -7,19 +7,21 @@ use Carbon\Carbon;
 
 class DateInterpretation
 {
-    protected $timezone;
+    private $now;
 
-    protected $year;
+    private $year;
 
-    protected $month;
+    private $month;
 
-    protected $day;
+    private $day;
 
-    public function __construct(string $string, $timezone = null)
+    public function __construct($dateTime, string $writtenInput)
     {
-        $this->timezone = $timezone;
+        $this->now = $dateTime instanceof Carbon
+            ? $dateTime->copy()
+            : Carbon::parse($dateTime);
 
-        $this->interpretDate($string);
+        $this->interpretDate($writtenInput);
 
         if ($this->hasSpecifiedDay()) {
             $carbon = Carbon::parse('01-'.$this->getMonth().'-'.$this->getYear())->lastOfMonth();
@@ -32,7 +34,7 @@ class DateInterpretation
         }
     }
 
-    protected function interpretDate($string)
+    private function interpretDate($string)
     {
         // Match dates like: "01-01-2000", "01-01 2000", "01 01 2000"
         if (preg_match('/\d?\d[\- ]\d?\d[\- ]\d{4}/', $string, $matches)) {
@@ -108,7 +110,7 @@ class DateInterpretation
      *
      * @return array
      */
-    protected function parseDayAndMonth($a, $b)
+    private function parseDayAndMonth($a, $b)
     {
         $failed = [null, null];
 
@@ -141,39 +143,45 @@ class DateInterpretation
             $this->getYear().'-'.$this->getMonth().'-'.$this->getDay()
         );
 
-        return $dateString->isBeforeToday($this->timezone) && ! $this->hasSpecifiedYear()
+        return $dateString->isBefore($this->now) && ! $this->hasSpecifiedYear()
             ? $dateString->addYears(1)
             : $dateString;
     }
 
-    protected function defaultYear()
+    private function defaultYear()
     {
-        return now($this->timezone)->format('Y');
+        return $this->now->format('Y');
     }
 
-    protected function defaultMonth()
+    private function defaultMonth()
     {
         return '01';
     }
 
-    protected function defaultDay()
+    private function defaultDay()
     {
         return '01';
     }
 
     public function getYear(): string
     {
-        return $this->year ? str_pad($this->year, 2, '0', STR_PAD_LEFT) : $this->defaultYear();
+        return $this->year
+            ? str_pad($this->year, 2, '0', STR_PAD_LEFT)
+            : $this->defaultYear();
     }
 
     public function getMonth(): string
     {
-        return $this->month ? str_pad($this->month, 2, '0', STR_PAD_LEFT) : $this->defaultMonth();
+        return $this->month
+            ? str_pad($this->month, 2, '0', STR_PAD_LEFT)
+            : $this->defaultMonth();
     }
 
     public function getDay(): string
     {
-        return $this->day ? str_pad($this->day, 2, '0', STR_PAD_LEFT) : $this->defaultDay();
+        return $this->day
+            ? str_pad($this->day, 2, '0', STR_PAD_LEFT)
+            : $this->defaultDay();
     }
 
     public function hasSpecifiedDate(): bool
