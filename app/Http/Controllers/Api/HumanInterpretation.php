@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Meel\DateTimeDiff;
 use App\Meel\When\ScheduleFormat;
+use App\Models\InputLog;
 use Illuminate\Http\Request;
 
 class HumanInterpretation extends Controller
@@ -44,11 +45,13 @@ class HumanInterpretation extends Controller
 
     private function interpret(Request $request)
     {
-        $request->validate([
-            'when' => 'nullable|string|max:255',
+        $values = $request->validate([
+            'written_input' => 'nullable|string|max:255',
+            'source' => 'required|string|max:255',
+            'session_id' => 'required|string|max:255',
         ]);
 
-        $writtenInput = $request->get('when');
+        $writtenInput = $request->get('written_input');
 
         if ($writtenInput === null) {
             $error = ['valid' => true, 'humanInterpretation' => ''];
@@ -57,9 +60,14 @@ class HumanInterpretation extends Controller
         }
 
         $schedule = new ScheduleFormat(
-            $now = now($request->user()->timezone),
-            $writtenInput
+            $now = now($request->user()->timezone), $writtenInput
         );
+
+        InputLog::create($values + [
+            'usable' => $schedule->usable(),
+            'recurring' => $schedule->recurring(),
+            'created_at' => now(),
+        ]);
 
         if (! $schedule->usable()) {
             $error = ['valid' => false, 'humanInterpretation' => ''];

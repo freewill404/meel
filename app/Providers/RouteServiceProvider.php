@@ -11,34 +11,28 @@ class RouteServiceProvider extends ServiceProvider
 
     public function map()
     {
-        $this->mapApiRoutes();
+        Route::middleware(['api', 'auth:api'])
+            ->prefix('api/v1')
+            ->name('api.')
+            ->namespace($this->namespace.'\\Api')
+            ->group(base_path('routes/api-routes.php'));
 
-        $this->mapGuestWebRoutes();
 
-        $this->mapUserWebRoutes();
-    }
-
-    protected function mapGuestWebRoutes()
-    {
         Route::middleware('web')
-             ->namespace($this->namespace)
-             ->group(base_path('routes/web-routes.php'));
-    }
+            ->namespace($this->namespace)
+            ->group(base_path('routes/web-routes.php'));
 
-    protected function mapUserWebRoutes()
-    {
+
         Route::middleware(['web', 'auth'])
-             ->name('user.')
-             ->namespace($this->namespace.'\\User')
-             ->group(base_path('routes/web-user-routes.php'));
-    }
+            ->name('user.')
+            ->namespace($this->namespace.'\\User')
+            ->group(base_path('routes/web-user-routes.php'));
 
-    protected function mapApiRoutes()
-    {
-        Route::prefix('api/v1')
-             ->middleware(['api', 'auth:api'])
-             ->name('api.')
-             ->namespace($this->namespace.'\\Api')
-             ->group(base_path('routes/api-routes.php'));
+
+        Route::middleware(['web', 'auth', 'is-admin'])
+            ->prefix('admin')
+            ->name('admin.')
+            ->namespace($this->namespace.'\\Admin')
+            ->group(base_path('routes/web-admin-routes.php'));
     }
 }

@@ -40,6 +40,7 @@ class DateTimeDiffTest extends TestCase
         // Saturday
         '2018-05-12 12:00' => [
             '2018-05-13 13:00' => 'tomorrow at 13:00',
+            '2018-05-12 12:00' => 'right now',
         ],
 
         // Saturday

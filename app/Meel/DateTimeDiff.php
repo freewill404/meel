@@ -19,11 +19,13 @@ class DateTimeDiff
 
         $this->nextOccurrence = Carbon::parse((string) $nextOccurrence);
 
-        if ($this->nextOccurrence->lessThanOrEqualTo($this->now)) {
+        if ($this->nextOccurrence->lessThan($this->now)) {
             throw new RuntimeException('Next occurrence has to be in the future');
         }
 
-        $this->value = $this->parse();
+        $this->value = $this->nextOccurrence->equalTo($this->now)
+            ? 'right now'
+            : $this->parse();
     }
 
     public function diff()

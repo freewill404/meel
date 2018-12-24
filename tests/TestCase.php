@@ -3,6 +3,7 @@
 namespace Tests;
 
 use App\Models\User;
+use App\Support\Enums\UserRole;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Contracts\Console\Kernel;
@@ -50,6 +51,39 @@ abstract class TestCase extends BaseTestCase
         parent::tearDown();
     }
 
+    /**
+     * @param null $user
+     *
+     * @return TestCase|$this
+     */
+    protected function login($user = null)
+    {
+        $user = $user ?: factory(User::class)->create();
+
+        return $this->actingAs($user);
+    }
+
+    /**
+     * @param null $user
+     *
+     * @return TestCase|$this
+     */
+    protected function adminLogin($user = null)
+    {
+        $user = $user ?: factory(User::class)->create(['role' => UserRole::ADMIN]);
+
+        if ($user->role !== UserRole::ADMIN) {
+            throw new \RuntimeException();
+        }
+
+        return $this->login($user);
+    }
+
+    /**
+     * @param null $user
+     *
+     * @return TestCase|$this
+     */
     protected function apiLogin($user = null)
     {
         $user = $user ?: factory(User::class)->create();

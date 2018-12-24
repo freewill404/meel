@@ -10,6 +10,8 @@ class DatabaseSeeder extends Seeder
              UsersTableSeeder::class,
              SchedulesTableSeeder::class,
              FeedsTableSeeder::class,
+
+             InputLogsTableSeeder::class,
          ]);
     }
 }

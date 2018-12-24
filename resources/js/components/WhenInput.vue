@@ -29,6 +29,7 @@
             when: '',
             humanInterpretation: '',
             valid: true,
+            sessionIdentifier: Math.floor(Math.random() * 1e16).toString(),
         }),
 
         mounted: function() {
@@ -45,9 +46,11 @@
             }, 200),
 
             validateWhen: function () {
-                this.requestFormat = this.when;
-
-                axios.post('/api/v1/human-when-interpretation/'+this.feature, { 'when': this.when }).then(response => {
+                axios.post(`/api/v1/human-when-interpretation/${this.feature}`, {
+                    'written_input': this.when,
+                    'session_id': this.sessionIdentifier,
+                    'source': this.feature,
+                }).then(response => {
                     this.valid = response.data.valid;
 
                     this.humanInterpretation = response.data.humanInterpretation;
