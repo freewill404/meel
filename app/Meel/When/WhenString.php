@@ -87,6 +87,9 @@ class WhenString
         'second' => '2nd',
         'third'  => '3rd',
         'fourth' => '4th',
+
+        'min' => 'minutes',
+        'mins' => 'minutes',
     ];
 
     private const MONTHS = [

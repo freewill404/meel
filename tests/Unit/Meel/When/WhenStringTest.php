@@ -97,6 +97,11 @@ class WhenStringTest extends TestCase
         'sept 0' => 'september 0',
         '32 sept' => '32 september',
         'sept 32' => 'september 32',
+
+        'in 5 mins' => 'in 5 minutes',
+        'in 5 min' => 'in 5 minutes',
+        'in 5 mins and 1 hour' => 'in 5 minutes and 1 hour',
+        'in 1 hour and 1 min' => 'in 1 hour and 1 minutes',
     ];
 
     /** @test */
