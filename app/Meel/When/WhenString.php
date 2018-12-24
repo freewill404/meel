@@ -121,10 +121,12 @@ class WhenString
             $string = preg_replace('/(^| )'.$search.'( |$)/', '${1}'.$replace.'${2}', $string);
         }
 
-        return $this->replaceWrittenMonths($string);
+        $string = $this->replaceWrittenMonths($string);
+
+        return $this->changeTo24HourFormat($string);
     }
 
-    protected function replaceWrittenMonths($string)
+    private function replaceWrittenMonths($string)
     {
         $months = '(january|february|march|april|may|june|july|august|september|october|november|december)';
 
@@ -163,5 +165,27 @@ class WhenString
         $string = preg_replace('/(\d\d-\d\d) (\d{4})/', '$1-$2', $string);
 
         return $string;
+    }
+
+    /**
+     * Change am/pm times to 24 hour format.
+     *
+     * @param $string
+     *
+     * @return string
+     */
+    private function changeTo24HourFormat($string)
+    {
+        return preg_replace_callback('/(^| )((\d+|\d\d?:\d\d)(?: |)(am|pm))( |$)/', function ($matches) {
+            [$hours, $minutes] = strpos($matches[3], ':') ? explode(':', $matches[3]) : [$matches[3], '0'];
+
+            if ($hours <= 0 || $hours > 12 || $minutes > 59) {
+                return $matches[0];
+            }
+
+            $fullTime = date('H:i', strtotime($matches[2]));
+
+            return $matches[1].$fullTime.$matches[5];
+        }, $string);
     }
 }

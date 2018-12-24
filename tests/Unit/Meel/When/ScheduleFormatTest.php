@@ -41,6 +41,10 @@ class ScheduleFormatTest extends TestCase
 
             'in 5 mins' => '2018-03-28 12:05',
             'in 1 min please' => '2018-03-28 12:01',
+
+            'at 1:30pm' => '2018-03-28 13:30',
+            'tomorrow at 3pm' => '2018-03-29 15:00',
+            'tomorrow at 3 am' => '2018-03-29 03:00',
         ],
     ];
 

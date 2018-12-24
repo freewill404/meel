@@ -102,6 +102,32 @@ class WhenStringTest extends TestCase
         'in 5 min' => 'in 5 minutes',
         'in 5 mins and 1 hour' => 'in 5 minutes and 1 hour',
         'in 1 hour and 1 min' => 'in 1 hour and 1 minutes',
+        'in 1 minotaur from now' => 'in 1 minotaur from now',
+
+        'at 2 am' => 'at 02:00',
+        'at 2am' => 'at 02:00',
+        'at 2 pm' => 'at 14:00',
+        'at 2pm' => 'at 14:00',
+        'at 12am' => 'at 00:00',
+        'at 12pm' => 'at 12:00',
+        'at 1:30 am' => 'at 01:30',
+        'at 1:30am' => 'at 01:30',
+        'at 1:30 pm' => 'at 13:30',
+        'at 1:30pm' => 'at 13:30',
+        'at 12:30pm' => 'at 12:30',
+        'at 12:30 pm' => 'at 12:30',
+        'at 12:30am' => 'at 00:30',
+        'at 12:30 am' => 'at 00:30',
+
+        // the following am/pm values are invalid.
+        'at 13pm' => 'at 13pm',
+        'at 13:30pm' => 'at 13:30pm',
+        'at 13am' => 'at 13am',
+        'at 13:30am' => 'at 13:30am',
+        'at 111am' => 'at 111am',
+        'at 2 amsterdam' => 'at 2 amsterdam',
+        'at 1:30pmazan' => 'at 1:30pmazan',
+
     ];
 
     /** @test */
@@ -112,6 +138,12 @@ class WhenStringTest extends TestCase
                 $expectedPreparedInput,
                 $actual = (new WhenString)->prepare($writtenInput),
                 "WhenString error:\n\n  input:    {$writtenInput}\n  prepared: {$actual}\n  expected: {$expectedPreparedInput}\n"
+            );
+
+            $this->assertSame(
+                $actual,
+                (new WhenString)->prepare($actual),
+                'Prepared string changed when being prepared twice'
             );
         }
     }
