@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Controllers\Api;
 
+use App\Models\InputLog;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -41,11 +42,16 @@ class HumanInterpretationControllerTest extends TestCase
     }
 
     /** @test */
-    function basic_non_recurring_interpretation()
+    function it_stores_an_input_log_record()
     {
         $this->apiLogin()->assertValidHumanInterpretation(
             'Once, next Wednesday at 16:00',
             'next week at 16:00'
+        );
+
+        $this->assertSame(
+            'next week at 16:00',
+            InputLog::all()->first()->written_input
         );
     }
 
@@ -71,14 +77,17 @@ class HumanInterpretationControllerTest extends TestCase
         return $this->assertHumanInterpretation($expected, $input, false);
     }
 
+    private function postWrittenInput($data)
+    {
+        return $this->json('POST', route('api.humanInterpretation.schedule'), $data + [
+            'source' => 'test',
+            'session_id' => '123',
+        ]);
+    }
+
     private function assertHumanInterpretation($expected, $input, $expectedIsValid)
     {
-        $content = $this->json('POST', route('api.humanInterpretation.schedule'), [
-                'written_input' => $input,
-            ] + [
-                'source' => 'test',
-                'session_id' => '123',
-            ])
+        $content = $this->postWrittenInput(['written_input' => $input])
             ->assertStatus(200)
             ->getContent();
 

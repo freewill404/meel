@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Meel\DateTimeDiff;
 use App\Meel\When\ScheduleFormat;
+use App\Meel\When\WhenString;
 use App\Models\InputLog;
 use Illuminate\Http\Request;
 
@@ -64,6 +65,7 @@ class HumanInterpretation extends Controller
         );
 
         InputLog::create($values + [
+            'prepared_written_input' => (new WhenString)->prepare($writtenInput),
             'usable' => $schedule->usable(),
             'recurring' => $schedule->recurring(),
             'created_at' => now(),

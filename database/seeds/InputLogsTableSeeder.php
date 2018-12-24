@@ -1,6 +1,7 @@
 <?php
 
 use App\Meel\When\ScheduleFormat;
+use App\Meel\When\WhenString;
 use App\Models\InputLog;
 use Illuminate\Database\Seeder;
 
@@ -16,6 +17,11 @@ class InputLogsTableSeeder extends Seeder
             'every day at 1',
             'every day at 1:00',
             'every day at 13:00',
+        ]);
+
+        $this->createInputLog([
+            'in j',
+            'in jan',
         ]);
 
         $this->createInputLog([
@@ -40,6 +46,7 @@ class InputLogsTableSeeder extends Seeder
                 'session_id' => $sessionId,
                 'source' => $source,
                 'written_input' => $value,
+                'prepared_written_input' => (new WhenString)->prepare($value),
                 'usable' => $schedule->usable(),
                 'recurring' => $schedule->recurring(),
                 'created_at' => now(),
