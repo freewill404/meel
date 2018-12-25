@@ -10,33 +10,51 @@ class MonthlyNthDay extends RecurringWhenFormat
 {
     protected $intervalDescription = 'monthly';
 
-    protected $nth;
+    private $nth;
 
-    protected $day;
+    private $nthNumber;
+
+    private $day;
 
     public function __construct(string $string)
     {
         // Match:
         //   "every third saturday of the month"
         //   "the last saturday of the month"
-        $this->usableMatch = preg_match('/(?:^| )(1st|2nd|3rd|4th|last) (monday|tuesday|wednesday|thursday|friday|saturday|sunday) of the month/', $string, $matches);
+        //   "the last day of the month"
+        //   "the 12th day of the month"
+        $this->usableMatch = preg_match('/(?:^| )(\d\d?(?:st|nd|rd|th)|last) (day|monday|tuesday|wednesday|thursday|friday|saturday|sunday) of the month/', $string, $matches);
 
-        if ($this->usableMatch) {
-            // Carbon::parse needs written ordinal numbers
-            $this->nth = strtr($matches[1], [
-                '1st' => 'first',
-                '2nd' => 'second',
-                '3rd' => 'third',
-                '4th' => 'fourth',
-            ]);
+        if (! $this->usableMatch) {
+            return;
+        }
 
-            $this->day = $matches[2];
+        // Carbon's "modify" needs written ordinal numbers
+        $this->nth = strtr($matches[1], [
+            '1st' => 'first',
+            '2nd' => 'second',
+            '3rd' => 'third',
+            '4th' => 'fourth',
+        ]);
+
+        $this->nthNumber = $matches[1] === 'last'
+            ? null
+            : substr($matches[1], 0, strlen($matches[1]) - 2);
+
+        $this->day = $matches[2];
+
+        if ($this->day !== 'day' && $this->nthNumber > 4) {
+            $this->usableMatch = false;
         }
     }
 
     public function getNextDate(Carbon $now, SecondlessTimeString $setTime): DateString
     {
         $setTimeIsLaterThanNow = $setTime->laterThan($now);
+
+        if ($this->day === 'day' && $this->nth !== 'last') {
+            return $this->nextNthDay($now, $setTimeIsLaterThanNow);
+        }
 
         $nthDayThisMonth = new DateString(
             $now->copy()->modify("{$this->nth} {$this->day} of this month")
@@ -53,5 +71,34 @@ class MonthlyNthDay extends RecurringWhenFormat
         return new DateString(
             $now->copy()->modify("{$this->nth} {$this->day} of next month")
         );
+    }
+
+    private function nextNthDay(Carbon $now, $setTimeIsLaterThanNow)
+    {
+        $baseMonth = $now->copy()->lastOfMonth();
+
+        // When the request is for date 28, 29, 30 or 31, and the current month
+        // has less days than that, set the date to the last day of the month.
+        if ($baseMonth->day >= $this->nthNumber) {
+            $baseMonth->day($this->nthNumber);
+        }
+
+        $nthDayThisMonth = new DateString($baseMonth);
+
+        if ($nthDayThisMonth->isAfter($now)) {
+            return $nthDayThisMonth;
+        }
+
+        if ($nthDayThisMonth->isSame($now) && $setTimeIsLaterThanNow) {
+            return $nthDayThisMonth;
+        }
+
+        $nextMonth = $now->copy()->addMonthNoOverflow(1)->lastOfMonth();
+
+        if ($nextMonth->day >= $this->nthNumber) {
+            $nextMonth->day($this->nthNumber);
+        }
+
+        return new DateString($nextMonth);
     }
 }
