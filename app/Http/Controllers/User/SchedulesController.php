@@ -4,15 +4,32 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\MeelRequest;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
 class SchedulesController extends Controller
 {
     public function index()
     {
+        /** @var User $user */
+        $user = Auth::user();
+
         return view('schedules.index', [
-            'user'      => Auth::user(),
-            'schedules' => Auth::user()->schedules->sortBy('next_occurrence'),
+            'user' => $user,
+            'noSchedulesYet' => $user->email_schedules_created === 0,
+            'hasUpcomingSchedules' => $user->schedules->where('next_occurrence', '!=', null)->isNotEmpty(),
+        ]);
+    }
+
+    public function ended()
+    {
+        /** @var User $user */
+        $user = Auth::user();
+
+        return view('schedules.ended-schedules', [
+            'user' => $user,
+            'noSchedulesYet' => $user->email_schedules_created === 0,
+            'hasEndedSchedules' => $user->schedules->where('next_occurrence', null)->isNotEmpty(),
         ]);
     }
 

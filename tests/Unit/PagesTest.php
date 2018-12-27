@@ -22,6 +22,7 @@ class PagesTest extends TestCase
 
     protected $userRoutes = [
         'user.schedules',
+        'user.schedules.ended',
         'user.schedules.ok',
         'user.feeds',
         'user.feeds.create',

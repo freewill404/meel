@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Controllers\Api;
+namespace Tests\Unit\Controllers\User\Api;
 
 use App\Models\InputLog;
 use App\Models\User;

@@ -8,6 +8,10 @@ class FeedsTableSeeder extends Seeder
 {
     public function run()
     {
+        if (! $this->command->confirm('Seed feeds?', true)) {
+            return;
+        }
+
         User::each(function (User $user) {
             $user->feeds()->saveMany([
                 factory(Feed::class)->make([

@@ -1,8 +1,9 @@
 <?php
 
-Route::get('/schedules', ['uses' => 'SchedulesController@index', 'as' => 'schedules']);
-Route::post('/',         ['uses' => 'SchedulesController@post',  'as' => 'schedules.post']);
-Route::get('/ok',        ['uses' => 'SchedulesController@ok',    'as' => 'schedules.ok']);
+Route::get('/schedules',       ['uses' => 'SchedulesController@index', 'as' => 'schedules']);
+Route::get('/schedules/ended', ['uses' => 'SchedulesController@ended', 'as' => 'schedules.ended']);
+Route::post('/',               ['uses' => 'SchedulesController@post',  'as' => 'schedules.post']);
+Route::get('/ok',              ['uses' => 'SchedulesController@ok',    'as' => 'schedules.ok']);
 
 
 Route::get('/feeds',           ['uses' => 'FeedsController@index',  'as' => 'feeds']);

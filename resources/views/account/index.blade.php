@@ -66,6 +66,13 @@
         </form>
 
 
+
+        <form method="post" class="panel w-2/3 mb-16" action="{{ route('logout') }}">
+            {{ csrf_field() }}
+            <button class="btn block ml-auto">Logout</button>
+        </form>
+
+
         @if($errors->count())
             <div class="mx-auto text-md p-2 mt-8 bg-red-lighter rounded border-l-4 border-red">
                 <strong class="block mb-2">The following errors occurred:</strong>

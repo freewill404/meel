@@ -14,8 +14,8 @@ class RouteServiceProvider extends ServiceProvider
         Route::middleware(['api', 'auth:api'])
             ->prefix('api/v1')
             ->name('api.')
-            ->namespace($this->namespace.'\\Api')
-            ->group(base_path('routes/api-routes.php'));
+            ->namespace($this->namespace.'\\User\\Api')
+            ->group(base_path('routes/user-api-routes.php'));
 
 
         Route::middleware('web')
@@ -26,13 +26,13 @@ class RouteServiceProvider extends ServiceProvider
         Route::middleware(['web', 'auth'])
             ->name('user.')
             ->namespace($this->namespace.'\\User')
-            ->group(base_path('routes/web-user-routes.php'));
+            ->group(base_path('routes/user-web-routes.php'));
 
 
         Route::middleware(['web', 'auth', 'is-admin'])
             ->prefix('admin')
             ->name('admin.')
             ->namespace($this->namespace.'\\Admin')
-            ->group(base_path('routes/web-admin-routes.php'));
+            ->group(base_path('routes/admin-web-routes.php'));
     }
 }

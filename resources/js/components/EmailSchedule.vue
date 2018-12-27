@@ -1,12 +1,12 @@
 <template>
-    <div v-if="! isDeleted" class="py-1 mb-3">
+    <div class="py-1 mb-3">
         <input ref="whatInput"
                v-model="what"
                @blur="save()"
                @keyup.enter="save()"
                maxlength="255"
                class="w-full"
-               :class="{ 'bg-grey-lighter': ! isEditing, 'field': isEditing }"
+               :class="{ 'bg-grey-lightest': ! isEditing, 'field': isEditing }"
                :disabled="! isEditing"
         >
 
@@ -42,7 +42,7 @@
     export default {
 
         props: {
-            scheduleId: String,
+            scheduleId: Number,
             initialWhat: String,
             isRecurring: Boolean,
             lastSentAt: String,
@@ -55,7 +55,6 @@
             what: '',
             isEditing: false,
             deleteClickedOnce: false,
-            isDeleted: false,
         }),
 
         mounted: function() {
@@ -88,9 +87,9 @@
                     return;
                 }
 
-                this.isDeleted = true;
-
                 axios.delete('/api/v1/schedule/'+this.scheduleId);
+
+                this.$emit('deleted', this.scheduleId);
             },
         },
 

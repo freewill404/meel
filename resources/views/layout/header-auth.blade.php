@@ -9,26 +9,29 @@
     </span>
 
     <span class="flex justify-between items-center">
-        <a class="mr-4 text-grey-dark w-4" title="Schedules" href="{{ route('user.schedules') }}">
+        <a class="relative mr-4 w-4" title="Schedules" href="{{ route('user.schedules') }}">
             @include('helpers.svg.envelope')
+
+            @if(Route::is('user.schedules*'))
+                <div class="absolute -ml-1 w-6 border-b-4 border-yellow-dark"></div>
+            @endif
         </a>
 
-        <a class="mr-4 text-grey-dark w-4" title="Feeds" href="{{ route('user.feeds') }}">
+        <a class="mr-4 w-4" title="Feeds" href="{{ route('user.feeds') }}">
             @include('helpers.svg.feed')
+
+            @if(Route::is('user.feeds*'))
+                <div class="absolute -ml-1 w-6 border-b-4 border-yellow-dark"></div>
+            @endif
         </a>
 
-        @if(Route::is('user.account'))
-            <form method="post" class="inline-block" action="{{ route('logout') }}">
-                {{ csrf_field() }}
-                <button class="text-grey-dark w-4" title="Logout">
-                    @include('helpers.svg.sign-out')
-                </button>
-            </form>
-        @else
-            <a class="text-grey-dark w-4" title="Account" href="{{ route('user.account') }}">
-                @include('helpers.svg.cog')
-            </a>
-        @endif
+        <a class="w-4" title="Account" href="{{ route('user.account') }}">
+            @include('helpers.svg.cog')
+
+            @if(Route::is('user.account*'))
+                <div class="absolute -ml-1 w-6 border-b-4 border-yellow-dark"></div>
+            @endif
+        </a>
 
     </span>
 

@@ -24,6 +24,10 @@ class SchedulesTableSeeder extends Seeder
 
     public function run()
     {
+        if (! $this->command->confirm('Seed schedules?', true)) {
+            return;
+        }
+
         Mail::fake();
 
         User::all()->each(function (User $user) {

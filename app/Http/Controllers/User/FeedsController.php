@@ -5,6 +5,7 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use App\Http\Rules\UsableRecurringWhen;
 use App\Models\Feed;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -12,8 +13,12 @@ class FeedsController extends Controller
 {
     public function index()
     {
+        /** @var User $user */
+        $user = Auth::user();
+
         return view('feeds.index', [
-            'feeds' => Auth::user()->feeds,
+            'feeds' => $user->feeds,
+            'noFeedsYet' => $user->feeds_created === 0,
         ]);
     }
 
@@ -28,8 +33,8 @@ class FeedsController extends Controller
     public function store(Request $request)
     {
         $values = $request->validate([
-            'url'               => 'required|string|url|max:255',
-            'when'              => ['nullable', 'present', 'string', 'max:255', new UsableRecurringWhen],
+            'url' => 'required|string|url|max:255',
+            'when' => ['nullable', 'present', 'string', 'max:255', new UsableRecurringWhen],
             'group_new_entries' => 'required|boolean',
         ]);
 
@@ -48,8 +53,8 @@ class FeedsController extends Controller
     public function update(Request $request, Feed $feed)
     {
         $values = $request->validate([
-            'url'               => 'required|string|url|max:255',
-            'when'              => ['nullable', 'present', 'string', 'max:255', new UsableRecurringWhen],
+            'url' => 'required|string|url|max:255',
+            'when' => ['nullable', 'present', 'string', 'max:255', new UsableRecurringWhen],
             'group_new_entries' => 'required|boolean',
         ]);
 
