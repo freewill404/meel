@@ -25,6 +25,9 @@ php artisan migrate:fresh --seed
 npm install && npm run dev
 ```
 
+## Credits
+Most illustrations used are made by [unDraw.co](https://undraw.co/)
+
 ## License
 
 This project is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT)
