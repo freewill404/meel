@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers\User\Api;
 
-use App\Http\Controllers\Controller;
 use App\Meel\DateTimeDiff;
 use App\Meel\When\ScheduleFormat;
 use App\Meel\When\WhenString;
 use App\Models\InputLog;
 use Illuminate\Http\Request;
 
-class HumanInterpretation extends Controller
+class HumanInterpretation
 {
     public function schedule(Request $request)
     {

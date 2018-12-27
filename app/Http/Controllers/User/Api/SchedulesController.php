@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers\User\Api;
 
-use App\Http\Controllers\Controller;
 use App\Http\Resources\ScheduleResource;
 use App\Models\Schedule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class SchedulesController extends Controller
+class SchedulesController
 {
     public function upcoming()
     {
@@ -26,7 +25,7 @@ class SchedulesController extends Controller
         $endedSchedules = Auth::user()
             ->schedules()
             ->whereNull('next_occurrence')
-            ->orderBy('last_sent_at')
+            ->orderByDesc('last_sent_at')
             ->get();
 
         return ScheduleResource::collection($endedSchedules);

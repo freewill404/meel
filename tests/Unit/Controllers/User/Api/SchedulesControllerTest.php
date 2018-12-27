@@ -98,7 +98,7 @@ class SchedulesControllerTest extends TestCase
         $this->apiLogin($user)
             ->getEndedSchedules()
             ->assertStatus(200)
-            ->assertSeeInOrder(['bbb', 'ccc'])
+            ->assertSeeInOrder(['ccc', 'bbb'])
             ->assertDontSee('aaa');
     }
 
