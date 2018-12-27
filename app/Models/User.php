@@ -16,20 +16,16 @@ class User extends Authenticatable
 
     protected $guarded = [];
 
-    protected $hidden = [
-        'password', 'remember_token',
-    ];
-
     protected $casts = [
-        'email_confirmed'           => 'bool',
-        'emails_left'               => 'integer',
-        'max_feeds'                 => 'integer',
-        'email_schedules_created'   => 'integer',
-        'scheduled_emails_sent'     => 'integer',
-        'scheduled_emails_not_sent' => 'integer',
-        'feeds_created'             => 'integer',
-        'feed_emails_sent'          => 'integer',
-        'feed_emails_not_sent'      => 'integer',
+        'email_confirmed' => 'bool',
+        'emails_left' => 'int',
+        'max_feeds' => 'int',
+        'email_schedules_created' => 'int',
+        'scheduled_emails_sent' => 'int',
+        'scheduled_emails_not_sent' => 'int',
+        'feeds_created' => 'int',
+        'feed_emails_sent' => 'int',
+        'feed_emails_not_sent' => 'int',
     ];
 
     public function schedules()

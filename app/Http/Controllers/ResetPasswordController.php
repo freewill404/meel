@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ResetsPasswords;
 use Illuminate\Http\Request;
 
-class ResetPasswordController extends Controller
+class ResetPasswordController
 {
     use ResetsPasswords;
 
@@ -14,11 +13,6 @@ class ResetPasswordController extends Controller
      * Where to redirect users after resetting their password.
      */
     protected $redirectTo = '/';
-
-    public function __construct()
-    {
-        $this->middleware('guest');
-    }
 
     public function showResetForm(Request $request, $token = null)
     {

@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers\User;
 
-use App\Http\Controllers\Controller;
 use App\Models\Feedback;
 use Illuminate\Http\Request;
 
-class FeedbackController extends Controller
+class FeedbackController
 {
     public function index()
     {
@@ -20,7 +19,7 @@ class FeedbackController extends Controller
         ]);
 
         Feedback::create([
-            'user_id'  => $request->user()->id,
+            'user_id' => $request->user()->id,
             'feedback' => $request->get('feedback'),
         ]);
 

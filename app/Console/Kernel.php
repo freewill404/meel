@@ -15,18 +15,15 @@ class Kernel extends ConsoleKernel
 {
     protected function schedule(Schedule $schedule)
     {
-        // Schedules
         $schedule->job(QueueDueEmailsJob::class)->everyMinute();
-
-        // Feeds
         $schedule->job(QueueDueFeedsJob::class)->everyMinute();
 
         // Diagnostic
         $schedule->job(SendAdminDigestJob::class)->monthlyOn(1, '07:00');
-        $schedule->job(SendAdminAlertJob::class )->dailyAt('17:30');
+        $schedule->job(SendAdminAlertJob::class)->dailyAt('17:30');
 
         // Other
-        $schedule->job(GenerateSitemapJob::class   )->dailyAt('2:05');
+        $schedule->job(GenerateSitemapJob::class)->dailyAt('2:05');
         $schedule->call([SiteStats::class, 'today'])->twiceDaily(); // Ensure every day has a SiteStats model
 
         $schedule->command('backup:run-configless --disable-notifications --only-db --set-destination-disks=dropbox')->dailyAt('2:10');

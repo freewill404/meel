@@ -9,6 +9,6 @@ class Feedback extends Model
     protected $guarded = [];
 
     protected $casts = [
-        'user_id' => 'integer',
+        'user_id' => 'int',
     ];
 }

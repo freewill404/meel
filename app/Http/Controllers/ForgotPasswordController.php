@@ -1,19 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
 use Illuminate\Http\Request;
 
-class ForgotPasswordController extends Controller
+class ForgotPasswordController
 {
     use SendsPasswordResetEmails;
-
-    public function __construct()
-    {
-        $this->middleware('guest');
-    }
 
     public function showLinkRequestForm()
     {

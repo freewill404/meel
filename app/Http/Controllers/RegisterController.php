@@ -1,22 +1,16 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace App\Http\Controllers;
 
 use App\Http\Rules\UniqueEmail;
 use App\Models\User;
-use App\Http\Controllers\Controller;
 use App\Support\Enums\Timezone;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class RegisterController extends Controller
+class RegisterController
 {
-    public function __construct()
-    {
-        $this->middleware('guest');
-    }
-
     public function showRegistrationForm()
     {
         return view('auth.register', [
@@ -27,15 +21,15 @@ class RegisterController extends Controller
     public function register(Request $request)
     {
         $request->validate([
-            'email'    => ['required', 'string', 'email', 'max:255', new UniqueEmail],
+            'email' => ['required', 'string', 'email', 'max:255', new UniqueEmail],
             'timezone' => Timezone::required(),
-            'password' => 'required|string|min:6',
+            'password' => 'required|string|min:6|confirmed',
         ]);
 
         $user = User::create([
-            'email'               => $request->get('email'),
-            'timezone'            => $request->get('timezone'),
-            'password'            => bcrypt($request->get('password')),
+            'email' => $request->get('email'),
+            'timezone' => $request->get('timezone'),
+            'password' => bcrypt($request->get('password')),
             'email_confirm_token' => sha1(str_random(16)),
         ]);
 

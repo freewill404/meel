@@ -1,5 +1,5 @@
 @extends('layout.base-template', [
-    'title'       => 'Register an account | Meel.me',
+    'title' => 'Create an account | Meel.me',
     'description' => 'Register today to start mailing yourself',
 ])
 
@@ -20,6 +20,11 @@
         <label>
             Password
             <input class="field" type="password" name="password" required>
+        </label>
+
+        <label>
+            Repeat password
+            <input class="field" type="password" name="password_confirmation" required>
         </label>
 
         <label class="block">

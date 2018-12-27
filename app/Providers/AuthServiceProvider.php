@@ -12,7 +12,7 @@ class AuthServiceProvider extends ServiceProvider
 {
     protected $policies = [
         Schedule::class => SchedulePolicy::class,
-        Feed::class     => FeedPolicy::class,
+        Feed::class => FeedPolicy::class,
     ];
 
     public function boot()

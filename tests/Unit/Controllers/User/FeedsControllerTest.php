@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Controllers;
+namespace Tests\Unit\Controllers\User;
 
 use App\Models\Feed;
 use App\Models\User;

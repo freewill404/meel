@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Controllers;
+namespace Tests\Unit\Controllers\User;
 
 use App\Models\Schedule;
 use App\Models\SiteStats;

@@ -17,10 +17,10 @@ class Schedule extends Model
     protected $guarded = [];
 
     protected $casts = [
-        'user_id'         => 'integer',
-        'times_sent'      => 'integer',
+        'user_id' => 'int',
+        'times_sent' => 'int',
         'next_occurrence' => 'datetime',
-        'last_sent_at'    => 'datetime',
+        'last_sent_at' => 'datetime',
     ];
 
     public function user()

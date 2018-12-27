@@ -11,14 +11,14 @@ class SiteStats extends Model
     public $timestamps = false;
 
     protected $casts = [
-        'users_registered'          => 'integer',
-        'email_schedules_created'   => 'integer',
-        'scheduled_emails_sent'     => 'integer',
-        'scheduled_emails_not_sent' => 'integer',
-        'feeds_created'             => 'integer',
-        'feed_emails_sent'          => 'integer',
-        'feed_emails_not_sent'      => 'integer',
-        'feed_polls'                => 'integer',
+        'users_registered' => 'int',
+        'email_schedules_created' => 'int',
+        'scheduled_emails_sent' => 'int',
+        'scheduled_emails_not_sent' => 'int',
+        'feeds_created' => 'int',
+        'feed_emails_sent' => 'int',
+        'feed_emails_not_sent' => 'int',
+        'feed_polls' => 'int',
     ];
 
     public static function today()
@@ -26,14 +26,14 @@ class SiteStats extends Model
         return static::firstOrCreate([
             'date' => now()->format('Y-m-d'),
         ], [
-            'users_registered'          => 0,
-            'email_schedules_created'   => 0,
-            'scheduled_emails_sent'     => 0,
+            'users_registered' => 0,
+            'email_schedules_created' => 0,
+            'scheduled_emails_sent' => 0,
             'scheduled_emails_not_sent' => 0,
-            'feeds_created'             => 0,
-            'feed_emails_sent'          => 0,
-            'feed_emails_not_sent'      => 0,
-            'feed_polls'                => 0,
+            'feeds_created' => 0,
+            'feed_emails_sent' => 0,
+            'feed_emails_not_sent' => 0,
+            'feed_polls' => 0,
         ]);
     }
 

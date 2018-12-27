@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers\User;
 
-use App\Http\Controllers\Controller;
 use App\Http\Rules\UsableRecurringWhen;
 use App\Models\Feed;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class FeedsController extends Controller
+class FeedsController
 {
     public function index()
     {
@@ -25,7 +24,7 @@ class FeedsController extends Controller
     public function create()
     {
         return view('feeds.create', [
-            'user'      => $user = Auth::user(),
+            'user' => $user = Auth::user(),
             'feedCount' => $user->feeds()->count(),
         ]);
     }

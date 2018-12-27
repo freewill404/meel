@@ -2,18 +2,17 @@
 
 namespace App\Http\Controllers\User;
 
-use App\Http\Controllers\Controller;
 use App\Support\Enums\Timezone;
 use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 
-class AccountController extends Controller
+class AccountController
 {
     public function index()
     {
         return view('account.index', [
-            'user'      => Auth::user(),
+            'user' => Auth::user(),
             'timezones' => Timezone::selectValues(),
         ]);
     }

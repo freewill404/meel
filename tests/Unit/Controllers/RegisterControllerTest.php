@@ -72,7 +72,8 @@ class RegisterControllerTest extends TestCase
         return $this->post(route('register.post'), $data + [
             'email' => 'test@example.com',
             'timezone'=> 'Europe/Amsterdam',
-            'password'=> 'secret',
+            'password' => 'secret',
+            'password_confirmation' => 'secret',
         ]);
     }
 }

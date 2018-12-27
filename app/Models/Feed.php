@@ -20,11 +20,11 @@ class Feed extends Model
     ];
 
     protected $casts = [
-        'user_id'           => 'integer',
-        'emails_sent'       => 'integer',
-        'next_poll_at'      => 'datetime',
-        'last_polled_at'    => 'datetime',
-        'group_new_entries' => 'boolean',
+        'user_id' => 'int',
+        'emails_sent' => 'int',
+        'next_poll_at' => 'datetime',
+        'last_polled_at' => 'datetime',
+        'group_new_entries' => 'bool',
     ];
 
     public function user()

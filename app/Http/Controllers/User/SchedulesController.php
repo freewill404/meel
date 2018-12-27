@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\User;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\MeelRequest;
+use App\Http\Rules\UsableWhen;
 use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class SchedulesController extends Controller
+class SchedulesController
 {
     public function index()
     {
@@ -33,8 +33,13 @@ class SchedulesController extends Controller
         ]);
     }
 
-    public function post(MeelRequest $request)
+    public function post(Request $request)
     {
+        $request->validate([
+            'what' => 'required|string|max:255',
+            'when' => ['nullable', 'present', 'string', 'max:255', new UsableWhen],
+        ]);
+
         $request->user()->schedules()->create([
             'what' => $request->get('what'),
             'when' => $request->get('when') ?? $request->user()->default_when,

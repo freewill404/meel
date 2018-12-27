@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\SiteStats;
 use Illuminate\Support\Facades\Auth;
 
-class HomeController extends Controller
+class HomeController
 {
     public function index()
     {
