@@ -24,11 +24,11 @@
 
         <label class="block">
             Timezone
-            <select name="timezone" class="field">
+            <select name="timezone" class="field" id="tz-select">
                 @foreach($timezones as $region => $list)
                     <optgroup label="{{ $region }}">
                         @foreach($list as $timezone => $name)
-                            <option value="{{ $timezone }}" {{ $timezone === 'Europe/Amsterdam' ? 'selected' : '' }}>{{ $name }}</option>
+                            <option value="{{ $timezone }}">{{ $name }}</option>
                         @endforeach
                     </optgroup>
                 @endforeach
@@ -50,5 +50,21 @@
         </div>
     @endif
 
-
 @endsection
+
+
+@push('footer')
+    <script>
+        var tzName = '{{ old('timezone') }}' || jstz.determine().name();
+
+        var el = document.getElementById('tz-select');
+
+        for (var i = 0; i < el.options.length; i++) {
+            if (el.options[i].value === tzName) {
+                el.options[i].selected = true;
+
+                break;
+            }
+        }
+    </script>
+@endpush

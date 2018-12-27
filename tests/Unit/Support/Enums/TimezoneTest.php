@@ -19,7 +19,7 @@ class TimezoneTest extends TestCase
             })
             ->flatten()
             ->tap(function ($timezones) {
-                $this->assertCount(411, $timezones);
+                $this->assertCount(492, $timezones);
             })
             ->each(function ($timezone) {
                 now($timezone); // invalid timezones will throw an exception.
