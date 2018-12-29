@@ -36,7 +36,7 @@ class FeedEntryTest extends TestCase
             'pubDate' => '',
         ]);
 
-        $this->assertSame((string) now(), (string) $feedEntry->publishedAt);
+        $this->assertNull($feedEntry->publishedAt);
     }
 
     private function createFeedEntry($attributes = [])

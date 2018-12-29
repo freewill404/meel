@@ -82,6 +82,22 @@ class FeedEntriesCollectionTest extends TestCase
     }
 
     /** @test */
+    function it_ignores_entries_with_no_date()
+    {
+        $feedEntries = new FeedEntryCollection(
+            file_get_contents($this->testFilePath.'feeds/rss-2.0-003-no-date.txt')
+        );
+
+        $entries = $feedEntries->entries();
+
+        $this->assertCount(3, $entries);
+
+        $this->assertSame('Star City', $entries[0]->title);
+        $this->assertSame('The Engine That Does More', $entries[1]->title);
+        $this->assertSame('Astronauts\' Dirty Laundry', $entries[2]->title);
+    }
+
+    /** @test */
     function it_gets_items_since_a_specific_datetime()
     {
         $feedEntryCollection = new FeedEntryCollection(
@@ -125,5 +141,21 @@ class FeedEntriesCollectionTest extends TestCase
         $this->assertSame('2003-06-03 11:39:21', (string) $entries[0]->publishedAt);
         $this->assertSame('2003-05-30 13:06:42', (string) $entries[1]->publishedAt);
         $this->assertSame('2003-05-27 10:37:32', (string) $entries[2]->publishedAt);
+    }
+
+    /** @test */
+    function it_loads_a_reddit_user_rss_feed()
+    {
+        $redditRssFeed = new FeedEntryCollection(
+            file_get_contents($this->testFilePath.'feeds/rss-reddit-01.txt')
+        );
+
+        $entries = $redditRssFeed->entries();
+
+        $this->assertCount(25, $entries);
+
+        $this->assertMatchesJsonSnapshot(
+            $redditRssFeed->toJson()
+        );
     }
 }

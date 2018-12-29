@@ -20,16 +20,18 @@ class FeedEntry
 
         $this->url = $entry->getPermalink();
 
-        $this->publishedAt = Carbon::instance(
-            $entry->getDateCreated() ?? now()
-        )->setTimezone('Europe/Amsterdam');
+        $date = $entry->getDateCreated() ?? $entry->getDateModified() ?? null;
+
+        $this->publishedAt = $date
+            ? Carbon::instance($date)->setTimezone('Europe/Amsterdam')
+            : null;
     }
 
     public function toArray()
     {
         return [
-            'title'       => $this->title,
-            'url'         => $this->url,
+            'title' => $this->title,
+            'url' => $this->url,
             'publishedAt' => (string) $this->publishedAt,
         ];
     }

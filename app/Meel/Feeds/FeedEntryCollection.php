@@ -16,7 +16,13 @@ class FeedEntryCollection
         $feed = Reader::importString($feedString);
 
         foreach ($feed as $entry) {
-            $this->entries[] = new FeedEntry($entry);
+            $feedEntry = new FeedEntry($entry);
+
+            if (! $feedEntry->publishedAt) {
+                continue;
+            }
+
+            $this->entries[] = $feedEntry;
         }
     }
 
