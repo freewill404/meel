@@ -31,39 +31,47 @@
 
 
 a {
-    @apply .no-underline
+    @apply no-underline
 }
 
 .field {
-    @apply .block .w-full .shadow .appearance-none .border .rounded .mt-1 .mb-3 .p-1;
+    @apply block w-full shadow appearance-none border rounded mt-1 mb-3 p-1;
 }
 
 .btn {
-    @apply .bg-blue .text-white .font-bold .py-2 .px-4 .rounded .no-underline .select-none;
+    @apply bg-blue text-white font-bold py-2 px-4 rounded no-underline select-none;
 }
 
 .btn:hover {
-    @apply .bg-blue-dark;
+    @apply bg-blue-dark;
+}
+
+.btn-setting {
+    @apply border-2 bg-grey-lighter border-grey-light font-bold py-2 px-4 rounded no-underline select-none;
+}
+
+.btn-setting:hover {
+    @apply bg-grey-light;
 }
 
 .btn-create {
-    @apply .btn .bg-green;
+    @apply btn bg-green;
 }
 
 .btn-create:hover {
-    @apply .bg-green-dark;
+    @apply bg-green-dark;
 }
 
 .btn-delete {
-    @apply .btn .bg-red;
+    @apply btn bg-red;
 }
 
 .btn-delete:hover {
-    @apply .bg-red-dark;
+    @apply bg-red-dark;
 }
 
 .panel {
-    @apply .bg-white .border .rounded .shadow .p-4;
+    @apply bg-white border rounded shadow p-4;
 }
 
 
