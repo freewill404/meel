@@ -7,7 +7,7 @@
 
     <div class="max-w-sm mx-auto mt-8 mb-16">
 
-        <div class="flex justify-between">
+        <div class="flex justify-between mb-6">
             <span></span>
 
             <a class="text-black text-sm" href="{{ route('user.feeds.create') }}">new</a>
