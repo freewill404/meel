@@ -39,10 +39,12 @@ task('deploy', [
     'artisan:route:cache',
 
     'artisan:migrate',
+
+    'deploy:symlink',
+
     'clear-opcache',
     'artisan:queue:restart',
 
-    'deploy:symlink',
     'deploy:unlock',
     'cleanup',
 ]);
