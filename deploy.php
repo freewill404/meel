@@ -14,7 +14,7 @@ host('sjors@meel.me')->set('deploy_path', '/var/www/meel');
 
 task('build-npm-assets', 'npm i; npm run prod');
 
-task('clear-opcache', 'sudo service apache2 restart');
+task('clear-opcache', 'sudo service apache2 reload');
 
 
 after('deploy:failed', 'deploy:unlock');
